@@ -5,22 +5,19 @@ import Tank from '../../../components/Tank.astro';
 import { absolute, packs, speciesById, styleById } from '../../../lib/site';
 import { fishMeta } from '../../../lib/pictures';
 import { packStyle, premadeProps } from '../../../lib/tanks';
-import sync from '../../../data/sync.json';
 import { useLocale, localeCodes, localeParam } from '../../../i18n/index.ts';
 
 export function getStaticPaths() {
   return localeCodes.flatMap((code) => packs.map((pack) => ({ params: { locale: localeParam(code), id: pack.id }, props: { pack } })));
 }
 const { pack } = Astro.props;
-const { locale, t, l, name, tagline, list, languageName } = useLocale(Astro.url);
+const { t, l, name, tagline, list } = useLocale(Astro.url);
 const p = t.pack;
 
 const fish = pack.species.map((id) => speciesById(id));
 const styleId = packStyle[pack.id] ?? 'minimal';
 const style = styleById(styleId);
 const names = list(fish.map((s) => name(s)));
-// The other languages the app names these fish in: all it speaks but the page's own.
-const langs = sync.languages.filter((lang) => lang !== locale.data);
 
 const others = packs.filter((x) => x.id !== pack.id);
 const title = p.title(name(pack), names);
@@ -85,26 +82,6 @@ const crumbs = {
         </ol>
         <p>{p.after}</p>
 
-        <h2>{p.namesTitle}</h2>
-        <p>{p.namesIntro(sync.languages.length)}</p>
-        <table>
-          <thead>
-            <tr>
-              <th>{p.languageHeader}</th>
-              {fish.map((s) => <th>{name(s)}</th>)}
-            </tr>
-          </thead>
-          <tbody>
-            {
-              langs.map((lang) => (
-                <tr>
-                  <td>{languageName(lang)}</td>
-                  {fish.map((s) => <td lang={lang}>{s.names[lang as keyof typeof s.names]}</td>)}
-                </tr>
-              ))
-            }
-          </tbody>
-        </table>
       </div>
 
       <aside class="pack-page__others">
@@ -136,10 +113,6 @@ const crumbs = {
   }
   .pack-page__text {
     margin: clamp(40px, 6vw, 64px) auto 0;
-  }
-  .pack-page__text table {
-    display: block;
-    overflow-x: auto;
   }
   .pack-page__others {
     margin-top: clamp(40px, 6vw, 64px);

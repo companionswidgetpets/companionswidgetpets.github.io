@@ -233,13 +233,13 @@ p + p {
 }
 .kicker {
   display: inline-block;
-  font-family: var(--font-display);
-  font-weight: 720;
-  font-stretch: 120%;
-  font-size: 0.75rem;
-  letter-spacing: 0.1em;
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-stretch: normal;
+  font-size: 0.8rem;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: var(--accent);
+  color: var(--ink-4);
   margin-bottom: 14px;
 }
 .lead {
@@ -292,7 +292,7 @@ p + p {
 }
 .btn--ghost {
   background: var(--accent-soft);
-  color: var(--accent);
+  color: #000;
 }
 .btn--small {
   min-height: 40px;
@@ -608,4 +608,85 @@ p + p {
   .fish-pic {
     animation: none;
   }
+}
+
+/* ---------- Languages ----------
+   The site is set in each reader's system fonts, so every script already arrives in a
+   face made for it. What differs by language is rhythm: how tall a line of full-width
+   characters wants to be, where a line may break, and which fonts to ask for by name on
+   systems whose default is not the best they have. */
+
+/* Chinese, Japanese and Korean: characters fill the whole height of the line, so text
+   needs more room between lines than Latin does, and headings more than their tight
+   Latin setting. Italics do not exist in these scripts. */
+html:lang(ja),
+html:lang(ko),
+html:lang(zh) {
+  line-height: 1.75;
+}
+:is(html:lang(ja), html:lang(ko), html:lang(zh)) body {
+  line-height: inherit;
+}
+:is(html:lang(ja), html:lang(ko), html:lang(zh)) :is(h1, h2, .title-face) {
+  line-height: 1.3;
+  letter-spacing: 0.03em;
+}
+:is(html:lang(ja), html:lang(ko), html:lang(zh)) :is(h3, h4, .heading-face) {
+  line-height: 1.4;
+}
+:is(html:lang(ja), html:lang(ko), html:lang(zh)) .lead {
+  line-height: 1.7;
+}
+:is(html:lang(ja), html:lang(ko), html:lang(zh)) :is(em, i, cite, address) {
+  font-style: normal;
+}
+html:lang(ja) {
+  --font-body: -apple-system, BlinkMacSystemFont, "Hiragino Sans", "Hiragino Kaku Gothic ProN", "Yu Gothic UI",
+    "Yu Gothic", "Noto Sans JP", "Noto Sans CJK JP", Meiryo, system-ui, sans-serif;
+  /* Punctuation never starts a line, and small kana never do either. */
+  line-break: strict;
+}
+/* Japanese has no spaces, so a browser may break a heading in the middle of a word;
+   where it can, it is asked to break between phrases instead. */
+html:lang(ja) :is(h1, h2, h3, .lead, summary, .card p) {
+  word-break: auto-phrase;
+}
+html:lang(ko) {
+  --font-body: -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Pretendard", "Malgun Gothic",
+    "Noto Sans KR", "Noto Sans CJK KR", system-ui, sans-serif;
+  /* Korean breaks lines between words, never inside one. */
+  word-break: keep-all;
+  overflow-wrap: break-word;
+}
+html:lang(zh-Hans) {
+  --font-body: -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei UI", "Microsoft YaHei",
+    "Noto Sans SC", "Noto Sans CJK SC", system-ui, sans-serif;
+  line-break: strict;
+}
+html:lang(zh-Hant) {
+  --font-body: -apple-system, BlinkMacSystemFont, "PingFang TC", "Microsoft JhengHei UI", "Microsoft JhengHei",
+    "Noto Sans TC", "Noto Sans CJK TC", system-ui, sans-serif;
+  line-break: strict;
+}
+
+/* Russian: Plus Jakarta Sans, the titles' stand-in where SF Pro is not installed, has no
+   Cyrillic, and a heading half in it and half in the system font looks patched. Titles
+   use the system's own face throughout instead. */
+html:lang(ru) {
+  --font-display: BlinkMacSystemFont, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", system-ui, sans-serif;
+}
+
+/* German and Russian build long words. Running text may hyphenate them (the browser
+   knows each language's rules from the page's lang), and no heading or button may push
+   the page wider than the screen. */
+:is(html:lang(de), html:lang(ru)) :is(.prose, .card p, .lead, .qa__body) {
+  hyphens: auto;
+  -webkit-hyphens: auto;
+}
+h1,
+h2,
+h3,
+h4,
+summary {
+  overflow-wrap: break-word;
 }

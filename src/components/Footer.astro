@@ -37,6 +37,13 @@ const columns = [
   },
   {
     heading: t.footer.columnAbout,
+    socials: [
+      { name: 'Instagram', href: 'https://www.instagram.com/companionswidgetpets/', icon: '/social/instagram.svg' },
+      { name: 'TikTok', href: 'https://www.tiktok.com/@companionswidgetpets', icon: '/social/tiktok.svg' },
+      { name: 'YouTube', href: 'https://www.youtube.com/channel/UC6TBlKUJo0dvjhqETj9FpRQ', icon: '/social/youtube.webp' },
+      { name: 'Rednote', href: 'https://xhslink.cn/m/5SH9GeHn3eg', icon: '/social/rednote.svg' },
+      { name: 'LinkedIn', href: 'https://www.linkedin.com/in/tiaanvdr/', icon: '/social/linkedin.svg' },
+    ],
     links: [
       { href: l('/press/'), label: t.footer.press },
       { href: l('/support/'), label: t.footer.support },
@@ -56,7 +63,7 @@ const columns = [
       <p class="footer__facts">{t.footer.facts(app.minimumOS)}</p>
     </div>
     {
-      columns.map(({ heading, links }) => (
+      columns.map(({ heading, links, socials }) => (
         <nav class="footer__col" aria-label={heading}>
           <h2>{heading}</h2>
           <ul>
@@ -66,6 +73,17 @@ const columns = [
               </li>
             ))}
           </ul>
+          {socials && (
+            <ul class="footer__socials">
+              {socials.map(({ name, href, icon }) => (
+                <li>
+                  <a href={href} aria-label={name} title={name} target="_blank" rel="noopener noreferrer">
+                    <img src={icon} alt="" width="22" height="22" loading="lazy" />
+                  </a>
+                </li>
+              ))}
+            </ul>
+          )}
         </nav>
       ))
     }
@@ -165,6 +183,30 @@ const columns = [
   }
   .footer__col a {
     color: var(--ink-2);
+  }
+  .footer__col .footer__socials {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    margin-top: 20px;
+    margin-left: -6px;
+  }
+  .footer__socials a {
+    display: grid;
+    place-items: center;
+    width: 32px;
+    height: 32px;
+    border-radius: 6px;
+    color: #000;
+  }
+  .footer__socials a:hover {
+    background: var(--line);
+  }
+  .footer__socials img {
+    width: 22px;
+    height: 22px;
+    object-fit: contain;
+    filter: grayscale(1) contrast(10);
   }
   /* The language menu: a globe and the languages by their own names, the current one
      in ink. */

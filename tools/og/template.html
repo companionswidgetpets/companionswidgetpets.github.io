@@ -1,6 +1,8 @@
 <!doctype html>
-<!-- The social preview card (1200×630). Rendered to public/og/default.png with
-     `npm run og` (headless Chrome via tools/shots.mjs); nothing here is served. -->
+<!-- The social preview card (1200×630), drawn once per language to public/og/ with
+     `npm run og` (tools/og/make-plan.mjs writes the plan from src/i18n/*.ts, then headless
+     Chrome draws it via tools/shots.mjs); nothing here is served. The words below are the
+     English ones, replaced by setWords() at the foot of the page. -->
 <html lang="en">
 <head>
 <meta charset="utf-8" />
@@ -59,9 +61,9 @@
 <body>
   <div class="copy">
     <div class="brand"><img src="../../src/assets/icon/app-icon.png" alt="" /><span>Companions</span></div>
-    <h1>A tiny aquarium on your Home&nbsp;Screen.</h1>
-    <p>Your fish swim around right on your widget, all day long.</p>
-    <div class="facts">Free on the App Store · iPhone, iPad, Mac and Apple Watch</div>
+    <h1 id="title">A tiny aquarium on your Home&nbsp;Screen.</h1>
+    <p id="text">Your fish swim around right on your widget, all day long.</p>
+    <div class="facts" id="facts">Free on the App Store · iPhone, iPad, Mac and Apple Watch</div>
   </div>
   <div class="tank">
     <img class="fern-l" src="../../src/assets/props/ferns.png" alt="" />
@@ -75,5 +77,32 @@
     <i class="bubble" style="left:184px; top:48px; width:6px; height:6px"></i>
     <i class="bubble" style="left:342px; top:120px; width:8px; height:8px"></i>
   </div>
+  <script>
+    /* Puts a language's words on the card. Chinese, Japanese and Korean lines are taller
+       and break between phrases; a headline too long for the card at full size is set
+       smaller, a step at a time, until the words clear the bottom edge. */
+    window.setWords = ({ lang, title, text, facts }) => {
+      document.documentElement.lang = lang;
+      const h1 = document.getElementById('title');
+      h1.innerHTML = title;
+      document.getElementById('text').textContent = text;
+      document.getElementById('facts').textContent = facts;
+      const cjk = /^(ja|ko|zh)/.test(lang);
+      if (cjk) {
+        h1.style.lineHeight = '1.28';
+        h1.style.wordBreak = lang === 'ko' ? 'keep-all' : 'auto-phrase';
+        document.getElementById('text').style.wordBreak = lang === 'ko' ? 'keep-all' : 'auto-phrase';
+        document.getElementById('text').style.lineHeight = '1.5';
+      }
+      const copy = document.querySelector('.copy');
+      let size = 50;
+      while (copy.getBoundingClientRect().bottom > 560 && size > 34) {
+        size -= 2;
+        h1.style.fontSize = `${size}px`;
+      }
+      window.cardReport = () => `headline ${size}px, words end at ${Math.round(copy.getBoundingClientRect().bottom)}px of 630`;
+    };
+    window.cardReport = () => 'og card rendered';
+  </script>
 </body>
 </html>

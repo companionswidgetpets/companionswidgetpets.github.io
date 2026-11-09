@@ -80,6 +80,7 @@ const description = h.description(species.length);
                   id="place-standby"
                   size="small"
                   style="dark"
+                  look="standby"
                   fish={[{ species: 'ghost', seed: 'ps-1' }, { species: 'neon', seed: 'ps-2' }, { species: 'jellyfish', seed: 'ps-3' }]}
                   props={premadeProps('small', 'dark')}
                   bubbles={false}
@@ -115,21 +116,21 @@ const description = h.description(species.length);
         <article class="card place">
           <div class="place__art place__art--ipad" aria-hidden="true">
             <div class="place__ipad">
-              <div class="place__ipad-toolbar">
-                <span>Companions</span>
-                <span class="place__ipad-controls"><i></i><i></i><i></i></span>
+              <div class="place__ipad-screen">
+                <div class="place__ipad-icons"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+                <div class="place__ipad-widget">
+                  <Tank
+                    id="place-ipad"
+                    size="large"
+                    style="lavender"
+                    fish={[{ species: 'discus', seed: 'pi-1' }, { species: 'dartfish', seed: 'pi-2' }, { species: 'angelfish', seed: 'pi-3' }, { species: 'neon', seed: 'pi-4' }]}
+                    props={premadeProps('large', 'lavender')}
+                    fishSize={1}
+                    bubbles={false}
+                  />
+                  <span class="place__label">Companions</span>
+                </div>
               </div>
-              <div class="place__ipad-tank">
-                <Tank
-                  id="place-ipad"
-                  size="medium"
-                  style="pond"
-                  fish={[{ species: 'spotted_koi', seed: 'pi-1' }, { species: 'gold_koi', seed: 'pi-2' }, { species: 'frog', seed: 'pi-3' }]}
-                  props={premadeProps('medium', 'pond')}
-                  bubbles={false}
-                />
-              </div>
-              <div class="place__ipad-home"></div>
             </div>
           </div>
           <h3>{h.places.ipad.title}</h3>
@@ -446,44 +447,46 @@ const description = h.description(species.length);
   .place__art--ipad {
     background: linear-gradient(145deg, #dcd6f4, #d1e5f7 60%, #e9f3fa);
   }
+  /* A landscape iPad Home Screen: blank icons on the left, the large widget on the right,
+     sized off the screen's width so it scales down with the card. */
   .place__ipad {
-    position: relative;
-    width: 280px;
-    max-width: calc(100% - 32px);
-    padding: 12px 14px 20px;
+    width: min(288px, 100% - 32px);
     border: 7px solid #24262c;
     border-radius: 22px;
-    background: linear-gradient(160deg, #cce5fb, #f2f8ff);
-    box-shadow: 0 14px 28px rgba(24, 34, 60, 0.2);
-  }
-  .place__ipad-toolbar {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 12px;
-    margin-bottom: 12px;
-    font-family: var(--font-display);
-    font-weight: 750;
-    font-size: 0.65rem;
-  }
-  .place__ipad-controls {
-    display: flex;
-    gap: 5px;
-  }
-  .place__ipad-controls i {
-    width: 5px;
-    height: 5px;
-    border-radius: 50%;
-    background: var(--ink-3);
-  }
-  .place__ipad-home {
-    position: absolute;
-    bottom: 5px;
-    left: 35%;
-    width: 30%;
-    height: 3px;
-    border-radius: 999px;
     background: #24262c;
+    box-shadow: 0 14px 28px rgba(24, 34, 60, 0.22);
+  }
+  .place__ipad-screen {
+    container-type: inline-size;
+    aspect-ratio: 1.44;
+    border-radius: 15px;
+    overflow: hidden;
+    display: grid;
+    grid-template-columns: 1fr 48%;
+    gap: 6%;
+    align-items: start;
+    align-content: center;
+    padding: 0 6% 2%;
+    background: linear-gradient(160deg, #4f7fe6, #86b4f4 55%, #c4e0fb);
+  }
+  .place__ipad-icons {
+    display: grid;
+    grid-template-columns: repeat(3, 9cqw);
+    grid-template-rows: repeat(4, 9cqw);
+    justify-content: space-between;
+    align-content: space-between;
+    /* the large widget's glass, without its label */
+    height: calc(48cqw * 427 / 406.8);
+  }
+  .place__ipad-icons i {
+    display: block;
+    border-radius: 22.5%;
+    background: rgba(255, 255, 255, 0.55);
+    box-shadow: 0 1px 4px rgba(20, 40, 80, 0.12);
+  }
+  .place__ipad-widget .place__label {
+    margin-top: 1.4cqw;
+    font-size: 3.3cqw;
   }
   .place__art--mac {
     background: linear-gradient(180deg, #1f3b6e, #4b86c9 60%, #8fc1ec);

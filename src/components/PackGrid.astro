@@ -15,20 +15,19 @@ const { t, l, name, tagline } = useLocale(Astro.url);
 
 <div class="packs grid grid--3">
   {
-    packs.map((pack, i) => (
+    packs.map((pack) => (
       <a class="card card--link pack" href={l(`/packs/${pack.id}/`)}>
         <div class="pack__fish" aria-hidden="true">
-          {pack.species.map((id, j) => (
+          {pack.species.map((id) => (
             <Image
               src={fishMeta(id)}
               alt=""
-              width={112}
-              height={112}
+              width={160}
+              height={160}
               densities={[1, 2]}
               format="webp"
               loading="lazy"
               class="fish-pic"
-              style={`--delay:${(-(i * 5 + j) * 0.7).toFixed(1)}s`}
             />
           ))}
         </div>
@@ -44,13 +43,14 @@ const { t, l, name, tagline } = useLocale(Astro.url);
 <style>
   .pack__fish {
     display: grid;
-    grid-template-columns: repeat(5, 1fr);
+    grid-template-columns: repeat(5, minmax(0, 1fr));
     gap: 6px;
     margin-bottom: 18px;
   }
   .pack__fish img {
     width: 100%;
     height: auto;
+    animation: none;
   }
   .pack__names {
     margin-top: 10px;

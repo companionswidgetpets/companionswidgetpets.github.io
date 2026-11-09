@@ -7,12 +7,13 @@
   },
   "scripts": {
     "dev": "astro dev",
-    "build": "astro build",
+    "build": "node tools/check-i18n.mjs && astro build",
     "preview": "astro preview",
     "astro": "astro",
     "sync": "python3 tools/sync-from-app.py",
+    "check:i18n": "node tools/check-i18n.mjs",
     "shots": "node tools/shots.mjs tools/shots.plan.json",
-    "og": "node tools/shots.mjs tools/og/plan.json"
+    "og": "node tools/og/make-plan.mjs && node tools/shots.mjs tools/og/plan.json"
   },
   "dependencies": {
     "@astrojs/sitemap": "^3.7.4",

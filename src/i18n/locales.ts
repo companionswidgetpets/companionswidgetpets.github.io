@@ -23,7 +23,7 @@ export interface Locale {
   name: string;
 }
 
-export const locales = [
+const every = [
   { code: 'en', lang: 'en', hreflang: 'en', data: 'en', og: 'en_US', name: 'English' },
   { code: 'de', lang: 'de', hreflang: 'de', data: 'de', og: 'de_DE', name: 'Deutsch' },
   { code: 'es', lang: 'es', hreflang: 'es', data: 'es', og: 'es_LA', name: 'Español' },
@@ -36,7 +36,20 @@ export const locales = [
   { code: 'zh-hant', lang: 'zh-Hant', hreflang: 'zh-Hant', data: 'zh-Hant', og: 'zh_TW', name: '繁體中文' },
 ] as const satisfies readonly Locale[];
 
-export type LocaleCode = (typeof locales)[number]['code'];
+export type LocaleCode = (typeof every)[number]['code'];
+
+/**
+ * Languages still being translated. A language listed here is not built, linked to or
+ * mentioned to search engines, so nothing half-finished is ever published; take it off the
+ * list when its words are complete and `npm run check:i18n` passes. To look at one before
+ * then, build with I18N_DRAFTS=1 (`I18N_DRAFTS=1 npm run dev`).
+ */
+export const drafts: LocaleCode[] = ['de', 'es', 'fr', 'pt', 'ru', 'ja', 'ko', 'zh-hans', 'zh-hant'];
+
+const showDrafts = Boolean(globalThis.process?.env?.I18N_DRAFTS);
+
+/** The languages the site is published in. */
+export const locales: readonly Locale[] = every.filter((l) => showDrafts || !drafts.includes(l.code));
 
 export const defaultLocale: LocaleCode = 'en';
 export const localeCodes = locales.map((l) => l.code) as LocaleCode[];

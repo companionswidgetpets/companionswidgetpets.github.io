@@ -26,11 +26,14 @@ npm run preview      # serves dist/ the way GitHub Pages will
 
 | Path | What |
 |---|---|
-| `src/pages/` | One file per page or route: `index.astro` (home), `help/`, `guides/`, `packs/`, `styles/`, `whats-new/`, `press/`, `support.astro`, `privacy.astro`, `404.astro` |
-| `src/content/help/*.md` | One question and answer per file; the file name is the URL (`/help/<name>/`) |
+| `src/pages/[...locale]/` | One file per page or route, each built once per language: `index.astro` (home), `help/`, `guides/`, `packs/`, `styles/`, `whats-new/`, `press/`, `support.astro`, `privacy.astro`. `src/pages/404.astro` is the one page outside it |
+| `src/i18n/` | The languages (`locales.ts`) and every word of the pages and components: `en.ts` is the original, with one file of the same shape per language (see "Languages" below) |
+| `src/content/help/*.md` | One question and answer per file, in English; the file name is the URL (`/help/<name>/`) |
 | `src/content/guides/*.md` | Longer articles (`/guides/<name>/`) |
 | `src/content/news/*.md` | Release notes, one per version (`/whats-new/<name>/`) |
+| `src/content/i18n/<language>/` | The translations of those three folders, file for file |
 | `src/content.config.ts` | The frontmatter each kind of entry must have |
+| `src/lib/content.ts` | Gives a page its help answers, guides and release notes in its own language |
 | `src/components/` | `Hero`, `Phone`, `Tank`, `TopBar`, `Footer`, `SizesDemo`, `PackGrid`, `StyleRow`, `Badge`, `Analytics` |
 | `src/layouts/Base.astro` | The page shell: metadata, Open Graph, JSON-LD, Smart App Banner, fonts |
 | `src/scripts/` | `tank.js` (the simulation), `hero.js` (scroll choreography), `site.js` (menu, style picker), `glass.js` (what is glass, and how much each browser gets), `analytics.js` (visitor statistics) |
@@ -39,8 +42,8 @@ npm run preview      # serves dist/ the way GitHub Pages will
 | `src/vendor/liquid-glass/` | The Liquid Glass for the Web library, unmodified (see "Liquid glass" below) |
 | `src/data/*.json` | Facts pulled from the app by the sync script, plus `app.json` (hand-kept facts: version, URLs, languages) |
 | `src/assets/` | Pictures that go through Astro's image pipeline (fish, props, phone, widget capture, icon, screenshots) |
-| `public/` | Served as-is: fonts, `robots.txt`, `llms.txt`, icons, `og/default.png` |
-| `tools/` | `sync-from-app.py`, `footprints.swift`, `shots.mjs` (headless screenshots), `og/` (social card) |
+| `public/` | Served as-is: fonts, `robots.txt`, `llms.txt`, icons, `og/` (the social card in each language) |
+| `tools/` | `sync-from-app.py`, `footprints.swift`, `check-i18n.mjs` (checks the translations), `shots.mjs` (headless screenshots), `og/` (social cards, one per language) |
 
 ### Writing a help answer
 
@@ -61,6 +64,50 @@ The full answer in Markdown. Numbered steps can use <ol class="steps"> … </ol>
 
 One question per page, answered in the first two sentences, with facts taken from the app.
 Guides and release notes work the same way; their fields are in `src/content.config.ts`.
+
+A new answer is published in English at once. It appears in another language when
+`src/content/i18n/<language>/help/<same-slug>.md` exists (see "Languages"); until then that
+language simply does not have the page, and `npm run check:i18n` lists what is waiting.
+
+### Languages
+
+The site is published in ten languages: English at the root (`/help/`), and German, Spanish,
+French, Portuguese, Russian, Japanese, Korean, Simplified Chinese and Traditional Chinese
+each under its own folder (`/de/help/`, `/ja/help/`, `/zh-hans/help/` …). The addresses are the
+same in every language apart from that folder.
+
+Words come from three places:
+
+| What | Where | Notes |
+|---|---|---|
+| Fish, pack, prop and style names | `src/data/*.json` | Pulled from the app by `npm run sync`, in all of the app's languages |
+| Pages and components | `src/i18n/<language>.ts` | Exactly the shape of `en.ts`. A sentence that varies with a count or a name is a function, so each language orders its words and chooses its plurals itself |
+| Help answers, guides, release notes | `src/content/i18n/<language>/{help,guides,news}/<slug>.md` | Frontmatter holds only the words (`question` and `summary`; `title`, `description` and `kicker`; `title` and `summary`). Order, category, dates and related links are read from the English file. Links into the site carry the language's folder (`/ja/help/battery/`) |
+
+Three rules keep the translations right:
+
+- **The app's words are the site's words.** A button, menu or page of the app is written exactly
+  as the app shows it in that language (`Localizable.xcstrings` in the app repo), and iOS's own
+  labels as Apple writes them. The privacy policy is the app's translated policy, word for word.
+- **A page is published in a language only when it has been translated.** There is never an
+  English page under another language's address.
+- **`npm run check:i18n`** compares every language with the English: the same entries in
+  `src/i18n/`, the same headings, steps and links in each Markdown page, and no link that
+  leaves its language. `npm run build` runs it first and stops if it finds an error.
+  `npm run check:i18n -- --strict` also fails on pages still waiting for a translation, and
+  `node tools/check-i18n.mjs --dist` checks the built site (language tags, canonical and
+  hreflang links both ways, the sitemap, every internal link).
+
+After changing English text, change it in each language too: for `en.ts` the check fails
+until every language has the entry; for a Markdown page the translation is yours to keep in
+step.
+
+To add a language: add it to `src/i18n/locales.ts` (and to `drafts` there, which keeps it off
+the published site while it is being written; `I18N_DRAFTS=1 npm run dev` shows drafts),
+write `src/i18n/<code>.ts` and register it in `src/i18n/index.ts`, translate
+`src/content/i18n/<code>/`, add Apple's badge in that language as
+`src/assets/badge/app-store-badge-<code>.svg`, run `npm run og` for its social card, and take
+it off `drafts` when `npm run check:i18n -- --strict` passes.
 
 ### Keeping the site true to the app
 
@@ -117,7 +164,9 @@ and on `<lg-navbar>` having `moveTo()`.
 ```sh
 npm run build && npm run preview &
 node tools/shots.mjs tools/shots.plan.json      # screenshots + any JavaScript errors
-npm run og                                      # re-render public/og/default.png from tools/og/template.html
+npm run check:i18n                              # the translations against the English
+node tools/check-i18n.mjs --dist                # the built site: hreflang, canonical, sitemap, links
+npm run og                                      # re-draw public/og/*.png, one card per language
 ```
 
 `tools/shots.mjs` drives the Google Chrome on this Mac headless, with no dependencies.
@@ -144,6 +193,11 @@ Afterwards, every push to `main` republishes within a couple of minutes.
 - Every page has a canonical URL, Open Graph and Twitter tags, and JSON-LD: `WebSite`,
   `Person` (developer) and, on the home page, `SoftwareApplication`; `FAQPage` on help pages,
   `TechArticle` on guides and release notes, `BreadcrumbList` everywhere, `ItemList` on packs.
+- Every page names itself and its translations with `hreflang` links (and `x-default`, the
+  English page), in its `<head>` and again in the sitemap, so a search engine shows each reader
+  the page in their own language. Each language's pages have their own `<html lang>`, title,
+  description, `og:locale`, social card and structured data, and link only to pages in the same
+  language; the language menu in the footer is the one place that crosses over.
 - The sitemap is at `/sitemap-index.xml`. Submit the site once to
   [Google Search Console](https://search.google.com/search-console) and
   [Bing Webmaster Tools](https://www.bing.com/webmasters) (Bing feeds ChatGPT and Copilot).
@@ -218,8 +272,16 @@ Who is counted:
   into `src/content/news/`.
 - App Store links carry no campaign token. Add `?pt=<provider>&ct=website&mt=8` to
   `appStoreUrl` in `src/data/app.json` to see the site's installs in App Analytics.
-- The site is English only. Fish, pack, prop and style names are already in all twelve
-  languages in `src/data/`, ready for translated pages.
+- The app also speaks Arabic and Italian, which the site does not yet (Arabic needs the
+  layout mirrored right to left).
+- In App Store Connect, each language's Marketing URL, Support URL and Privacy Policy URL can
+  point at that language's pages (`/ja/`, `/ja/support/`, `/ja/privacy/`), so someone coming
+  from the Japanese App Store lands on the Japanese site.
+- Search engines other than Google and Bing matter in three of the languages: register the
+  site with [Naver Search Advisor](https://searchadvisor.naver.com) (Korean),
+  [Yandex Webmaster](https://webmaster.yandex.com) (Russian) and, if mainland China matters,
+  [Baidu](https://ziyuan.baidu.com), each of which takes the same sitemap.
+- The App Store screenshots in the press kit are the English ones in every language.
 - An RSS feed for What's new, and the promo video on the home page.
 
 ## Licences and credits

@@ -3,12 +3,12 @@
  * The three widget sizes as live tanks, with a style picker that repaints all three.
  */
 import Tank from './Tank.astro';
-import { styles, paletteVars, pageTint, rgb } from '../lib/site';
+import { styles, styleById, paletteVars, pageTint, rgb } from '../lib/site';
 import { demoFish, premadeProps } from '../lib/tanks';
 import { useLocale } from '../i18n/index.ts';
 
 const { t, name } = useLocale(Astro.url);
-const initial = styles[0];
+const initial = styleById('lavender');
 ---
 
 <section class="section demo" id="sizes" data-style-scope style={`--demo-tint:${pageTint(initial)}`}>

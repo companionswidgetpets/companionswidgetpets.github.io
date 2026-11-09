@@ -11,9 +11,33 @@ import { heroTank } from '../lib/tanks';
 import { useLocale } from '../i18n/index.ts';
 
 const { t } = useLocale(Astro.url);
+
+// On wide screens the headline is two fixed lines beside the phone, sized so that the
+// English "on your Home Screen." (15.5 times the font size wide) ends just short of it.
+// A language whose line runs longer is set proportionally smaller, so it never reaches
+// the phone. The widths are SF Pro's at the title's width and weight, near enough; every
+// Chinese, Japanese or Korean character is one font size wide.
+const ENGLISH_EM = 15.5;
+function lineEm(text: string): number {
+  let em = 0;
+  for (const ch of text) {
+    if (/[\u2e80-\u9fff\uac00-\ud7af\uf900-\ufaff\uff00-\uffef]/.test(ch)) em += 1.02;
+    else if (/\s/.test(ch)) em += 0.4;
+    else if (/[.,:;!?'’"“”„«»()\-–—·¡¿]/.test(ch)) em += 0.44;
+    else if (/[ilIjtfr1]/.test(ch)) em += 0.54;
+    else if (/[mwMWЖШЩЮМжшщюмы]/.test(ch)) em += 1.22;
+    else if (/\p{Lu}/u.test(ch)) em += 1.02;
+    else em += 0.86;
+  }
+  return em;
+}
+const lines = t.hero.titleHtml
+  .split(/<br\s*\/?>/)
+  .map((line) => line.replace(/<[^>]+>/g, '').replace(/&nbsp;/g, ' ').trim());
+const fit = Math.min(1, ENGLISH_EM / Math.max(...lines.map(lineEm)));
 ---
 
-<section class="hero" data-hero aria-label={t.hero.label}>
+<section class="hero" data-hero aria-label={t.hero.label} style={`--title-fit:${fit.toFixed(3)}`}>
   <div class="hero__stage">
     <div class="hero__sky" aria-hidden="true"></div>
 
@@ -105,9 +129,10 @@ const { t } = useLocale(Astro.url);
   }
   /* Two fixed lines, as in the mockup. The size is whatever lets "on your Home Screen."
      (15.5 times the font size wide at this width and tracking) end 3vw short of the
-     phone, whose final left edge is 73.5vw minus half its 39.1vh width. */
+     phone, whose final left edge is 73.5vw minus half its 39.1vh width. --title-fit
+     (set above) shrinks it for a language whose headline runs longer than that. */
   .hero__title {
-    font-size: clamp(28px, calc(3.61vw - 1.26vh), 64px);
+    font-size: clamp(calc(28px * var(--title-fit, 1)), calc((3.61vw - 1.26vh) * var(--title-fit, 1)), 64px);
     white-space: nowrap;
     color: var(--ink);
   }
@@ -207,7 +232,7 @@ const { t } = useLocale(Astro.url);
       left: var(--gutter);
     }
     .hero__title {
-      font-size: clamp(22px, calc((72vw - 19.6vh - var(--gutter) - 24px) / 15.5), 44px);
+      font-size: clamp(calc(22px * var(--title-fit, 1)), calc((72vw - 19.6vh - var(--gutter) - 24px) / 15.5 * var(--title-fit, 1)), 44px);
     }
   }
 </style>

@@ -10,4 +10,4 @@ Companions is translated into twelve languages: English, Arabic, German, Spanish
 
 The app follows your iPhone's language. To use another, open **⋯ › Settings** and choose a language under **Language**; the app switches without changing your phone's settings. Names you have given fish are yours and stay as you typed them.
 
-This website is in English for now. Translations of the help pages will follow.
+This website is written in ten of them: English, German, Spanish, French, Portuguese, Russian, Japanese, Korean, Simplified Chinese and Traditional Chinese. Pick yours from the list at the foot of any page.

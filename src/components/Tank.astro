@@ -5,7 +5,8 @@
  *
  * `look="widget"` draws the glass from the real Home Screen capture, which already has
  * iOS's own highlight and rim over it; `look="app"` (default) paints the app's glass in
- * CSS from the style's palette, so it can be restyled live.
+ * CSS from the style's palette, so it can be restyled live. `look="standby"` draws no glass
+ * and no rim at all, only the props and the fish, as StandBy shows the widget.
  */
 import { getImage } from 'astro:assets';
 import { fishUrl, propUrl } from '../lib/pictures';
@@ -34,7 +35,7 @@ interface Props {
   style?: string;
   fish?: FishEntry[];
   props?: PlacedProp[];
-  look?: 'app' | 'widget';
+  look?: 'app' | 'widget' | 'standby';
   /** Swim speed notch, -2…2; the app starts at -1. */
   speed?: number;
   /** Fish size notch, -2…2; the app starts at -1. */
@@ -135,7 +136,7 @@ const cornerClass = complication?.corner ?? 'topRight';
       widget ? (
         <img class="tank__capture" src={widget.src} width={widget.attributes.width} height={widget.attributes.height} alt="" />
       ) : (
-        <div class="tank__glass" aria-hidden="true" />
+        look === 'app' && <div class="tank__glass" aria-hidden="true" />
       )
     }
     <div class="tank__scene" aria-hidden="true"></div>
