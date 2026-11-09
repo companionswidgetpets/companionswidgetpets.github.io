@@ -101,7 +101,7 @@ const isCurrent = (path: string) => (path === '/' ? current === '/' : current.st
     width: 100%;
     max-width: calc(1400px - var(--tp) * 140px);
     min-height: var(--topbar-h);
-    padding: 10px 16px;
+    padding: 7px 16px;
     border-radius: 999px;
     background: var(--glass);
     -webkit-backdrop-filter: blur(22px) saturate(1.7);
@@ -117,7 +117,7 @@ const isCurrent = (path: string) => (path === '/' ? current === '/' : current.st
     position: relative;
     display: flex;
     align-items: center;
-    gap: 14px;
+    gap: 12px;
     color: var(--ink);
     text-decoration: none;
     min-width: 0;
@@ -126,18 +126,17 @@ const isCurrent = (path: string) => (path === '/' ? current === '/' : current.st
     text-decoration: none;
   }
   .topbar__icon {
-    width: 44px;
-    height: 44px;
-    border-radius: 11px;
+    width: 36px;
+    height: 36px;
+    border-radius: 9px;
     flex: none;
     box-shadow: 0 1px 3px rgba(11, 18, 32, 0.15);
   }
   .topbar__wordmark {
     font-family: var(--font-display);
-    font-weight: 750;
+    font-weight: 700;
     font-stretch: 150%;
-    /* 33px on a 1920-wide screen, as in the mockup */
-    font-size: clamp(1.25rem, 1.75vw, 2.1rem);
+    font-size: clamp(1.1rem, 1.5vw, 1.8rem);
     letter-spacing: 0.02em;
     white-space: nowrap;
     transition: opacity 0.25s ease, transform 0.35s ease;
@@ -209,8 +208,8 @@ const isCurrent = (path: string) => (path === '/' ? current === '/' : current.st
     display: none;
   }
   .topbar__menu-toggle {
-    width: 48px;
-    height: 48px;
+    width: 44px;
+    height: 44px;
     border-radius: 50%;
     border: 0;
     background: transparent;
@@ -275,7 +274,7 @@ const isCurrent = (path: string) => (path === '/' ? current === '/' : current.st
   }
   @media (max-width: 539px) {
     .topbar__wordmark {
-      font-size: 0.95rem;
+      font-size: 0.9rem;
     }
     .topbar__brand {
       gap: 10px;
@@ -299,11 +298,11 @@ const isCurrent = (path: string) => (path === '/' ? current === '/' : current.st
   @media (min-width: 1000px) {
     .topbar__brand {
       flex: 1 1 0;
-      min-width: 44px;
+      min-width: 36px;
     }
     .topbar__wordmark {
       position: absolute;
-      left: 58px;
+      left: 48px;
     }
     .topbar__nav {
       display: block;

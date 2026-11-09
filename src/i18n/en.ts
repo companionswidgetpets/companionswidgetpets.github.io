@@ -150,9 +150,13 @@ const en = {
         title: 'Apple Watch',
         text: 'The Companions watch app shows your small tank on your wrist, synced from your iPhone. The watch keeps its own clock, so the tank is just fish.',
       },
+      ipad: {
+        title: 'iPad',
+        text: 'A full, standalone Companions app for iPad. Build your aquarium on the big screen and add widgets to your Home Screen, with no iPhone needed.',
+      },
       mac: {
-        title: 'Mac and iPad',
-        text: "Companions runs on iPad, and your iPhone's widgets can sit on your Mac desktop too, so the fish swim between your windows.",
+        title: 'Mac',
+        text: 'Bring your iPhone widgets to your Mac desktop with Continuity, or add them from the Mac app. Your fish keep you company between windows.',
       },
     },
 

@@ -67,7 +67,7 @@
 
   --gutter: clamp(16px, 4vw, 40px);
   --measure: 68ch;
-  --topbar-h: 72px;
+  --topbar-h: 60px;
 }
 
 /* ---------- Base ---------- */
