@@ -1,0 +1,64 @@
+---
+/** The eight tank styles as small live tanks, in a row that scrolls sideways on phones. */
+import Tank from './Tank.astro';
+import { styles } from '../lib/site';
+import { styleFish, premadeProps } from '../lib/tanks';
+---
+
+<div class="style-row" role="list">
+  {
+    styles.map((s) => (
+      <a class="style-row__item" href={`/styles/#${s.id}`} role="listitem">
+        <Tank
+          id={`style-${s.id}`}
+          size="small"
+          style={s.id}
+          fish={styleFish[s.id]}
+          props={premadeProps('small', s.id)}
+          bubbles={false}
+          label={`The ${s.names.en} tank style`}
+        />
+        <span>{s.names.en}</span>
+      </a>
+    ))
+  }
+</div>
+
+<style>
+  .style-row {
+    display: grid;
+    grid-auto-flow: column;
+    grid-auto-columns: minmax(150px, 1fr);
+    gap: 16px;
+    overflow-x: auto;
+    padding: 6px var(--gutter) 18px;
+    margin-inline: calc(-1 * var(--gutter));
+    scroll-snap-type: x proximity;
+    scrollbar-width: thin;
+  }
+  @media (min-width: 1100px) {
+    .style-row {
+      grid-auto-columns: 1fr;
+      overflow: visible;
+      padding-inline: 0;
+      margin-inline: 0;
+    }
+  }
+  .style-row__item {
+    scroll-snap-align: start;
+    color: var(--ink-2);
+    font-weight: 600;
+    font-size: 0.95rem;
+    text-align: center;
+    text-decoration: none;
+    transition: transform 0.2s ease;
+  }
+  .style-row__item:hover {
+    text-decoration: none;
+    transform: translateY(-3px);
+  }
+  .style-row__item span {
+    display: block;
+    margin-top: 10px;
+  }
+</style>

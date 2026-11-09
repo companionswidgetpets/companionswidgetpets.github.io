@@ -1,0 +1,96 @@
+---
+/**
+ * An iPhone showing a Home Screen, with the Companions widget slot ready for a live tank.
+ *
+ * The bezel and the Home Screen are the promo film's own pictures: a 450×920-point phone
+ * whose screen is 402×874 points at (23.5, 22.5), and a Home Screen with the widget's
+ * 164.33-point square at (26.67, 90), the label "Companions" under it. Whatever is put in
+ * the default slot lands exactly in that square.
+ */
+import { Image } from 'astro:assets';
+import bezel from '../assets/phone/bezel.png';
+import home from '../assets/phone/home-minimal.png';
+
+interface Props {
+  class?: string;
+  /** Loading priority for the pictures; the hero's phone is `eager`. */
+  loading?: 'eager' | 'lazy';
+  sizes?: string;
+}
+const { class: className = '', loading = 'lazy', sizes = '(min-width: 1100px) 29vw, (min-width: 768px) 40vw, 78vw' } = Astro.props;
+---
+
+<div class={`phone ${className}`} aria-hidden="false">
+  <div class="phone__screen">
+    <Image
+      src={home}
+      alt="An iPhone Home Screen with the Companions aquarium widget in the top-left corner"
+      widths={[480, 720, 1206]}
+      sizes={sizes}
+      format="webp"
+      quality={82}
+      loading={loading}
+      fetchpriority={loading === 'eager' ? 'high' : 'auto'}
+      class="phone__home"
+    />
+    <div class="phone__widget">
+      <slot />
+    </div>
+  </div>
+  <Image
+    src={bezel}
+    alt=""
+    widths={[540, 810, 1350]}
+    sizes={sizes}
+    format="webp"
+    quality={85}
+    loading={loading}
+    class="phone__bezel"
+  />
+</div>
+
+<style is:global>
+  .phone {
+    position: relative;
+    width: var(--phone-w, 400px);
+    aspect-ratio: 450 / 920;
+    user-select: none;
+  }
+  .phone__screen {
+    position: absolute;
+    left: calc(23.5 / 450 * 100%);
+    top: calc(22.5 / 920 * 100%);
+    width: calc(402 / 450 * 100%);
+    height: calc(874 / 920 * 100%);
+    overflow: hidden;
+    border-radius: calc(60 / 402 * 100% / 1) / calc(60 / 874 * 100%);
+    background: #000;
+  }
+  .phone__home {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  .phone__widget {
+    position: absolute;
+    left: calc(26.67 / 402 * 100%);
+    top: calc(90 / 874 * 100%);
+    width: calc(164.33 / 402 * 100%);
+    height: calc(164.33 / 874 * 100%);
+  }
+  .phone__widget .tank-frame,
+  .phone__widget .tank {
+    width: 100%;
+    height: 100%;
+  }
+  .phone__bezel {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    filter: drop-shadow(0 30px 60px rgb(10 30 60 / 0.25));
+  }
+</style>

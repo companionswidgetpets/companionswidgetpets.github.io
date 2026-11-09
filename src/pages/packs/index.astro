@@ -1,0 +1,57 @@
+---
+import Base from '../../layouts/Base.astro';
+import PackGrid from '../../components/PackGrid.astro';
+import { absolute, species, packs, freeSpecies } from '../../lib/site';
+
+const crumbs = {
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'Companions', item: absolute('/') },
+    { '@type': 'ListItem', position: 2, name: 'Fish and packs', item: absolute('/packs/') },
+  ],
+};
+const list = {
+  '@type': 'ItemList',
+  name: 'Fish packs in Companions',
+  numberOfItems: packs.length,
+  itemListElement: packs.map((p, i) => ({ '@type': 'ListItem', position: i + 1, name: p.names.en, url: absolute(`/packs/${p.id}/`) })),
+};
+---
+
+<Base
+  title="Every fish and every pack"
+  description={`All ${species.length} fish in the Companions aquarium widget, pack by pack: which ${freeSpecies.length} come free, what each pack holds, and how the one-time packs and All Fish work.`}
+  jsonLd={[crumbs, list]}
+>
+  <section class="page-head">
+    <div class="container">
+      <span class="kicker">{species.length} species · {packs.length} packs</span>
+      <h1>Every fish, every pack.</h1>
+      <p class="lead">
+        Companions comes with {freeSpecies.length} fish: the three every tank starts with and the five of the Freshwater
+        Pack. The other packs are bought once, in the app, and kept for good. All Fish unlocks every pack at once,
+        including packs still to come, and the tank complications with them.
+      </p>
+    </div>
+  </section>
+  <section class="section--tight">
+    <div class="container">
+      <PackGrid />
+      <div class="prose" style="margin-top:56px">
+        <h2>How packs work</h2>
+        <p>
+          A pack is a one-time purchase through the App Store, in your local currency. Buy it on your iPhone and it is
+          yours on your iPad too, under the same Apple Account; Restore Purchases in Settings brings it back on a new
+          device. Nothing expires, and nothing in a tank is ever taken away.
+        </p>
+        <p>
+          <strong>All Fish</strong> comes two ways: a one-time lifetime unlock, or a monthly plan while you want it.
+          Either way it opens every pack, every pack added later, and the complications (the time, date, weather,
+          steps and Moon in a tank's corner). If a monthly plan lapses, the fish you already added keep swimming; only
+          adding new ones from those packs waits until it is renewed.
+        </p>
+        <p>Prices are shown in the app, under Settings, in your own currency.</p>
+      </div>
+    </div>
+  </section>
+</Base>

@@ -1,0 +1,22 @@
+{
+  "name": "companions-website",
+  "type": "module",
+  "version": "0.0.1",
+  "engines": {
+    "node": ">=22.23.4"
+  },
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "astro": "astro",
+    "sync": "python3 tools/sync-from-app.py",
+    "shots": "node tools/shots.mjs tools/shots.plan.json",
+    "og": "node tools/shots.mjs tools/og/plan.json"
+  },
+  "dependencies": {
+    "@astrojs/sitemap": "^3.7.4",
+    "astro": "^7.4.7"
+  },
+  "private": true
+}

@@ -1,0 +1,468 @@
+[
+ {
+  "id": "stock",
+  "names": {
+   "en": "Stock Fish",
+   "ar": "الأسماك الأساسية",
+   "de": "Standardfische",
+   "es": "Peces básicos",
+   "fr": "Poissons de base",
+   "it": "Pesci di base",
+   "ja": "基本の魚",
+   "ko": "기본 물고기",
+   "pt": "Peixes Básicos",
+   "ru": "Базовые рыбки",
+   "zh-Hans": "基础鱼种",
+   "zh-Hant": "基本魚種"
+  },
+  "taglines": {
+   "en": "The fish every tank starts with.",
+   "ar": "الأسماك التي يبدأ بها كل حوض.",
+   "de": "Die Fische, mit denen jedes Aquarium beginnt.",
+   "es": "Los peces con los que empieza toda pecera.",
+   "fr": "Les poissons par lesquels chaque aquarium commence.",
+   "it": "I pesci con cui inizia ogni acquario.",
+   "ja": "どの水槽にも最初からいる魚です。",
+   "ko": "모든 어항에 처음부터 들어 있는 물고기입니다.",
+   "pt": "Os peixes com que todo aquário começa.",
+   "ru": "Рыбки, с которых начинается каждый аквариум.",
+   "zh-Hans": "每个鱼缸一开始就有的鱼。",
+   "zh-Hant": "每個魚缸一開始就有的魚。"
+  },
+  "comesWithApp": true,
+  "species": [
+   "tang",
+   "sardine",
+   "puffer"
+  ]
+ },
+ {
+  "id": "freshwater",
+  "names": {
+   "en": "Freshwater Pack",
+   "ar": "حزمة المياه العذبة",
+   "de": "Süßwasser-Paket",
+   "es": "Pack de agua dulce",
+   "fr": "Pack Eau douce",
+   "it": "Pack Acqua dolce",
+   "ja": "淡水魚パック",
+   "ko": "민물 팩",
+   "pt": "Pacote Água Doce",
+   "ru": "Пресноводные рыбки",
+   "zh-Hans": "淡水套装",
+   "zh-Hant": "淡水魚套組"
+  },
+  "taglines": {
+   "en": "A collection of the bright little fish that live in rivers, lakes and streams.",
+   "ar": "مجموعة من الأسماك الصغيرة الزاهية التي تعيش في الأنهار والبحيرات والجداول.",
+   "de": "Eine Sammlung der kleinen, bunten Fische, die in Flüssen, Seen und Bächen leben.",
+   "es": "Una colección de los pequeños y coloridos peces que viven en ríos, lagos y arroyos.",
+   "fr": "Une collection de petits poissons colorés qui vivent dans les rivières, les lacs et les ruisseaux.",
+   "it": "Una collezione di piccoli pesci dai colori vivaci che vivono in fiumi, laghi e torrenti.",
+   "ja": "川や湖、小川に暮らす、小さくて色鮮やかな魚たちを集めました。",
+   "ko": "강과 호수, 개울에 사는 작고 화사한 물고기들을 모았습니다.",
+   "pt": "Uma coleção dos peixinhos coloridos que vivem em rios, lagos e riachos.",
+   "ru": "Подборка маленьких ярких рыбок, которые живут в реках, озёрах и ручьях.",
+   "zh-Hans": "汇集了河流、湖泊和溪流中色彩鲜艳的小鱼。",
+   "zh-Hant": "收錄生活在河川、湖泊與溪流中、色彩鮮豔的小魚。"
+  },
+  "comesWithApp": true,
+  "species": [
+   "neon",
+   "guppy",
+   "goldfish",
+   "angel_fish",
+   "betta"
+  ]
+ },
+ {
+  "id": "reef",
+  "names": {
+   "en": "Reef Pack",
+   "ar": "حزمة الشعاب المرجانية",
+   "de": "Riff-Paket",
+   "es": "Pack de arrecife",
+   "fr": "Pack Récif",
+   "it": "Pack Corallo",
+   "ja": "サンゴ礁パック",
+   "ko": "산호초 팩",
+   "pt": "Pacote Marinho",
+   "ru": "Обитатели рифа",
+   "zh-Hans": "珊瑚礁套装",
+   "zh-Hant": "珊瑚礁套組"
+  },
+  "taglines": {
+   "en": "A collection of some of the most beautiful fish from earth's mighty reefs.",
+   "ar": "مجموعة من أجمل أسماك الشعاب المرجانية العظيمة على وجه الأرض.",
+   "de": "Eine Sammlung mit einigen der schönsten Fische aus den gewaltigen Riffen der Erde.",
+   "es": "Una colección con algunos de los peces más hermosos de los majestuosos arrecifes del planeta.",
+   "fr": "Une collection de quelques-uns des plus beaux poissons des grands récifs de la planète.",
+   "it": "Una collezione di alcuni tra i pesci più belli delle maestose barriere coralline del pianeta.",
+   "ja": "地球の壮大なサンゴ礁に暮らす、とりわけ美しい魚たちを集めました。",
+   "ko": "지구의 웅장한 산호초에 사는 가장 아름다운 물고기들을 모았습니다.",
+   "pt": "Uma coleção com alguns dos peixes mais bonitos dos majestosos recifes do planeta.",
+   "ru": "Подборка самых красивых рыбок с величественных рифов планеты.",
+   "zh-Hans": "汇集了地球上壮丽珊瑚礁中最美的几种鱼。",
+   "zh-Hant": "收錄地球壯麗珊瑚礁中最美麗的幾種魚。"
+  },
+  "comesWithApp": false,
+  "species": [
+   "clownfish",
+   "moorish_idol",
+   "regal_tang",
+   "parrot_fish",
+   "lion_fish"
+  ]
+ },
+ {
+  "id": "pond",
+  "names": {
+   "en": "Pond Pack",
+   "ar": "حزمة البركة",
+   "de": "Teich-Paket",
+   "es": "Pack de estanque",
+   "fr": "Pack Étang",
+   "it": "Pack Laghetto",
+   "ja": "池の仲間パック",
+   "ko": "연못 팩",
+   "pt": "Pacote do Lago",
+   "ru": "Садовый пруд",
+   "zh-Hans": "池塘套装",
+   "zh-Hant": "池塘套組"
+  },
+  "taglines": {
+   "en": "A collection of the gentle, hardy creatures that live in garden ponds and mountain streams.",
+   "ar": "مجموعة من الكائنات الوديعة القوية التي تعيش في برك الحدائق وجداول الجبال.",
+   "de": "Eine Sammlung der ruhigen, robusten Tiere, die in Gartenteichen und Gebirgsbächen leben.",
+   "es": "Una colección de las criaturas tranquilas y resistentes que viven en estanques de jardín y arroyos de montaña.",
+   "fr": "Une collection de créatures paisibles et robustes qui vivent dans les bassins de jardin et les ruisseaux de montagne.",
+   "it": "Una collezione delle creature tranquille e robuste che vivono nei laghetti da giardino e nei torrenti di montagna.",
+   "ja": "庭の池や山の渓流に暮らす、おだやかでたくましい生きものたちを集めました。",
+   "ko": "정원 연못과 산속 개울에 사는 온순하고 튼튼한 생물들을 모았습니다.",
+   "pt": "Uma coleção das criaturas calmas e resistentes que vivem em lagos de jardim e riachos de montanha.",
+   "ru": "Подборка спокойных и выносливых обитателей садовых прудов и горных ручьёв.",
+   "zh-Hans": "汇集了庭院池塘和山间溪流中温和而强健的几种生物。",
+   "zh-Hant": "收錄生活在庭園池塘與山間溪流中、溫和而強健的生物。"
+  },
+  "comesWithApp": false,
+  "species": [
+   "spotted_koi",
+   "gold_koi",
+   "catfish",
+   "trout",
+   "terrapin"
+  ]
+ },
+ {
+  "id": "seaCreatures",
+  "names": {
+   "en": "Sea Creatures Pack",
+   "ar": "حزمة الكائنات البحرية",
+   "de": "Meerestiere-Paket",
+   "es": "Pack de criaturas marinas",
+   "fr": "Pack Créatures marines",
+   "it": "Pack Creature marine",
+   "ja": "海の生きものパック",
+   "ko": "바다 생물 팩",
+   "pt": "Pacote Criaturas Marinhas",
+   "ru": "Морские жители",
+   "zh-Hans": "海洋生物套装",
+   "zh-Hant": "海洋生物套組"
+  },
+  "taglines": {
+   "en": "A collection of the curious creatures that drift and dart through the open sea.",
+   "ar": "مجموعة من الكائنات العجيبة التي تنساب وتنطلق في عرض البحر.",
+   "de": "Eine Sammlung der wundersamen Tiere, die durch das offene Meer treiben und flitzen.",
+   "es": "Una colección de las curiosas criaturas que flotan y se deslizan por el mar abierto.",
+   "fr": "Une collection de créatures étonnantes qui dérivent et filent en pleine mer.",
+   "it": "Una collezione delle curiose creature che fluttuano e sfrecciano nel mare aperto.",
+   "ja": "広い海をただよい、すいすいと泳ぎ回るふしぎな生きものたちを集めました。",
+   "ko": "넓은 바다를 떠다니고 헤엄쳐 다니는 신기한 생물들을 모았습니다.",
+   "pt": "Uma coleção das curiosas criaturas que flutuam e deslizam pelo mar aberto.",
+   "ru": "Подборка удивительных созданий, которые парят и проносятся в открытом море.",
+   "zh-Hans": "汇集了在大海中漂游穿梭的几种奇妙生物。",
+   "zh-Hant": "收錄在大海中漂游穿梭的奇妙生物。"
+  },
+  "comesWithApp": false,
+  "species": [
+   "sea_turtle",
+   "seahorse",
+   "squid",
+   "jellyfish",
+   "octopus"
+  ]
+ },
+ {
+  "id": "pondCreatures",
+  "names": {
+   "en": "Pond Creatures Pack",
+   "ar": "حزمة كائنات البركة",
+   "de": "Teichtiere-Paket",
+   "es": "Pack de criaturas de estanque",
+   "fr": "Pack Créatures d'étang",
+   "it": "Pack Creature dello stagno",
+   "ja": "池の生きものパック",
+   "ko": "연못 생물 팩",
+   "pt": "Pacote Criaturas do Lago",
+   "ru": "Обитатели пруда",
+   "zh-Hans": "池塘生物套装",
+   "zh-Hant": "池塘生物套組"
+  },
+  "taglines": {
+   "en": "A collection of the little creatures that hop, wriggle and lurk among the lily pads.",
+   "ar": "مجموعة من الكائنات الصغيرة التي تقفز وتتلوى وتختبئ بين أوراق الزنبق.",
+   "de": "Eine Sammlung der kleinen Tiere, die im stillen Teich hüpfen, zappeln und lauern.",
+   "es": "Una colección de las pequeñas criaturas que saltan y culebrean por el estanque.",
+   "fr": "Une collection des petites créatures qui sautent et frétillent parmi les nénuphars.",
+   "it": "Una collezione delle piccole creature che saltano e guizzano tra le ninfee.",
+   "ja": "スイレンの葉のあいだで跳ねたり、くねったりする小さな生きものを集めました。",
+   "ko": "수련 잎 사이에서 폴짝 뛰고 꼬물거리는 작은 생물들을 모았습니다.",
+   "pt": "Uma coleção das pequenas criaturas que pulam e serpenteiam entre as ninfeias.",
+   "ru": "Подборка маленьких созданий, которые прыгают и извиваются среди кувшинок.",
+   "zh-Hans": "汇集了在睡莲叶间蹦跳、扭动、潜伏的小生物。",
+   "zh-Hant": "收錄在睡蓮葉間跳躍、蠕動、潛伏的小生物。"
+  },
+  "comesWithApp": false,
+  "species": [
+   "minnow",
+   "axolotl",
+   "frog",
+   "toad",
+   "tadpole"
+  ]
+ },
+ {
+  "id": "shark",
+  "names": {
+   "en": "Shark Pack",
+   "ar": "حزمة أسماك القرش",
+   "de": "Hai-Paket",
+   "es": "Pack de tiburones",
+   "fr": "Pack Requins",
+   "it": "Pack Squali",
+   "ja": "サメパック",
+   "ko": "상어 팩",
+   "pt": "Pacote Tubarões",
+   "ru": "Акулы",
+   "zh-Hans": "鲨鱼套装",
+   "zh-Hant": "鯊魚套組"
+  },
+  "taglines": {
+   "en": "A collection of the sleek hunters and gentle giants that rule the open ocean.",
+   "ar": "مجموعة من الصيادين الرشيقين والعمالقة الوديعين الذين يسودون عرض المحيط.",
+   "de": "Eine Sammlung der eleganten Jäger und sanften Riesen, die das offene Meer beherrschen.",
+   "es": "Una colección de los elegantes cazadores y gigantes apacibles que reinan en el océano abierto.",
+   "fr": "Une collection des chasseurs élégants et des doux géants qui règnent sur le grand large.",
+   "it": "Una collezione degli eleganti cacciatori e dei giganti gentili che dominano l'oceano aperto.",
+   "ja": "大海原を支配する、しなやかなハンターとおだやかな巨人たちを集めました。",
+   "ko": "드넓은 바다를 누비는 날렵한 사냥꾼과 온순한 거인들을 모았습니다.",
+   "pt": "Uma coleção dos caçadores elegantes e gigantes gentis que reinam no oceano aberto.",
+   "ru": "Подборка стремительных охотников и кротких гигантов, которые правят открытым океаном.",
+   "zh-Hans": "汇集了称霸大洋的矫健猎手与温和巨兽。",
+   "zh-Hant": "收錄稱霸大洋的矯健獵手與溫柔巨獸。"
+  },
+  "comesWithApp": false,
+  "species": [
+   "great_white",
+   "manta",
+   "hammerhead",
+   "whale_shark",
+   "thresher"
+  ]
+ },
+ {
+  "id": "whale",
+  "names": {
+   "en": "Whale Pack",
+   "ar": "حزمة الحيتان",
+   "de": "Wal-Paket",
+   "es": "Pack de ballenas",
+   "fr": "Pack Baleines",
+   "it": "Pack Balene",
+   "ja": "クジラパック",
+   "ko": "고래 팩",
+   "pt": "Pacote Baleias",
+   "ru": "Киты и дельфины",
+   "zh-Hans": "鲸鱼套装",
+   "zh-Hant": "鯨魚套組"
+  },
+  "taglines": {
+   "en": "A collection of the whales and dolphins that sing, leap and play their way across the deep.",
+   "ar": "مجموعة من الحيتان والدلافين التي تغني وتقفز وتلهو في طريقها عبر الأعماق.",
+   "de": "Eine Sammlung der Wale und Delfine, die singend, springend und spielend durch die Weltmeere ziehen.",
+   "es": "Una colección de las ballenas y los delfines que cantan, saltan y juegan de un océano a otro.",
+   "fr": "Une collection des baleines et des dauphins qui chantent, bondissent et jouent d'un océan à l'autre.",
+   "it": "Una collezione delle balene e dei delfini che cantano, saltano e giocano da un oceano all'altro.",
+   "ja": "歌い、跳ね、遊びながら海から海へと旅するクジラとイルカたちを集めました。",
+   "ko": "노래하고 뛰어오르고 장난치며 바다에서 바다로 여행하는 고래와 돌고래들을 모았습니다.",
+   "pt": "Uma coleção das baleias e dos golfinhos que cantam, saltam e brincam de um oceano a outro.",
+   "ru": "Подборка китов и дельфинов, которые поют, прыгают и играют, странствуя по океанским глубинам.",
+   "zh-Hans": "汇集了在大洋间歌唱、跳跃、嬉戏的鲸鱼与海豚。",
+   "zh-Hant": "收錄在深海中一路歌唱、跳躍、嬉戲的鯨魚與海豚。"
+  },
+  "comesWithApp": false,
+  "species": [
+   "dolphin",
+   "orca",
+   "blue_whale",
+   "sperm_whale",
+   "humpback_whale"
+  ]
+ },
+ {
+  "id": "reef2",
+  "names": {
+   "en": "Reef Pack II",
+   "ar": "حزمة الشعاب المرجانية ٢",
+   "de": "Riff-Paket 2",
+   "es": "Pack de arrecife 2",
+   "fr": "Pack Récif 2",
+   "it": "Pack Corallo 2",
+   "ja": "サンゴ礁パック2",
+   "ko": "산호초 팩 2",
+   "pt": "Pacote Marinho 2",
+   "ru": "Обитатели рифа 2",
+   "zh-Hans": "珊瑚礁套装 2",
+   "zh-Hant": "珊瑚礁套組 2"
+  },
+  "taglines": {
+   "en": "A collection of more of the bold, bright creatures that bustle about the reef.",
+   "ar": "مجموعة أخرى من الكائنات الجريئة الزاهية التي تعجّ بها حدائق الشعاب المرجانية.",
+   "de": "Eine Sammlung weiterer kecker, bunter Tiere, die sich am Riff tummeln.",
+   "es": "Una colección de otras criaturas audaces y coloridas que bullen en el arrecife.",
+   "fr": "Une collection d'autres créatures vives et colorées qui s'affairent sur le récif.",
+   "it": "Una collezione di altre creature vivaci e colorate che brulicano sulla barriera.",
+   "ja": "サンゴ礁の庭をにぎやかに泳ぎ回る、あざやかで元気な生きものたちをさらに集めました。",
+   "ko": "산호초의 산호 정원을 활기차게 누비는 화려하고 당찬 생물들을 더 모았습니다.",
+   "pt": "Uma coleção de outras criaturas ousadas e coloridas que se agitam pelo recife.",
+   "ru": "Ещё одна подборка ярких и смелых созданий, которые снуют по рифу.",
+   "zh-Hans": "汇集了更多在珊瑚礁的珊瑚园里穿梭忙碌、色彩艳丽的生物。",
+   "zh-Hant": "收錄更多在珊瑚礁花園裡穿梭忙碌、色彩鮮豔的生物。"
+  },
+  "comesWithApp": false,
+  "species": [
+   "angelfish",
+   "yellow_butterfly",
+   "triggerfish",
+   "dartfish",
+   "starfish"
+  ]
+ },
+ {
+  "id": "freshwater2",
+  "names": {
+   "en": "Freshwater Pack II",
+   "ar": "حزمة المياه العذبة ٢",
+   "de": "Süßwasser-Paket 2",
+   "es": "Pack de agua dulce 2",
+   "fr": "Pack Eau douce 2",
+   "it": "Pack Acqua dolce 2",
+   "ja": "淡水魚パック2",
+   "ko": "민물 팩 2",
+   "pt": "Pacote Água Doce 2",
+   "ru": "Пресноводные рыбки 2",
+   "zh-Hans": "淡水套装 2",
+   "zh-Hant": "淡水魚套組 2"
+  },
+  "taglines": {
+   "en": "A collection of more of the peaceful little creatures of warm tropical rivers.",
+   "ar": "مجموعة أخرى من الكائنات الصغيرة الوادعة التي تعيش في الأنهار الاستوائية الدافئة.",
+   "de": "Eine Sammlung weiterer friedlicher kleiner Tiere aus warmen tropischen Flüssen.",
+   "es": "Una colección de otras pequeñas criaturas pacíficas de los cálidos ríos tropicales.",
+   "fr": "Une collection d'autres petites créatures paisibles des rivières tropicales.",
+   "it": "Una collezione di altre piccole creature pacifiche dei caldi fiumi tropicali.",
+   "ja": "あたたかい熱帯の川にすむおだやかな小さな生きものたちをさらに集めました。",
+   "ko": "따뜻한 열대의 강에서 무리 지어 헤엄치고 종종걸음 치는 온순한 작은 생물들을 더 모았습니다.",
+   "pt": "Uma coleção de outras pequenas criaturas pacíficas dos rios tropicais.",
+   "ru": "Ещё одна подборка мирных маленьких созданий из тёплых тропических рек.",
+   "zh-Hans": "汇集了更多在温暖的热带河流中成群游动、四处爬行的温和小生物。",
+   "zh-Hant": "收錄更多在溫暖的熱帶河流中成群游動、四處爬行的溫和小生物。"
+  },
+  "comesWithApp": false,
+  "species": [
+   "discus",
+   "zebra_danio",
+   "rummynose",
+   "pearl_gourami",
+   "ghost_shrimp"
+  ]
+ },
+ {
+  "id": "openOcean",
+  "names": {
+   "en": "Open Ocean Pack",
+   "ar": "حزمة المحيط المفتوح",
+   "de": "Hochsee-Paket",
+   "es": "Pack de alta mar",
+   "fr": "Pack Grand large",
+   "it": "Pack Alto mare",
+   "ja": "大海原パック",
+   "ko": "먼바다 팩",
+   "pt": "Pacote Alto-Mar",
+   "ru": "Рыбы открытого океана",
+   "zh-Hans": "远洋套装",
+   "zh-Hant": "遠洋套組"
+  },
+  "taglines": {
+   "en": "A collection of the big, fast fish that roam the open ocean, far from any shore.",
+   "ar": "مجموعة من الأسماك الكبيرة السريعة التي تجوب عرض المحيط بعيدًا عن أي شاطئ.",
+   "de": "Eine Sammlung der großen, schnellen Fische, die das offene Meer weit vor jeder Küste durchstreifen.",
+   "es": "Una colección de los peces grandes y veloces que recorren el océano abierto, lejos de cualquier costa.",
+   "fr": "Une collection des grands poissons rapides qui parcourent le grand large, loin de toute côte.",
+   "it": "Una collezione dei grandi pesci veloci che percorrono l'oceano aperto, lontano da ogni costa.",
+   "ja": "岸から遠く離れた大海原を泳ぎ回る、大きくて速い魚たちを集めました。",
+   "ko": "해안에서 멀리 떨어진 드넓은 바다를 누비는 크고 빠른 물고기들을 모았습니다.",
+   "pt": "Uma coleção dos peixes grandes e velozes que percorrem o oceano aberto, longe de qualquer costa.",
+   "ru": "Подборка больших и быстрых рыб, которые бороздят открытый океан вдали от берегов.",
+   "zh-Hans": "汇集了远离海岸、在大洋中疾速巡游的大鱼。",
+   "zh-Hant": "收錄遠離海岸、在大洋中疾速巡游的大魚。"
+  },
+  "comesWithApp": false,
+  "species": [
+   "tuna",
+   "barracuda",
+   "mahi_mahi",
+   "swordfish",
+   "snapper"
+  ]
+ },
+ {
+  "id": "special",
+  "names": {
+   "en": "Special Pack",
+   "ar": "حزمة مميزة",
+   "de": "Spezial-Paket",
+   "es": "Pack especial",
+   "fr": "Pack Spécial",
+   "it": "Pack Speciale",
+   "ja": "スペシャルパック",
+   "ko": "스페셜 팩",
+   "pt": "Pacote Especial",
+   "ru": "Диковинки",
+   "zh-Hans": "特别套装",
+   "zh-Hant": "特別套組"
+  },
+  "taglines": {
+   "en": "A collection of the strange and silly things that have no business in a fish tank.",
+   "ar": "مجموعة من الأشياء الغريبة والطريفة التي لا مكان لها في حوض الأسماك، وهذا ما يجعلها أكثر متعة.",
+   "de": "Eine Sammlung seltsamer, alberner Dinge, die im Aquarium nichts verloren haben.",
+   "es": "Una colección de cosas raras y disparatadas fuera de lugar en una pecera.",
+   "fr": "Une collection de choses étranges et loufoques qui n'ont rien à faire dans l'eau.",
+   "it": "Una collezione di cose strane e buffe che non c'entrano nulla con un acquario.",
+   "ja": "水槽には場違いなはずなのに、だからこそ楽しい、へんてこで愉快なものたちを集めました。",
+   "ko": "어항에 있을 리 없지만 그래서 더 재미있는, 엉뚱하고 유쾌한 것들을 모았습니다.",
+   "pt": "Uma coleção de coisas estranhas e engraçadas fora de lugar no aquário.",
+   "ru": "Подборка странных и забавных штук, которым не место в аквариуме.",
+   "zh-Hans": "汇集了本不该出现在鱼缸里、却因此格外有趣的古怪玩意儿。",
+   "zh-Hant": "收錄本不該出現在魚缸裡、卻因此格外有趣的古怪玩意兒。"
+  },
+  "comesWithApp": false,
+  "species": [
+   "ghost",
+   "skeleton",
+   "robot",
+   "balloon",
+   "submarine"
+  ]
+ }
+]

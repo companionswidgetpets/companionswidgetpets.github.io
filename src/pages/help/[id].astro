@@ -1,0 +1,117 @@
+---
+import { getCollection, render } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+import { absolute, app, formatDate, isoDate } from '../../lib/site';
+
+export async function getStaticPaths() {
+  const entries = await getCollection('help');
+  return entries.map((entry) => ({ params: { id: entry.id }, props: { entry } }));
+}
+const { entry } = Astro.props;
+const { Content } = await render(entry);
+
+const all = await getCollection('help');
+const related = entry.data.related
+  .map((ref) => {
+    if (ref.startsWith('/')) return { href: ref, label: ref.includes('/guides/') ? 'Guide' : 'Page', title: ref };
+    const e = all.find((x) => x.id === ref);
+    return e ? { href: `/help/${e.id}/`, label: 'Question', title: e.data.question } : null;
+  })
+  .filter(Boolean) as { href: string; label: string; title: string }[];
+
+const guides = await getCollection('guides');
+for (const r of related) {
+  if (r.label === 'Guide') {
+    const g = guides.find((x) => `/guides/${x.id}/` === r.href);
+    if (g) r.title = g.data.title;
+  }
+}
+
+const faqLd = {
+  '@type': 'FAQPage',
+  mainEntity: [
+    {
+      '@type': 'Question',
+      name: entry.data.question,
+      dateModified: isoDate(entry.data.updated),
+      acceptedAnswer: { '@type': 'Answer', text: entry.data.summary },
+    },
+  ],
+};
+const crumbs = {
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'Companions', item: absolute('/') },
+    { '@type': 'ListItem', position: 2, name: 'Help', item: absolute('/help/') },
+    { '@type': 'ListItem', position: 3, name: entry.data.question, item: absolute(`/help/${entry.id}/`) },
+  ],
+};
+---
+
+<Base title={entry.data.question} description={entry.data.summary} type="article" jsonLd={[faqLd, crumbs]} modified={isoDate(entry.data.updated)}>
+  <article>
+    <header class="page-head">
+      <div class="container container--narrow">
+        <nav class="breadcrumbs" aria-label="Breadcrumb">
+          <ol>
+            <li><a href="/">Companions</a></li>
+            <li><a href="/help/">Help</a></li>
+          </ol>
+        </nav>
+        <h1>{entry.data.question}</h1>
+        <p class="lead">{entry.data.summary}</p>
+        <p class="meta">Updated {formatDate(entry.data.updated)} · Companions {app.version}</p>
+      </div>
+    </header>
+    <div class="container container--narrow">
+      <div class="prose">
+        <Content />
+      </div>
+      {
+        related.length > 0 && (
+          <aside class="related">
+            <h2>Related</h2>
+            <ul>
+              {related.map((r) => (
+                <li>
+                  <a href={r.href}>{r.title}</a> <span class="meta">{r.label}</span>
+                </li>
+              ))}
+            </ul>
+          </aside>
+        )
+      }
+      <aside class="help-foot card">
+        <h2>Still stuck?</h2>
+        <p>
+          Email <a href={`mailto:${app.supportEmail}`}>{app.supportEmail}</a> with your iPhone model and iOS version and
+          we'll sort it out. <a href="/help/">Back to all questions</a>.
+        </p>
+      </aside>
+    </div>
+  </article>
+</Base>
+
+<style>
+  .related {
+    margin-top: clamp(40px, 6vw, 64px);
+  }
+  .related h2,
+  .help-foot h2 {
+    font-size: 1.2rem;
+    margin-bottom: 12px;
+  }
+  .related ul {
+    padding-left: 1.2em;
+    color: var(--ink-2);
+  }
+  .related li + li {
+    margin-top: 6px;
+  }
+  .help-foot {
+    margin-top: clamp(32px, 5vw, 48px);
+  }
+  .help-foot p {
+    color: var(--ink-2);
+  }
+</style>

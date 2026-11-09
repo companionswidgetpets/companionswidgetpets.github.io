@@ -1,0 +1,65 @@
+---
+import { getCollection } from 'astro:content';
+import Base from '../layouts/Base.astro';
+import { absolute, app } from '../lib/site';
+
+const popular = (await getCollection('help', (e) => e.data.featured)).sort((a, b) => a.data.order - b.data.order);
+const crumbs = {
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'Companions', item: absolute('/') },
+    { '@type': 'ListItem', position: 2, name: 'Support', item: absolute('/support/') },
+  ],
+};
+const contact = {
+  '@type': 'ContactPage',
+  name: 'Companions support',
+  url: absolute('/support/'),
+  about: { '@id': `${app.siteUrl}/#app` },
+};
+---
+
+<Base title="Support" description={`Help with the Companions aquarium widget: common fixes, and how to reach the developer at ${app.supportEmail}.`} jsonLd={[crumbs, contact]}>
+  <section class="page-head">
+    <div class="container container--narrow">
+      <span class="kicker">Support</span>
+      <h1>We'll sort it out.</h1>
+      <p class="lead">
+        Companions is made by two people, and one of us answers every email personally. Write to
+        <a href={`mailto:${app.supportEmail}`}>{app.supportEmail}</a>, or use the Email button in the app's Settings,
+        which fills in the details for you.
+      </p>
+    </div>
+  </section>
+
+  <section class="section--tight">
+    <div class="container container--narrow prose">
+      <h2>Before you write</h2>
+      <p>Most questions are answered on the <a href="/help/">help pages</a>. The ones we hear most:</p>
+      <ul>
+        {popular.map((e) => <li><a href={`/help/${e.id}/`}>{e.data.question}</a></li>)}
+      </ul>
+
+      <h2>What to include</h2>
+      <ul>
+        <li>Your iPhone model and iOS version (Settings › General › About).</li>
+        <li>The Companions version, shown at the bottom of the app's Settings.</li>
+        <li>What you expected and what happened instead. A screenshot or a screen recording helps enormously.</li>
+      </ul>
+
+      <h2>Purchases and refunds</h2>
+      <p>
+        Packs and All Fish are sold by Apple through the App Store, so refunds go through Apple: visit
+        <a href="https://reportaproblem.apple.com" rel="noopener">reportaproblem.apple.com</a>, sign in, and choose the
+        purchase. If a pack you bought shows as locked, open Settings in the app and tap <strong>Restore
+        Purchases</strong>; make sure you are signed in with the Apple Account that bought it.
+      </p>
+
+      <h2>Privacy</h2>
+      <p>Companions keeps your tank on your device and collects no personal information. The <a href="/privacy/">privacy policy</a> has the details.</p>
+
+      <h2>Something you'd love to see?</h2>
+      <p>A fish, a prop, a style, a place the widget should live: tell us. Many of the packs began as an email.</p>
+    </div>
+  </section>
+</Base>

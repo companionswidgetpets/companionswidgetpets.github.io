@@ -1,0 +1,109 @@
+---
+import { Image } from 'astro:assets';
+import Base from '../../layouts/Base.astro';
+import Badge from '../../components/Badge.astro';
+import { absolute, app, species, packs, styles, props as allProps } from '../../lib/site';
+import icon from '../../assets/icon/app-icon.png';
+
+const shots = import.meta.glob<{ default: ImageMetadata }>('../../assets/screenshots/*.png', { eager: true });
+const screenshots = Object.keys(shots)
+  .sort()
+  .map((k) => shots[k].default);
+
+const facts: [string, string][] = [
+  ['Name', app.name],
+  ['What it is', 'An iPhone app and Home Screen widget: an animated aquarium you stock with fish and watch all day'],
+  ['Price', 'Free. Fish packs are one-time in-app purchases; All Fish unlocks everything as a lifetime purchase or a monthly plan'],
+  ['Platforms', `iPhone and iPad (${app.minimumOS} or later), Apple Watch app, Mac via iPhone widgets on Mac`],
+  ['Fish', `${species.length} species in ${packs.length} packs; eight come with the app`],
+  ['Tank styles', styles.map((s) => s.names.en).join(', ')],
+  ['Props', `${allProps.filter((p) => p.isDecoration).length} decorations to arrange on the bed`],
+  ['Complications', 'Time, date, weather, step goal and Moon phase, in a corner of the tank'],
+  ['Languages', app.languages.join(', ')],
+  ['First released', 'September 23, 2026'],
+  ['Current version', `${app.version} (November 4, 2026)`],
+  ['Developer', `${app.developer} (design and code) and Shea (art), ${app.madeIn}`],
+  ['App Store', app.appStoreUrlUS],
+  ['Contact', app.supportEmail],
+];
+const crumbs = {
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'Companions', item: absolute('/') },
+    { '@type': 'ListItem', position: 2, name: 'Press kit', item: absolute('/press/') },
+  ],
+};
+---
+
+<Base
+  title="Press kit"
+  description="Facts, description, icon and screenshots for Companions, the aquarium Home Screen widget for iPhone, for anyone writing about it."
+  jsonLd={[crumbs]}
+>
+  <section class="page-head">
+    <div class="container container--narrow">
+      <span class="kicker">Press kit</span>
+      <h1>Writing about Companions?</h1>
+      <p class="lead">Everything here may be quoted and the pictures used freely in coverage of the app. For anything else, email <a href={`mailto:${app.supportEmail}`}>{app.supportEmail}</a>.</p>
+    </div>
+  </section>
+
+  <section class="section--tight">
+    <div class="container container--narrow prose">
+      <h2>In one sentence</h2>
+      <p>{app.oneLiner}</p>
+
+      <h2>In a paragraph</h2>
+      <p>
+        Companions is a free iPhone app that keeps a little fish tank in a Home Screen widget. You pick your fish from
+        {species.length} hand-drawn species, give each a name, and they swim in their own way at their own pace, every
+        time you unlock your phone: in the widget, in StandBy while the phone charges, on your Mac desktop and on
+        Apple Watch. There is nothing to feed and nothing can die; feeding is a game you can play if you like. Tanks
+        come in eight water styles with {allProps.filter((p) => p.isDecoration).length} props to arrange, and can carry the
+        time, the date, the weather, your step goal or the Moon in a corner. Eight fish come with the app; the rest
+        arrive in packs bought once, or all together with All Fish. Companions has no account, no advertising and no
+        tracking, and is translated into {app.languages.length} languages. It is made by {app.developer} and Shea in {app.madeIn}.
+      </p>
+
+      <h2>Facts</h2>
+      <table>
+        <tbody>
+          {facts.map(([k, v]) => <tr><th scope="row">{k}</th><td>{v}</td></tr>)}
+        </tbody>
+      </table>
+
+      <h2>Icon</h2>
+      <p>The App Store icon at 1024 pixels. Please don't recolour it or put it in another shape.</p>
+      <p class="press-icon">
+        <a href={icon.src} download="companions-icon-1024.png"><Image src={icon} alt="The Companions app icon: a goldfish's tail in pale blue water" width={256} height={256} densities={[1, 2]} format="png" /></a>
+      </p>
+
+      <h2>Screenshots</h2>
+      <p>The App Store screenshots, in order. Click one for the full-size file.</p>
+      <div class="press-shots">
+        {screenshots.map((shot, i) => <a href={shot.src}><Image src={shot} alt={`Companions App Store screenshot ${i + 1}`} width={300} height={Math.round((300 * shot.height) / shot.width)} densities={[1, 2]} format="webp" loading="lazy" /></a>)}
+      </div>
+
+      <h2>Download</h2>
+      <p><Badge /></p>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .press-icon img {
+    width: 160px;
+    height: 160px;
+    border-radius: 36px;
+    box-shadow: 0 10px 30px rgba(11, 18, 32, 0.15);
+  }
+  .press-shots {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 14px;
+  }
+  .press-shots img {
+    border-radius: 18px;
+    border: 1px solid var(--line);
+  }
+</style>

@@ -1,0 +1,46 @@
+---
+import Base from '../layouts/Base.astro';
+import Tank from '../components/Tank.astro';
+import { premadeProps } from '../lib/tanks';
+---
+
+<Base title="Page not found" description="That page swam off. Try the help pages or the home page." noindex>
+  <section class="page-head">
+    <div class="container container--narrow lost">
+      <div class="lost__tank">
+        <Tank
+          id="lost"
+          size="medium"
+          style="deepOcean"
+          fish={[{ species: 'ghost', seed: 'lost-1' }, { species: 'submarine', seed: 'lost-2' }]}
+          props={premadeProps('medium', 'deepOcean')}
+        />
+      </div>
+      <h1>That page swam off.</h1>
+      <p class="lead">There's nothing at this address. The fish, however, are fine.</p>
+      <p class="lost__links">
+        <a class="btn btn--pill" href="/">Back to the start</a>
+        <a class="btn btn--ghost" href="/help/">Help and questions</a>
+      </p>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .lost {
+    text-align: center;
+    display: grid;
+    justify-items: center;
+  }
+  .lost__tank {
+    width: min(100%, 420px);
+    margin-bottom: 32px;
+  }
+  .lost__links {
+    margin-top: 28px;
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+</style>

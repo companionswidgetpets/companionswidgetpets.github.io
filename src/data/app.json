@@ -1,0 +1,32 @@
+{
+  "name": "Companions - Widget Pets",
+  "shortName": "Companions",
+  "tagline": "A tiny aquarium on your Home Screen.",
+  "subtitle": "Your fish swim around right on your widget, all day long.",
+  "oneLiner": "Companions is a free iPhone app that puts a little animated aquarium in a Home Screen widget: pick your fish, name them, and watch them swim every time you look at your phone.",
+  "appStoreId": "6811950512",
+  "appStoreUrl": "https://apps.apple.com/app/companions-widget-pets/id6811950512",
+  "appStoreUrlUS": "https://apps.apple.com/us/app/companions-widget-pets/id6811950512",
+  "reviewUrl": "https://apps.apple.com/app/id6811950512?action=write-review",
+  "supportEmail": "companionswidgetpets@gmail.com",
+  "developer": "Tiaan van der Riel",
+  "developerLegal": "Tiaan Johan van der Riel",
+  "team": [
+    { "name": "Tiaan", "role": "Design and code", "avatar": "tiaan" },
+    { "name": "Shea", "role": "Art and fish", "avatar": "shea" }
+  ],
+  "madeIn": "South Korea",
+  "version": "4.5",
+  "versionDate": "2026-11-04",
+  "firstReleased": "2026-09-23",
+  "minimumOS": "iOS 26.0",
+  "price": "Free, with optional in-app purchases",
+  "category": "Lifestyle",
+  "platforms": ["iPhone", "iPad", "Mac", "Apple Watch"],
+  "languages": [
+    "English", "Arabic", "German", "Spanish", "French", "Italian", "Japanese", "Korean",
+    "Portuguese", "Russian", "Simplified Chinese", "Traditional Chinese"
+  ],
+  "siteUrl": "https://companionswidgetpets.github.io",
+  "campaignToken": "website"
+}

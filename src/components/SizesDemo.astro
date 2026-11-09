@@ -1,0 +1,114 @@
+---
+/**
+ * The three widget sizes as live tanks, with a style picker that repaints all three.
+ */
+import Tank from './Tank.astro';
+import { styles, paletteVars, pageTint, rgb } from '../lib/site';
+import { demoFish, premadeProps } from '../lib/tanks';
+
+const initial = styles[0];
+---
+
+<section class="section demo" id="sizes" data-style-scope style={`--demo-tint:${pageTint(initial)}`}>
+  <div class="container">
+    <div class="section__head section__head--center">
+      <span class="kicker">Three sizes, eight waters</span>
+      <h2>One tank. Any widget size.</h2>
+      <p class="lead">
+        The widget comes in small, medium and large, and each size keeps its own fish. Pick a style and every tank
+        changes to match.
+      </p>
+    </div>
+
+    <div class="chip-row demo__picker" data-style-picker role="group" aria-label="Tank style">
+      {
+        styles.map((s) => (
+          <button
+            class="chip"
+            type="button"
+            aria-pressed={s.id === initial.id ? 'true' : 'false'}
+            data-pick-style={s.id}
+            data-vars={paletteVars(s)}
+            data-name={s.names.en}
+            data-tint={pageTint(s)}
+          >
+            <span
+              class="chip__swatch"
+              style={`background: linear-gradient(${rgb(s.palette.water[0].rgb)}, ${rgb(s.palette.water[2].rgb)})`}
+            />
+            {s.names.en}
+          </button>
+        ))
+      }
+    </div>
+
+    <div class="demo__tanks">
+      <div class="demo__large">
+        <Tank id="demo-large" size="large" style={initial.id} fish={demoFish.large} props={premadeProps('large', initial.id)} />
+        <p class="demo__label">Large</p>
+      </div>
+      <div class="demo__stack">
+        <div>
+          <Tank id="demo-medium" size="medium" style={initial.id} fish={demoFish.medium} props={premadeProps('medium', initial.id)} />
+          <p class="demo__label">Medium</p>
+        </div>
+        <div class="demo__small">
+          <Tank id="demo-small" size="small" style={initial.id} fish={demoFish.small} props={premadeProps('small', initial.id)} />
+          <p class="demo__label">Small</p>
+        </div>
+      </div>
+    </div>
+
+    <p class="demo__caption">
+      The <strong data-style-name>{initial.names.en}</strong> tank in all three sizes. Change the style once and
+      every widget on your Home Screen follows.
+    </p>
+  </div>
+</section>
+
+<style>
+  .demo {
+    background: color-mix(in oklab, var(--demo-tint) 38%, var(--bg));
+    transition: background-color 0.5s ease;
+  }
+  .demo__picker {
+    justify-content: center;
+    margin-bottom: clamp(28px, 4vw, 44px);
+  }
+  .demo__tanks {
+    display: grid;
+    gap: clamp(16px, 2.4vw, 28px);
+    grid-template-columns: 1fr;
+    max-width: 1040px;
+    margin-inline: auto;
+    align-items: start;
+  }
+  @media (min-width: 720px) {
+    .demo__tanks {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+  .demo__stack {
+    display: grid;
+    gap: clamp(16px, 2.4vw, 28px);
+  }
+  .demo__small {
+    width: calc(170 / 364 * 100%);
+  }
+  .demo__label {
+    margin-top: 10px;
+    text-align: center;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--ink-3);
+  }
+  .demo__caption {
+    margin: clamp(24px, 3vw, 36px) auto 0;
+    max-width: 56ch;
+    text-align: center;
+    color: var(--ink-3);
+  }
+  .demo__caption strong {
+    color: var(--ink);
+  }
+</style>

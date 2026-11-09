@@ -1,0 +1,178 @@
+---
+import Base from '../layouts/Base.astro';
+import { absolute, app } from '../lib/site';
+
+// Kept word for word with the policy shown in the app (PrivacyPolicyView.swift), which is
+// the policy of record; its date is revised whenever the wording changes.
+const lastUpdated = 'November 1, 2026';
+const crumbs = {
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'Companions', item: absolute('/') },
+    { '@type': 'ListItem', position: 2, name: 'Privacy policy', item: absolute('/privacy/') },
+  ],
+};
+---
+
+<Base
+  title="Privacy policy"
+  description="Companions does not collect, sell or share any personal information. Your tank stays on your device; the only thing sent anywhere is anonymous usage statistics, which you can turn off."
+  jsonLd={[crumbs]}
+>
+  <section class="page-head">
+    <div class="container container--narrow">
+      <span class="kicker">Privacy policy</span>
+      <h1>Your fish are your business.</h1>
+      <p class="meta">Last updated: {lastUpdated}. This is the same policy shown in the app under Settings.</p>
+    </div>
+  </section>
+
+  <section class="section--tight">
+    <div class="container container--narrow prose">
+      <h2>The short version</h2>
+      <p>
+        Companions does not collect, sell or share any personal information. There is no account to create, no
+        advertising and no tracking of any kind, and everything the app knows about your tank stays on your device.
+        The only thing Companions sends anywhere is anonymous usage statistics, so I can see which parts of the app
+        are used; you can turn that off in Settings at any time.
+      </p>
+
+      <h2>What Companions stores</h2>
+      <p>The only thing Companions saves is the tank itself:</p>
+      <ul>
+        <li>The fish in your tank, and which species each one is</li>
+        <li>The name you give each fish</li>
+        <li>A random identifier for each fish, so the app can tell two fish of the same species apart</li>
+      </ul>
+      <p>
+        Names are stored exactly as you type them. If you name a fish after a friend or family member, that name is
+        kept on your device like everything else, and nowhere else.
+      </p>
+
+      <h2>Where it is stored</h2>
+      <p>
+        Your tank is saved on your device, in a storage area that is shared between the Companions app and its Home
+        Screen widget so the widget can show your fish. Companions never uploads this data anywhere.
+      </p>
+      <p>
+        If you back up your device with iCloud Backup or to a computer, Apple's backup may include Companions' data
+        along with the rest of your apps. Those backups are controlled by you in iOS Settings and are covered by
+        Apple's privacy policy, not this one.
+      </p>
+
+      <h2>Widgets</h2>
+      <p>
+        The Companions widget shows the fish in your tank on your Home Screen or Lock Screen. Like any widget, it is
+        visible to anyone who can see your screen. If you use VoiceOver, the widget also reads out your fish's names.
+        The widget reads your tank from the shared storage on your device; it does not send anything anywhere.
+      </p>
+
+      <h2>Usage statistics</h2>
+      <p>
+        To learn which parts of Companions people use, the app sends anonymous usage statistics to Google Analytics
+        for Firebase, a service run by Google. These are events such as the app being opened, a screen being shown, a
+        fish being added, a tank style being chosen or a pack being unlocked, together with general details: the
+        device model, iOS version and language, the app's version, and the country and region estimated from your
+        internet connection, whose address is not stored. Each installation of the app is given a random identifier so
+        that repeat use counts as one person; it is not linked to you, your Apple Account or your fish and their
+        names, and Companions does not use the advertising identifier or ask permission to track you.
+      </p>
+      <p>
+        You can turn this off with the Share Usage Data switch in Settings, and nothing further is sent. Google's
+        handling of these statistics is described in its privacy policy at
+        <a href="https://policies.google.com/privacy" rel="noopener">policies.google.com/privacy</a>.
+      </p>
+
+      <h2>Permissions</h2>
+      <p>Companions asks for three system permissions, each the first time you choose something that needs it, and works without any of them.</p>
+      <ul>
+        <li>
+          <strong>Adding photos to your library:</strong> iOS asks the first time you save a tank's QR code to Photos.
+          The permission only lets the app add pictures, not see the photos you already have.
+        </li>
+        <li>
+          <strong>Reading your steps from Health:</strong> iOS asks the first time you choose the Step Goal
+          complication. The app reads only today's step count, to draw it in your tank, and never writes to Health.
+          The count and the goal you set are kept in the shared storage on your device so the widget can show them,
+          and nowhere else.
+        </li>
+        <li>
+          <strong>Your location while the app is open:</strong> iOS asks when you tap Location under Settings on the
+          Complications sheet, after choosing the Moon Phase or the Weather complication. The app uses it to tell which
+          way up the Moon appears where you are, keeping only which hemisphere that is, and to fetch the weather there
+          from Apple's Weather service, which receives your approximate location for the forecast and nothing else.
+          Companions does not store your location or send it anywhere else.
+        </li>
+      </ul>
+      <p>
+        Companions does not access your camera, microphone, contacts, calendar or notifications, and it does not
+        request permission to track you across other apps or websites.
+      </p>
+
+      <h2>Third-party services</h2>
+      <p>
+        Apart from Google Analytics for Firebase, described above, Companions contains no third-party software
+        development kits: no crash reporting and no advertising.
+      </p>
+      <p>
+        The App Store handles downloading and updating the app, any packs you buy, and any ratings or reviews you
+        choose to leave. Companions never sees your payment details. Those interactions are governed by Apple's
+        privacy policy.
+      </p>
+
+      <h2>Things you choose to share</h2>
+      <p>A few buttons in Settings hand off to other apps, and only when you tap them:</p>
+      <ul>
+        <li>
+          <strong>Email</strong> opens your mail app with a new message addressed to me. Anything you write is sent by
+          your mail provider, and I receive only what you send.
+        </li>
+        <li><strong>Share Companions</strong> opens the iOS share sheet with a link to the app. Companions does not see who you share it with.</li>
+        <li><strong>Rate Companions</strong> asks Apple to show its rating prompt. Apple handles the rating; Companions does not receive it.</li>
+        <li>
+          <strong>Share this tank</strong>, on the main page's menu, makes a code that holds only the tank's water and
+          props, nothing about you or your fish, and opens the share sheet for you to send it.
+        </li>
+      </ul>
+
+      <h2>Your control</h2>
+      <p>You are in full control of your tank:</p>
+      <ul>
+        <li>Rename or remove any fish at any time from the tray at the bottom of the tank</li>
+        <li>Removing a fish deletes it from your device</li>
+        <li>Turn off usage statistics with the Share Usage Data switch in Settings</li>
+        <li>
+          Deleting the Companions app deletes the tank and everything else the app stored on your device (a device
+          backup made earlier may still hold a copy until it is replaced)
+        </li>
+      </ul>
+
+      <h2>Children</h2>
+      <p>
+        Companions does not collect personal information from anyone, of any age. The usage statistics described above
+        are anonymous and never include names, anything typed into the app or anything that could identify a child, or
+        anyone else.
+      </p>
+
+      <h2>This website</h2>
+      <p>
+        This website is a set of static pages served by GitHub Pages. It sets no cookies, runs no analytics and
+        embeds nothing from third parties; the fonts and pictures are served from the site itself. GitHub's own
+        handling of web server logs is described in
+        <a href="https://docs.github.com/en/site-policy/privacy-policies/github-general-privacy-statement" rel="noopener">GitHub's privacy statement</a>.
+      </p>
+
+      <h2>Changes to this policy</h2>
+      <p>
+        If Companions ever changes how it handles data, this policy will be updated in the app and the date at the top
+        revised. The current version is always available from Settings.
+      </p>
+
+      <h2>Contact</h2>
+      <p>
+        If you have any questions about this policy or about how Companions handles your data, email me at
+        <a href={`mailto:${app.supportEmail}`}>{app.supportEmail}</a> or use the Email button in Settings.
+      </p>
+    </div>
+  </section>
+</Base>

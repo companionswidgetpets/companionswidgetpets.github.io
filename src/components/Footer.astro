@@ -1,0 +1,125 @@
+---
+import { Image } from 'astro:assets';
+import { app, footerNav } from '../lib/site';
+import tiaan from '../assets/devs/tiaan.png';
+import shea from '../assets/devs/shea.png';
+import Badge from './Badge.astro';
+
+const year = new Date().getFullYear();
+---
+
+<footer class="footer">
+  <div class="container footer__inner">
+    <div class="footer__brand">
+      <p class="footer__name">{app.name}</p>
+      <p class="footer__tag">{app.tagline}</p>
+      <Badge />
+      <p class="footer__facts">Free · {app.minimumOS} or later · iPhone, iPad, Mac and Apple Watch</p>
+    </div>
+    {
+      Object.entries(footerNav).map(([heading, links]) => (
+        <nav class="footer__col" aria-label={heading}>
+          <h2>{heading}</h2>
+          <ul>
+            {links.map((l) => (
+              <li>
+                <a href={l.href}>{l.label}</a>
+              </li>
+            ))}
+          </ul>
+        </nav>
+      ))
+    }
+    <div class="footer__colophon">
+      <div class="footer__avatars" aria-hidden="true">
+        <Image src={tiaan} alt="" width={82} height={82} densities={[1, 2]} format="webp" />
+        <Image src={shea} alt="" width={82} height={82} densities={[1, 2]} format="webp" />
+      </div>
+      <p>Developed with ♡ by Tiaan and Shea in {app.madeIn}.</p>
+    </div>
+  </div>
+  <div class="container footer__legal">
+    <p>© {year} {app.developerLegal}. Apple, the Apple logo, iPhone, iPad, Mac, Apple Watch and App Store are trademarks of Apple Inc.</p>
+  </div>
+</footer>
+
+<style>
+  .footer {
+    margin-top: clamp(48px, 8vw, 96px);
+    padding: clamp(40px, 6vw, 72px) 0 32px;
+    background: var(--surface);
+    border-top: 1px solid var(--line);
+    color: var(--ink-3);
+    font-size: 0.95rem;
+  }
+  .footer__inner {
+    display: grid;
+    gap: 36px;
+    grid-template-columns: 1fr;
+  }
+  @media (min-width: 720px) {
+    .footer__inner {
+      grid-template-columns: 1.6fr 1fr 1fr 1.4fr;
+    }
+  }
+  .footer__name {
+    font-family: var(--font-display);
+    font-weight: 800;
+    font-size: 1.25rem;
+    color: var(--ink);
+    letter-spacing: -0.02em;
+  }
+  .footer__tag {
+    margin: 4px 0 18px;
+  }
+  .footer__facts {
+    margin-top: 14px;
+    font-size: 0.875rem;
+    color: var(--ink-4);
+  }
+  .footer__col h2 {
+    font-family: var(--font-body);
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--ink-4);
+    margin-bottom: 14px;
+  }
+  .footer__col ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 10px;
+  }
+  .footer__col a {
+    color: var(--ink-2);
+  }
+  .footer__colophon {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    align-self: start;
+  }
+  .footer__avatars {
+    display: flex;
+  }
+  .footer__avatars img {
+    width: 41px;
+    height: 41px;
+    border-radius: 50%;
+    background: var(--surface-2);
+    box-shadow: 0 0 0 2px var(--surface);
+  }
+  .footer__avatars img + img {
+    margin-left: -6px;
+  }
+  .footer__legal {
+    margin-top: 40px;
+    padding-top: 20px;
+    border-top: 1px solid var(--line);
+    font-size: 0.8rem;
+    color: var(--ink-4);
+  }
+</style>

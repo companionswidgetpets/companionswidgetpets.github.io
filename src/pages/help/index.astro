@@ -1,0 +1,97 @@
+---
+import { getCollection } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+import { absolute, app } from '../../lib/site';
+
+const categories: Record<string, string> = {
+  'getting-started': 'Getting started',
+  widgets: 'The widget',
+  'fish-and-packs': 'Fish and packs',
+  'tanks-and-styles': 'Tanks, styles and props',
+  complications: 'Complications',
+  'other-devices': 'StandBy, Apple Watch, Mac and iPad',
+  'privacy-and-purchases': 'Purchases and privacy',
+  troubleshooting: 'When something looks wrong',
+};
+
+const entries = (await getCollection('help')).sort((a, b) => a.data.order - b.data.order || a.data.question.localeCompare(b.data.question));
+const groups = Object.keys(categories)
+  .map((key) => ({ key, title: categories[key], items: entries.filter((e) => e.data.category === key) }))
+  .filter((g) => g.items.length);
+
+const faqLd = {
+  '@type': 'FAQPage',
+  mainEntity: entries.map((e) => ({
+    '@type': 'Question',
+    name: e.data.question,
+    acceptedAnswer: { '@type': 'Answer', text: `${e.data.summary} <a href="${absolute(`/help/${e.id}/`)}">Full answer</a>` },
+  })),
+};
+const crumbs = {
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'Companions', item: absolute('/') },
+    { '@type': 'ListItem', position: 2, name: 'Help', item: absolute('/help/') },
+  ],
+};
+---
+
+<Base
+  title="Help and questions"
+  description={`Answers to common questions about the Companions aquarium widget: adding the widget to your Home Screen, fish and packs, tank styles, complications, StandBy, Apple Watch, Mac, purchases and privacy.`}
+  jsonLd={[faqLd, crumbs]}
+>
+  <section class="page-head">
+    <div class="container container--narrow">
+      <span class="kicker">Help</span>
+      <h1>Questions, answered.</h1>
+      <p class="lead">
+        Everything people ask about Companions, in one place. Can't find yours? Email{' '}
+        <a href={`mailto:${app.supportEmail}`}>{app.supportEmail}</a> and a person will answer.
+      </p>
+    </div>
+  </section>
+
+  <section class="section--tight">
+    <div class="container container--narrow">
+      <nav class="help-toc" aria-label="Categories">
+        <ul class="chip-row">
+          {groups.map((g) => <li><a class="chip" href={`#${g.key}`}>{g.title}</a></li>)}
+        </ul>
+      </nav>
+      {
+        groups.map((g) => (
+          <section class="help-group" id={g.key}>
+            <h2>{g.title}</h2>
+            <div class="qa">
+              {g.items.map((e) => (
+                <details>
+                  <summary>{e.data.question}</summary>
+                  <div class="qa__body">
+                    <p>{e.data.summary}</p>
+                    <a class="qa__more" href={`/help/${e.id}/`}>Full answer</a>
+                  </div>
+                </details>
+              ))}
+            </div>
+          </section>
+        ))
+      }
+    </div>
+  </section>
+</Base>
+
+<style>
+  .help-toc ul {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 clamp(32px, 5vw, 56px);
+  }
+  .help-group + .help-group {
+    margin-top: clamp(40px, 6vw, 72px);
+  }
+  .help-group h2 {
+    font-size: 1.5rem;
+    margin-bottom: 14px;
+  }
+</style>

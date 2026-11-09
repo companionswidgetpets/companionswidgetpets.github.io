@@ -1,0 +1,61 @@
+---
+/** Every pack as a card: its fish, its tagline and whether it comes with the app. */
+import { Image } from 'astro:assets';
+import { packs, speciesById } from '../lib/site';
+import { fishMeta } from '../lib/pictures';
+
+interface Props {
+  /** Fewer words per card, for the home page. */
+  compact?: boolean;
+}
+const { compact = false } = Astro.props;
+---
+
+<div class="packs grid grid--3">
+  {
+    packs.map((pack, i) => (
+      <a class="card card--link pack" href={`/packs/${pack.id}/`}>
+        <div class="pack__fish" aria-hidden="true">
+          {pack.species.map((id, j) => {
+            const s = speciesById(id);
+            return (
+              <Image
+                src={fishMeta(id)}
+                alt=""
+                width={112}
+                height={112}
+                densities={[1, 2]}
+                format="webp"
+                loading="lazy"
+                class="fish-pic"
+                style={`--delay:${(-(i * 5 + j) * 0.7).toFixed(1)}s`}
+              />
+            );
+          })}
+        </div>
+        <p class="card__kicker">{pack.comesWithApp ? 'Comes with the app' : 'Pack'}</p>
+        <h3>{pack.names.en}</h3>
+        {!compact && <p>{pack.taglines.en}</p>}
+        <p class="pack__names">{pack.species.map((id) => speciesById(id).names.en).join(' · ')}</p>
+      </a>
+    ))
+  }
+</div>
+
+<style>
+  .pack__fish {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 6px;
+    margin-bottom: 18px;
+  }
+  .pack__fish img {
+    width: 100%;
+    height: auto;
+  }
+  .pack__names {
+    margin-top: 10px;
+    font-size: 0.9rem;
+    color: var(--ink-4) !important;
+  }
+</style>

@@ -1,0 +1,263 @@
+---
+/**
+ * The frosted-glass pill at the top of every page: the icon and wordmark, the section
+ * links and the black Download button. On the home page the wordmark fades as the
+ * headline arrives (the hero sets --tp); elsewhere it stays.
+ */
+import { Image } from 'astro:assets';
+import icon from '../assets/icon/app-icon.png';
+import { app, nav } from '../lib/site';
+
+interface Props {
+  /** The page's path, to mark the current section. */
+  current?: string;
+  /** Whether the wordmark gives way to the hero headline (home page only). */
+  hero?: boolean;
+}
+const { current = '/', hero = false } = Astro.props;
+const isCurrent = (href: string) => (href === '/' ? current === '/' : current.startsWith(href));
+---
+
+<header class={`topbar ${hero ? 'topbar--hero' : ''}`} data-topbar>
+  <div class="topbar__pill">
+    <a class="topbar__brand" href="/" aria-label="Companions home">
+      <Image src={icon} alt="" width={88} height={88} densities={[1, 2]} format="webp" class="topbar__icon" loading="eager" />
+      <span class="topbar__wordmark">{app.shortName}</span>
+    </a>
+    <nav class="topbar__nav" aria-label="Site">
+      <ul>
+        {
+          nav.map((item) => (
+            <li>
+              <a href={item.href} aria-current={isCurrent(item.href) ? 'page' : undefined}>
+                {item.label}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </nav>
+    <div class="topbar__actions">
+      <a class="btn btn--pill topbar__cta" href={app.appStoreUrl} rel="noopener">
+        <span class="topbar__cta-long">Download</span>
+        <span class="topbar__cta-short">Get</span>
+      </a>
+      <button class="topbar__menu-toggle" type="button" aria-expanded="false" aria-controls="site-menu" data-menu-toggle>
+        <span class="visually-hidden">Menu</span>
+        <span class="topbar__burger" aria-hidden="true"><i></i><i></i></span>
+      </button>
+    </div>
+  </div>
+  <nav class="topbar__sheet" id="site-menu" aria-label="Site" data-menu hidden>
+    <ul>
+      {
+        nav.map((item) => (
+          <li>
+            <a href={item.href} aria-current={isCurrent(item.href) ? 'page' : undefined}>
+              {item.label}
+            </a>
+          </li>
+        ))
+      }
+      <li><a href="/support/">Support</a></li>
+      <li><a href="/press/">Press kit</a></li>
+    </ul>
+  </nav>
+</header>
+
+<style is:global>
+  .topbar {
+    --tp: 0;
+    position: fixed;
+    inset: 0 0 auto 0;
+    z-index: 50;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 16px var(--gutter) 0;
+    pointer-events: none;
+  }
+  @media (min-width: 768px) {
+    .topbar {
+      padding-top: 22px;
+    }
+  }
+  .topbar__pill {
+    pointer-events: auto;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    width: 100%;
+    max-width: calc(1400px - var(--tp) * 140px);
+    min-height: var(--topbar-h);
+    padding: 10px 10px 10px 16px;
+    border-radius: 999px;
+    background: var(--glass);
+    -webkit-backdrop-filter: blur(22px) saturate(1.7);
+    backdrop-filter: blur(22px) saturate(1.7);
+    border: 1px solid var(--glass-line);
+    box-shadow: var(--glass-shadow);
+    transition: box-shadow 0.25s ease, background-color 0.25s ease;
+  }
+  .topbar--scrolled .topbar__pill {
+    background: var(--glass-strong);
+  }
+  .topbar__brand {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    color: var(--ink);
+    text-decoration: none;
+    min-width: 0;
+  }
+  .topbar__brand:hover {
+    text-decoration: none;
+  }
+  .topbar__icon {
+    width: 44px;
+    height: 44px;
+    border-radius: 11px;
+    flex: none;
+    box-shadow: 0 1px 3px rgba(11, 18, 32, 0.15);
+  }
+  .topbar__wordmark {
+    font-family: var(--font-display);
+    font-weight: 800;
+    font-size: 1.75rem;
+    letter-spacing: -0.03em;
+    white-space: nowrap;
+  }
+  .topbar--hero .topbar__wordmark {
+    opacity: calc(1 - var(--tp));
+    transform: translateX(calc(var(--tp) * -8px));
+    transition: opacity 0.1s linear;
+  }
+  .topbar__nav {
+    margin-left: auto;
+    display: none;
+  }
+  .topbar__nav ul {
+    list-style: none;
+    display: flex;
+    gap: 4px;
+    margin: 0;
+    padding: 0;
+  }
+  .topbar__nav a {
+    display: inline-block;
+    padding: 8px 14px;
+    border-radius: 999px;
+    color: var(--ink-2);
+    font-weight: 600;
+    font-size: 0.975rem;
+    text-decoration: none;
+  }
+  .topbar__nav a:hover,
+  .topbar__nav a[aria-current="page"] {
+    color: var(--ink);
+    background: rgba(127, 127, 127, 0.12);
+  }
+  .topbar__actions {
+    margin-left: auto;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .topbar__nav + .topbar__actions {
+    margin-left: 0;
+  }
+  .topbar__cta {
+    min-height: 48px;
+    padding: 0 26px;
+  }
+  .topbar__cta-short {
+    display: none;
+  }
+  .topbar__menu-toggle {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    border: 0;
+    background: transparent;
+    cursor: pointer;
+    display: grid;
+    place-items: center;
+    color: var(--ink);
+  }
+  .topbar__burger {
+    width: 20px;
+    display: grid;
+    gap: 6px;
+  }
+  .topbar__burger i {
+    display: block;
+    height: 2px;
+    border-radius: 2px;
+    background: currentColor;
+    transition: transform 0.2s ease;
+  }
+  .topbar--open .topbar__burger i:first-child {
+    transform: translateY(4px) rotate(45deg);
+  }
+  .topbar--open .topbar__burger i:last-child {
+    transform: translateY(-4px) rotate(-45deg);
+  }
+  .topbar__sheet {
+    pointer-events: auto;
+    width: 100%;
+    max-width: 1400px;
+    margin-top: 10px;
+    padding: 10px;
+    border-radius: 28px;
+    background: var(--glass-strong);
+    -webkit-backdrop-filter: blur(22px) saturate(1.7);
+    backdrop-filter: blur(22px) saturate(1.7);
+    border: 1px solid var(--glass-line);
+    box-shadow: var(--glass-shadow);
+  }
+  .topbar__sheet[hidden] {
+    display: none;
+  }
+  .topbar__sheet ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  .topbar__sheet a {
+    display: block;
+    padding: 14px 16px;
+    border-radius: 18px;
+    color: var(--ink);
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 1.1rem;
+    text-decoration: none;
+  }
+  .topbar__sheet a:hover,
+  .topbar__sheet a[aria-current="page"] {
+    background: rgba(127, 127, 127, 0.12);
+  }
+  @media (max-width: 479px) {
+    .topbar__wordmark {
+      font-size: 1.4rem;
+    }
+    .topbar__cta {
+      padding: 0 18px;
+    }
+    .topbar__cta-long {
+      display: none;
+    }
+    .topbar__cta-short {
+      display: inline;
+    }
+  }
+  @media (min-width: 900px) {
+    .topbar__nav {
+      display: block;
+    }
+    .topbar__menu-toggle,
+    .topbar__sheet {
+      display: none;
+    }
+  }
+</style>

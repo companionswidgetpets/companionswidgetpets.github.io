@@ -1,0 +1,14 @@
+{
+  "shots": [
+    {
+      "url": "file:///Users/mac/Desktop/companions-website/tools/og/template.html",
+      "out": "public/og/default.png",
+      "width": 1200,
+      "height": 630,
+      "scale": 1,
+      "wait": 800,
+      "settle": 800,
+      "probe": "'og card rendered'"
+    }
+  ]
+}

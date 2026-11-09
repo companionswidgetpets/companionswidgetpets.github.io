@@ -1,0 +1,12 @@
+---
+/** Apple's "Download on the App Store" badge, linking to the listing. */
+import { app } from '../lib/site';
+interface Props {
+  class?: string;
+}
+const { class: className = '' } = Astro.props;
+---
+
+<a class={`badge-link ${className}`} href={app.appStoreUrl} rel="noopener" aria-label="Download Companions on the App Store">
+  <img src="/img/app-store-badge.svg" alt="Download on the App Store" width="162" height="54" loading="lazy" />
+</a>

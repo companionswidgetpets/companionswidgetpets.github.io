@@ -1,0 +1,469 @@
+{
+ "small": [
+  {
+   "style": "minimal",
+   "props": [
+    {
+     "prop": "ferns",
+     "x": 0.193,
+     "y": 1.0119,
+     "side": 0.7495,
+     "flipped": false
+    },
+    {
+     "prop": "ferns",
+     "x": 0.7842,
+     "y": 1.0523,
+     "side": 0.4547,
+     "flipped": true
+    },
+    {
+     "prop": "sponge",
+     "x": 0.3067,
+     "y": 1.0295,
+     "side": 0.3343,
+     "flipped": false
+    }
+   ]
+  },
+  {
+   "style": "blossom",
+   "props": [
+    {
+     "prop": "ferns",
+     "x": 0.1662,
+     "y": 1.0084,
+     "side": 0.7065,
+     "flipped": false
+    },
+    {
+     "prop": "pineappleHouse",
+     "x": 0.742,
+     "y": 0.9944,
+     "side": 0.5373,
+     "flipped": false
+    },
+    {
+     "prop": "murexShell",
+     "x": 0.2448,
+     "y": 1.0137,
+     "side": 0.2741,
+     "flipped": false
+    }
+   ]
+  },
+  {
+   "style": "pond",
+   "props": [
+    {
+     "prop": "plants",
+     "x": 0.3715,
+     "y": 0.9733,
+     "side": 0.6028,
+     "flipped": false
+    }
+   ]
+  },
+  {
+   "style": "reed",
+   "props": [
+    {
+     "prop": "ferns",
+     "x": 0.1816,
+     "y": 1.0207,
+     "side": 0.6986,
+     "flipped": false
+    },
+    {
+     "prop": "ferns",
+     "x": 0.7982,
+     "y": 1.0084,
+     "side": 0.4547,
+     "flipped": true
+    },
+    {
+     "prop": "branches",
+     "x": 0.3069,
+     "y": 1.0102,
+     "side": 0.4299,
+     "flipped": false
+    }
+   ]
+  },
+  {
+   "style": "dark",
+   "props": [
+    {
+     "prop": "coralReef",
+     "x": 0.3233,
+     "y": 1.0119,
+     "side": 0.5431,
+     "flipped": false
+    }
+   ]
+  },
+  {
+   "style": "deepOcean",
+   "props": [
+    {
+     "prop": "ferns",
+     "x": 0.1855,
+     "y": 1.0014,
+     "side": 0.7275,
+     "flipped": false
+    },
+    {
+     "prop": "brainCoral",
+     "x": 0.3735,
+     "y": 1.0716,
+     "side": 0.2334,
+     "flipped": false
+    },
+    {
+     "prop": "coral",
+     "x": 0.2406,
+     "y": 1.0207,
+     "side": 0.3578,
+     "flipped": false
+    },
+    {
+     "prop": "sponge",
+     "x": 0.8358,
+     "y": 1.0137,
+     "side": 0.3264,
+     "flipped": false
+    }
+   ]
+  }
+ ],
+ "medium": [
+  {
+   "style": "minimal",
+   "props": [
+    {
+     "prop": "ferns",
+     "x": 0.1332,
+     "y": 1.0358,
+     "side": 0.8939,
+     "flipped": false
+    },
+    {
+     "prop": "ferns",
+     "x": 0.8527,
+     "y": 1.0041,
+     "side": 0.6365,
+     "flipped": true
+    },
+    {
+     "prop": "sponge",
+     "x": 0.2904,
+     "y": 1.0177,
+     "side": 0.4628,
+     "flipped": false
+    }
+   ]
+  },
+  {
+   "style": "blossom",
+   "props": [
+    {
+     "prop": "ferns",
+     "x": 0.1282,
+     "y": 1.0132,
+     "side": 0.8633,
+     "flipped": false
+    },
+    {
+     "prop": "pineappleHouse",
+     "x": 0.8047,
+     "y": 1.0086,
+     "side": 0.5878,
+     "flipped": false
+    },
+    {
+     "prop": "murexShell",
+     "x": 0.3142,
+     "y": 1.0132,
+     "side": 0.3839,
+     "flipped": false
+    }
+   ]
+  },
+  {
+   "style": "pond",
+   "props": [
+    {
+     "prop": "plants",
+     "x": 0.2455,
+     "y": 0.9542,
+     "side": 0.7812,
+     "flipped": false
+    },
+    {
+     "prop": "rock",
+     "x": 0.8311,
+     "y": 0.9497,
+     "side": 0.407,
+     "flipped": false
+    },
+    {
+     "prop": "pebble",
+     "x": 0.7227,
+     "y": 0.9383,
+     "side": 0.2449,
+     "flipped": false
+    }
+   ]
+  },
+  {
+   "style": "reed",
+   "props": [
+    {
+     "prop": "ferns",
+     "x": 0.1438,
+     "y": 1.0063,
+     "side": 0.8757,
+     "flipped": false
+    },
+    {
+     "prop": "ferns",
+     "x": 0.8654,
+     "y": 1.029,
+     "side": 0.6637,
+     "flipped": true
+    },
+    {
+     "prop": "branches",
+     "x": 0.3397,
+     "y": 1.0063,
+     "side": 0.6465,
+     "flipped": false
+    }
+   ]
+  },
+  {
+   "style": "dark",
+   "props": [
+    {
+     "prop": "moaiHouse",
+     "x": 0.8143,
+     "y": 0.9769,
+     "side": 0.6271,
+     "flipped": false
+    },
+    {
+     "prop": "coralReef",
+     "x": 0.2084,
+     "y": 0.9701,
+     "side": 0.6881,
+     "flipped": false
+    }
+   ]
+  },
+  {
+   "style": "deepOcean",
+   "props": [
+    {
+     "prop": "ferns",
+     "x": 0.1247,
+     "y": 1.0222,
+     "side": 0.8893,
+     "flipped": false
+    },
+    {
+     "prop": "sponge",
+     "x": 0.8373,
+     "y": 1.0336,
+     "side": 0.4934,
+     "flipped": false
+    },
+    {
+     "prop": "brainCoral",
+     "x": 0.3335,
+     "y": 1.088,
+     "side": 0.3435,
+     "flipped": false
+    },
+    {
+     "prop": "coral",
+     "x": 0.2206,
+     "y": 1.0177,
+     "side": 0.4636,
+     "flipped": false
+    }
+   ]
+  }
+ ],
+ "large": [
+  {
+   "style": "minimal",
+   "props": [
+    {
+     "prop": "ferns",
+     "x": 0.2539,
+     "y": 0.9877,
+     "side": 0.5541,
+     "flipped": false
+    },
+    {
+     "prop": "ferns",
+     "x": 0.8388,
+     "y": 0.9816,
+     "side": 0.3728,
+     "flipped": true
+    },
+    {
+     "prop": "sponge",
+     "x": 0.3283,
+     "y": 0.9857,
+     "side": 0.2393,
+     "flipped": false
+    }
+   ]
+  },
+  {
+   "style": "blossom",
+   "props": [
+    {
+     "prop": "ferns",
+     "x": 0.2326,
+     "y": 0.9756,
+     "side": 0.5218,
+     "flipped": false
+    },
+    {
+     "prop": "pineappleHouse",
+     "x": 0.827,
+     "y": 0.9796,
+     "side": 0.3342,
+     "flipped": false
+    },
+    {
+     "prop": "murexShell",
+     "x": 0.4111,
+     "y": 0.9917,
+     "side": 0.2472,
+     "flipped": false
+    }
+   ]
+  },
+  {
+   "style": "pond",
+   "props": [
+    {
+     "prop": "plants",
+     "x": 0.288,
+     "y": 0.9725,
+     "side": 0.4732,
+     "flipped": false
+    },
+    {
+     "prop": "rock",
+     "x": 0.8374,
+     "y": 0.9644,
+     "side": 0.1936,
+     "flipped": false
+    },
+    {
+     "prop": "pebble",
+     "x": 0.7178,
+     "y": 0.9624,
+     "side": 0.1091,
+     "flipped": false
+    }
+   ]
+  },
+  {
+   "style": "reed",
+   "props": [
+    {
+     "prop": "ferns",
+     "x": 0.196,
+     "y": 0.9887,
+     "side": 0.6197,
+     "flipped": false
+    },
+    {
+     "prop": "branches",
+     "x": 0.331,
+     "y": 0.9927,
+     "side": 0.3485,
+     "flipped": false
+    },
+    {
+     "prop": "ferns",
+     "x": 0.7892,
+     "y": 0.9897,
+     "side": 0.4086,
+     "flipped": true
+    }
+   ]
+  },
+  {
+   "style": "dark",
+   "props": [
+    {
+     "prop": "vallisneria",
+     "x": 0.8726,
+     "y": 0.9796,
+     "side": 0.4817,
+     "flipped": false
+    },
+    {
+     "prop": "coralReef",
+     "x": 0.2297,
+     "y": 0.9958,
+     "side": 0.3896,
+     "flipped": false
+    },
+    {
+     "prop": "tubeSponge",
+     "x": 0.8858,
+     "y": 0.9857,
+     "side": 0.1706,
+     "flipped": false
+    },
+    {
+     "prop": "moaiHouse",
+     "x": 0.6757,
+     "y": 0.9917,
+     "side": 0.4048,
+     "flipped": false
+    }
+   ]
+  },
+  {
+   "style": "deepOcean",
+   "props": [
+    {
+     "prop": "ferns",
+     "x": 0.2807,
+     "y": 1.0069,
+     "side": 0.6233,
+     "flipped": false
+    },
+    {
+     "prop": "brainCoral",
+     "x": 0.3969,
+     "y": 1.0412,
+     "side": 0.2022,
+     "flipped": false
+    },
+    {
+     "prop": "coral",
+     "x": 0.2475,
+     "y": 1.0119,
+     "side": 0.3142,
+     "flipped": false
+    },
+    {
+     "prop": "sponge",
+     "x": 0.8176,
+     "y": 1.0079,
+     "side": 0.3142,
+     "flipped": false
+    }
+   ]
+  }
+ ]
+}

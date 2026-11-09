@@ -1,0 +1,622 @@
+[
+ {
+  "id": "bubble",
+  "raw": "bubble",
+  "image": "props/bubble.png",
+  "names": {
+   "en": "Bubble",
+   "ar": "فقاعة",
+   "de": "Blase",
+   "es": "Burbuja",
+   "fr": "Bulle",
+   "it": "Bolla",
+   "ja": "泡",
+   "ko": "거품",
+   "pt": "Bolha",
+   "ru": "Пузырь",
+   "zh-Hans": "气泡",
+   "zh-Hant": "泡泡"
+  },
+  "size": [
+   161,
+   162
+  ],
+  "footprint": [
+   3,
+   4,
+   155,
+   155
+  ],
+  "fitAllowance": 1.0,
+  "isDecoration": true
+ },
+ {
+  "id": "coral",
+  "raw": "coral",
+  "image": "props/coral.png",
+  "names": {
+   "en": "Coral",
+   "ar": "مرجان",
+   "de": "Koralle",
+   "es": "Coral",
+   "fr": "Corail",
+   "it": "Corallo",
+   "ja": "サンゴ",
+   "ko": "산호",
+   "pt": "Coral",
+   "ru": "Коралл",
+   "zh-Hans": "珊瑚",
+   "zh-Hant": "珊瑚"
+  },
+  "size": [
+   300,
+   300
+  ],
+  "footprint": [
+   7,
+   7,
+   286,
+   288
+  ],
+  "fitAllowance": 1.0,
+  "isDecoration": true
+ },
+ {
+  "id": "ferns",
+  "raw": "ferns",
+  "image": "props/ferns.png",
+  "names": {
+   "en": "Ferns",
+   "ar": "سرخس",
+   "de": "Farne",
+   "es": "Helechos",
+   "fr": "Fougères",
+   "it": "Felci",
+   "ja": "シダ",
+   "ko": "고사리",
+   "pt": "Samambaias",
+   "ru": "Папоротник",
+   "zh-Hans": "蕨类",
+   "zh-Hant": "蕨類"
+  },
+  "size": [
+   300,
+   300
+  ],
+  "footprint": [
+   5,
+   5,
+   289,
+   289
+  ],
+  "fitAllowance": 1.0,
+  "isDecoration": true
+ },
+ {
+  "id": "sponge",
+  "raw": "sponge",
+  "image": "props/sponge.png",
+  "names": {
+   "en": "Sponge",
+   "ar": "إسفنج",
+   "de": "Schwamm",
+   "es": "Esponja",
+   "fr": "Éponge",
+   "it": "Spugna",
+   "ja": "海綿",
+   "ko": "해면",
+   "pt": "Esponja",
+   "ru": "Губка",
+   "zh-Hans": "海绵",
+   "zh-Hant": "海綿"
+  },
+  "size": [
+   300,
+   300
+  ],
+  "footprint": [
+   9,
+   7,
+   282,
+   283
+  ],
+  "fitAllowance": 1.0,
+  "isDecoration": true
+ },
+ {
+  "id": "branches",
+  "raw": "branches",
+  "image": "props/branches.png",
+  "names": {
+   "en": "Branches",
+   "ar": "أغصان",
+   "de": "Äste",
+   "es": "Ramas",
+   "fr": "Branches",
+   "it": "Rami",
+   "ja": "流木",
+   "ko": "나뭇가지",
+   "pt": "Galhos",
+   "ru": "Ветки",
+   "zh-Hans": "树枝",
+   "zh-Hant": "樹枝"
+  },
+  "size": [
+   300,
+   300
+  ],
+  "footprint": [
+   4,
+   11,
+   290,
+   244
+  ],
+  "fitAllowance": 1.1,
+  "isDecoration": true
+ },
+ {
+  "id": "plants",
+  "raw": "plants",
+  "image": "props/plants.png",
+  "names": {
+   "en": "Plants",
+   "ar": "نباتات",
+   "de": "Pflanzen",
+   "es": "Plantas",
+   "fr": "Plantes",
+   "it": "Piante",
+   "ja": "水草",
+   "ko": "수초",
+   "pt": "Plantas",
+   "ru": "Растения",
+   "zh-Hans": "水草",
+   "zh-Hant": "水草"
+  },
+  "size": [
+   300,
+   300
+  ],
+  "footprint": [
+   9,
+   7,
+   286,
+   289
+  ],
+  "fitAllowance": 1.0,
+  "isDecoration": true
+ },
+ {
+  "id": "vallisneria",
+  "raw": "vallisneria",
+  "image": "props/vallisneria.png",
+  "names": {
+   "en": "Vallisneria",
+   "ar": "فاليسنيريا",
+   "de": "Vallisnerie",
+   "es": "Vallisneria",
+   "fr": "Vallisnérie",
+   "it": "Vallisneria",
+   "ja": "バリスネリア",
+   "ko": "발리스네리아",
+   "pt": "Valisnéria",
+   "ru": "Валлиснерия",
+   "zh-Hans": "苦草",
+   "zh-Hant": "苦草"
+  },
+  "size": [
+   300,
+   300
+  ],
+  "footprint": [
+   32,
+   8,
+   242,
+   284
+  ],
+  "fitAllowance": 1.0,
+  "isDecoration": true
+ },
+ {
+  "id": "rock",
+  "raw": "rock",
+  "image": "props/rock.png",
+  "names": {
+   "en": "Rock",
+   "ar": "صخرة",
+   "de": "Stein",
+   "es": "Roca",
+   "fr": "Rocher",
+   "it": "Roccia",
+   "ja": "岩",
+   "ko": "바위",
+   "pt": "Rocha",
+   "ru": "Камень",
+   "zh-Hans": "岩石",
+   "zh-Hant": "岩石"
+  },
+  "size": [
+   300,
+   300
+  ],
+  "footprint": [
+   50,
+   57,
+   203,
+   160
+  ],
+  "fitAllowance": 1.0,
+  "isDecoration": true
+ },
+ {
+  "id": "pebble",
+  "raw": "pebble",
+  "image": "props/pebble.png",
+  "names": {
+   "en": "Pebble",
+   "ar": "حصاة",
+   "de": "Kiesel",
+   "es": "Guijarro",
+   "fr": "Galet",
+   "it": "Ciottolo",
+   "ja": "小石",
+   "ko": "조약돌",
+   "pt": "Seixo",
+   "ru": "Камешек",
+   "zh-Hans": "鹅卵石",
+   "zh-Hant": "鵝卵石"
+  },
+  "size": [
+   300,
+   300
+  ],
+  "footprint": [
+   77,
+   94,
+   146,
+   105
+  ],
+  "fitAllowance": 0.5,
+  "isDecoration": true
+ },
+ {
+  "id": "murexShell",
+  "raw": "murry_shell",
+  "image": "props/murry_shell.png",
+  "names": {
+   "en": "Murex Shell",
+   "ar": "صدفة موركس",
+   "de": "Murex",
+   "es": "Múrice",
+   "fr": "Murex",
+   "it": "Murice",
+   "ja": "アクキガイ",
+   "ko": "뿔소라",
+   "pt": "Múrex",
+   "ru": "Мурекс",
+   "zh-Hans": "骨螺",
+   "zh-Hant": "骨螺"
+  },
+  "size": [
+   300,
+   300
+  ],
+  "footprint": [
+   5,
+   29,
+   288,
+   237
+  ],
+  "fitAllowance": 1.0,
+  "isDecoration": true
+ },
+ {
+  "id": "scallop",
+  "raw": "scallop",
+  "image": "props/scallop.png",
+  "names": {
+   "en": "Scallop",
+   "ar": "صدفة مروحية",
+   "de": "Jakobs­muschel",
+   "es": "Vieira",
+   "fr": "Saint-Jacques",
+   "it": "Capasanta",
+   "ja": "ホタテ",
+   "ko": "가리비",
+   "pt": "Vieira",
+   "ru": "Гребешок",
+   "zh-Hans": "扇贝",
+   "zh-Hant": "扇貝"
+  },
+  "size": [
+   300,
+   300
+  ],
+  "footprint": [
+   38,
+   41,
+   225,
+   219
+  ],
+  "fitAllowance": 1.0,
+  "isDecoration": true
+ },
+ {
+  "id": "pearl",
+  "raw": "pearl",
+  "image": "props/pearl.png",
+  "names": {
+   "en": "Pearl",
+   "ar": "لؤلؤة",
+   "de": "Perle",
+   "es": "Perla",
+   "fr": "Perle",
+   "it": "Perla",
+   "ja": "真珠",
+   "ko": "진주",
+   "pt": "Pérola",
+   "ru": "Жемчужина",
+   "zh-Hans": "珍珠",
+   "zh-Hant": "珍珠"
+  },
+  "size": [
+   300,
+   300
+  ],
+  "footprint": [
+   18,
+   31,
+   262,
+   216
+  ],
+  "fitAllowance": 1.0,
+  "isDecoration": true
+ },
+ {
+  "id": "conch",
+  "raw": "conch",
+  "image": "props/conch.png",
+  "names": {
+   "en": "Conch",
+   "ar": "محارة",
+   "de": "Fechter­schnecke",
+   "es": "Caracola",
+   "fr": "Conque",
+   "it": "Conchiglia",
+   "ja": "ホラ貝",
+   "ko": "소라",
+   "pt": "Concha",
+   "ru": "Ракушка",
+   "zh-Hans": "海螺",
+   "zh-Hant": "海螺"
+  },
+  "size": [
+   300,
+   300
+  ],
+  "footprint": [
+   23,
+   56,
+   258,
+   172
+  ],
+  "fitAllowance": 1.0,
+  "isDecoration": true
+ },
+ {
+  "id": "coralReef",
+  "raw": "coral_reef",
+  "image": "props/coral_reef.png",
+  "names": {
+   "en": "Coral Reef",
+   "ar": "شعاب مرجانية",
+   "de": "Korallenriff",
+   "es": "Arrecife",
+   "fr": "Récif",
+   "it": "Barriera corallina",
+   "ja": "サンゴ礁",
+   "ko": "산호초",
+   "pt": "Recife de coral",
+   "ru": "Коралловый риф",
+   "zh-Hans": "珊瑚礁",
+   "zh-Hant": "珊瑚礁"
+  },
+  "size": [
+   300,
+   300
+  ],
+  "footprint": [
+   27,
+   18,
+   242,
+   251
+  ],
+  "fitAllowance": 1.0,
+  "isDecoration": true
+ },
+ {
+  "id": "anemone",
+  "raw": "anemone",
+  "image": "props/anemone.png",
+  "names": {
+   "en": "Anemone",
+   "ar": "شقائق النعمان",
+   "de": "Seeanemone",
+   "es": "Anémona",
+   "fr": "Anémone",
+   "it": "Anemone",
+   "ja": "イソギンチャク",
+   "ko": "말미잘",
+   "pt": "Anêmona",
+   "ru": "Актиния",
+   "zh-Hans": "海葵",
+   "zh-Hant": "海葵"
+  },
+  "size": [
+   300,
+   300
+  ],
+  "footprint": [
+   27,
+   20,
+   250,
+   261
+  ],
+  "fitAllowance": 1.0,
+  "isDecoration": true
+ },
+ {
+  "id": "brainCoral",
+  "raw": "brain",
+  "image": "props/brain.png",
+  "names": {
+   "en": "Brain Coral",
+   "ar": "مرجان دماغي",
+   "de": "Hirnkoralle",
+   "es": "Coral cerebro",
+   "fr": "Corail cerveau",
+   "it": "Corallo cervello",
+   "ja": "ノウサンゴ",
+   "ko": "뇌산호",
+   "pt": "Coral-cérebro",
+   "ru": "Коралл-мозговик",
+   "zh-Hans": "脑珊瑚",
+   "zh-Hant": "腦珊瑚"
+  },
+  "size": [
+   300,
+   300
+  ],
+  "footprint": [
+   41,
+   40,
+   219,
+   183
+  ],
+  "fitAllowance": 1.0,
+  "isDecoration": true
+ },
+ {
+  "id": "tubeSponge",
+  "raw": "tube_sponge",
+  "image": "props/tube_sponge.png",
+  "names": {
+   "en": "Tube Sponge",
+   "ar": "إسفنج أنبوبي",
+   "de": "Röhren­schwamm",
+   "es": "Esponja tubular",
+   "fr": "Éponge tubulaire",
+   "it": "Spugna tubolare",
+   "ja": "チューブ海綿",
+   "ko": "튜브 해면",
+   "pt": "Esponja tubular",
+   "ru": "Трубчатая губка",
+   "zh-Hans": "管海绵",
+   "zh-Hant": "管海綿"
+  },
+  "size": [
+   300,
+   300
+  ],
+  "footprint": [
+   27,
+   25,
+   245,
+   239
+  ],
+  "fitAllowance": 1.0,
+  "isDecoration": true
+ },
+ {
+  "id": "pineappleHouse",
+  "raw": "pineapple_house",
+  "image": "props/pineapple_house.png",
+  "names": {
+   "en": "Pineapple House",
+   "ar": "بيت الأناناس",
+   "de": "Ananashaus",
+   "es": "Casa piña",
+   "fr": "Maison ananas",
+   "it": "Casa ananas",
+   "ja": "パイナップルの家",
+   "ko": "파인애플 집",
+   "pt": "Casa de abacaxi",
+   "ru": "Домик-ананас",
+   "zh-Hans": "菠萝屋",
+   "zh-Hant": "鳳梨屋"
+  },
+  "size": [
+   300,
+   300
+  ],
+  "footprint": [
+   67,
+   12,
+   174,
+   272
+  ],
+  "fitAllowance": 1.0,
+  "isDecoration": true
+ },
+ {
+  "id": "moaiHouse",
+  "raw": "moai_house",
+  "image": "props/moai_house.png",
+  "names": {
+   "en": "Moai House",
+   "ar": "بيت مواي",
+   "de": "Moai-Haus",
+   "es": "Casa moái",
+   "fr": "Maison moaï",
+   "it": "Casa moai",
+   "ja": "モアイの家",
+   "ko": "모아이 집",
+   "pt": "Casa de moai",
+   "ru": "Домик-моаи",
+   "zh-Hans": "摩艾屋",
+   "zh-Hant": "摩艾屋"
+  },
+  "size": [
+   300,
+   300
+  ],
+  "footprint": [
+   62,
+   20,
+   176,
+   258
+  ],
+  "fitAllowance": 1.0,
+  "isDecoration": true
+ },
+ {
+  "id": "rockHouse",
+  "raw": "rock_house",
+  "image": "props/rock_house.png",
+  "names": {
+   "en": "Rock House",
+   "ar": "بيت صخري",
+   "de": "Felsenhaus",
+   "es": "Casa roca",
+   "fr": "Maison rocher",
+   "it": "Casa roccia",
+   "ja": "岩の家",
+   "ko": "바위 집",
+   "pt": "Casa de pedra",
+   "ru": "Каменный домик",
+   "zh-Hans": "石头屋",
+   "zh-Hant": "石頭屋"
+  },
+  "size": [
+   300,
+   300
+  ],
+  "footprint": [
+   48,
+   19,
+   206,
+   201
+  ],
+  "fitAllowance": 1.0,
+  "isDecoration": true
+ }
+]

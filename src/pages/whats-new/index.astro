@@ -1,0 +1,67 @@
+---
+import { getCollection, render } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+import { absolute, app, formatDate, isoDate } from '../../lib/site';
+
+const entries = (await getCollection('news')).sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+const rendered = await Promise.all(entries.map(async (e) => ({ entry: e, Content: (await render(e)).Content })));
+const crumbs = {
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'Companions', item: absolute('/') },
+    { '@type': 'ListItem', position: 2, name: "What's new", item: absolute('/whats-new/') },
+  ],
+};
+---
+
+<Base
+  title="What's new"
+  description={`Release notes for the Companions aquarium widget app, version by version. The current version is ${app.version}, released ${formatDate(app.versionDate)}.`}
+  jsonLd={[crumbs]}
+>
+  <section class="page-head">
+    <div class="container container--narrow">
+      <span class="kicker">What's new</span>
+      <h1>Every version, in order.</h1>
+      <p class="lead">The current version is Companions {app.version}, released {formatDate(app.versionDate)}. Updates arrive through the App Store.</p>
+    </div>
+  </section>
+  <section class="section--tight">
+    <div class="container container--narrow">
+      {
+        rendered.map(({ entry, Content }) => (
+          <article class="release" id={`v${entry.data.version}`}>
+            <header>
+              <p class="card__kicker">
+                <time datetime={isoDate(entry.data.date)}>{formatDate(entry.data.date)}</time>
+              </p>
+              <h2>
+                <a href={`/whats-new/${entry.id}/`}>
+                  {entry.data.version}: {entry.data.title}
+                </a>
+              </h2>
+            </header>
+            <div class="prose">
+              <Content />
+            </div>
+          </article>
+        ))
+      }
+    </div>
+  </section>
+</Base>
+
+<style>
+  .release + .release {
+    margin-top: clamp(40px, 6vw, 72px);
+    padding-top: clamp(40px, 6vw, 72px);
+    border-top: 1px solid var(--line);
+  }
+  .release h2 {
+    font-size: 1.6rem;
+    margin-bottom: 18px;
+  }
+  .release h2 a {
+    color: var(--ink);
+  }
+</style>

@@ -1,0 +1,495 @@
+---
+import { Image } from 'astro:assets';
+import { getCollection } from 'astro:content';
+import Base from '../layouts/Base.astro';
+import Hero from '../components/Hero.astro';
+import SizesDemo from '../components/SizesDemo.astro';
+import PackGrid from '../components/PackGrid.astro';
+import StyleRow from '../components/StyleRow.astro';
+import Tank from '../components/Tank.astro';
+import Badge from '../components/Badge.astro';
+import { app, props as allProps, species, packs, styles, absolute } from '../lib/site';
+import { propMeta } from '../lib/pictures';
+import { premadeProps } from '../lib/tanks';
+import watch from '../assets/watch/apple_watch.png';
+
+const appIcons = import.meta.glob<{ default: ImageMetadata }>('../assets/app-icons/*.png', { eager: true });
+const iconOrder = ['minimal', 'twilight', 'pond', 'reed', 'blossom', 'dark'];
+const iconNames: Record<string, string> = { minimal: 'Minimal', twilight: 'Twilight', pond: 'Pond', reed: 'Reed', blossom: 'Blossom', dark: 'Dark' };
+
+const faqs = (await getCollection('help', (e) => e.data.featured)).sort((a, b) => a.data.order - b.data.order);
+const guides = (await getCollection('guides', (e) => e.data.featured)).sort((a, b) => a.data.order - b.data.order).slice(0, 3);
+
+const showProps = ['ferns', 'coral', 'tubeSponge', 'pineappleHouse', 'moaiHouse', 'anemone', 'murexShell', 'rock'];
+const propsOnShow = showProps.map((id) => allProps.find((p) => p.id === id)!);
+
+const faqLd = {
+  '@type': 'FAQPage',
+  mainEntity: faqs.map((f) => ({
+    '@type': 'Question',
+    name: f.data.question,
+    acceptedAnswer: { '@type': 'Answer', text: `${f.data.summary} <a href="${absolute(`/help/${f.id}/`)}">Read more</a>` },
+  })),
+};
+
+const title = `${app.name}: a tiny aquarium on your iPhone Home Screen`;
+const description =
+  'Companions is a free iPhone aquarium widget: pick from 58 fish, name them, and watch them swim on your Home Screen, in StandBy, on your Mac and on Apple Watch. No feeding, no cleaning, no guilt.';
+---
+
+<Base title={title} description={description} home jsonLd={[faqLd]}>
+  <Hero />
+
+  <!-- Where it shows up -->
+  <section class="section places" id="everywhere">
+    <div class="container">
+      <div class="section__head">
+        <span class="kicker">Always in view</span>
+        <h2>It lives where you look.</h2>
+        <p class="lead">
+          Add the widget once and your fish are there every time you glance at your phone. Same fish, same water, no
+          need to open the app.
+        </p>
+      </div>
+      <div class="grid grid--2 places__grid">
+        <article class="card place">
+          <div class="place__art place__art--home" aria-hidden="true">
+            <div class="place__widget">
+              <Tank
+                id="place-home"
+                size="small"
+                style="blossom"
+                fish={[{ species: 'spotted_koi', seed: 'ph-1' }, { species: 'gold_koi', seed: 'ph-2' }, { species: 'seahorse', seed: 'ph-3' }]}
+                props={premadeProps('small', 'blossom')}
+                bubbles={false}
+              />
+              <span class="place__label">Companions</span>
+            </div>
+            <div class="place__icons"><i></i><i></i><i></i><i></i><i></i><i></i></div>
+          </div>
+          <h3>Home Screen</h3>
+          <p>Small, medium or large, in any of eight styles. Keep one tank or a shelf of them, and a different set of fish in each size.</p>
+        </article>
+
+        <article class="card place">
+          <div class="place__art place__art--standby" aria-hidden="true">
+            <div class="place__landscape">
+              <div class="place__standby-tank">
+                <Tank
+                  id="place-standby"
+                  size="small"
+                  style="dark"
+                  fish={[{ species: 'ghost', seed: 'ps-1' }, { species: 'neon', seed: 'ps-2' }, { species: 'jellyfish', seed: 'ps-3' }]}
+                  props={premadeProps('small', 'dark')}
+                  bubbles={false}
+                />
+              </div>
+              <div class="place__standby-clock"><span>9:41</span><small>Tue 1</small></div>
+            </div>
+          </div>
+          <h3>StandBy</h3>
+          <p>Stand your iPhone on its side while it charges and the tank keeps you company through the night, beside the clock.</p>
+        </article>
+
+        <article class="card place">
+          <div class="place__art place__art--watch" aria-hidden="true">
+            <div class="place__watch">
+              <div class="place__watch-screen">
+                <Tank
+                  id="place-watch"
+                  size="watch"
+                  style="minimal"
+                  fish={[{ species: 'clownfish', seed: 'pw-1' }, { species: 'regal_tang', seed: 'pw-2' }, { species: 'puffer', seed: 'pw-3' }]}
+                  props={premadeProps('small', 'minimal')}
+                  bubbles={false}
+                />
+              </div>
+              <Image src={watch} alt="" width={257} height={404} densities={[1, 2]} format="webp" loading="lazy" class="place__watch-picture" />
+            </div>
+          </div>
+          <h3>Apple Watch</h3>
+          <p>The Companions watch app shows your small tank on your wrist, synced from your iPhone. The watch keeps its own clock, so the tank is just fish.</p>
+        </article>
+
+        <article class="card place">
+          <div class="place__art place__art--mac" aria-hidden="true">
+            <div class="place__desktop">
+              <div class="place__menubar"><i></i><i></i><i></i></div>
+              <div class="place__mac-widget">
+                <Tank
+                  id="place-mac"
+                  size="medium"
+                  style="reed"
+                  fish={[{ species: 'trout', seed: 'pm-1' }, { species: 'minnow', seed: 'pm-2' }, { species: 'frog', seed: 'pm-3' }, { species: 'catfish', seed: 'pm-4' }]}
+                  props={premadeProps('medium', 'reed')}
+                  bubbles={false}
+                />
+              </div>
+            </div>
+          </div>
+          <h3>Mac and iPad</h3>
+          <p>Companions runs on iPad, and your iPhone's widgets can sit on your Mac desktop too, so the fish swim between your windows.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <SizesDemo />
+
+  <!-- Fish -->
+  <section class="section" id="fish">
+    <div class="container">
+      <div class="section__head">
+        <span class="kicker">{species.length} species in {packs.length} packs</span>
+        <h2>Meet the fish.</h2>
+        <p class="lead">
+          Every tank starts with a Tang, a Sardine and a Puffer, and the Freshwater Pack comes free. The rest arrive in
+          packs you buy once and keep, or all together with All Fish. Each fish swims in its own way, at its own
+          pace, and lets out the odd little bubble.
+        </p>
+      </div>
+      <PackGrid compact />
+      <p class="section__more"><a class="btn btn--ghost" href="/packs/">Every fish, every pack</a></p>
+    </div>
+  </section>
+
+  <!-- Make it yours -->
+  <section class="section section--surface" id="customize">
+    <div class="container">
+      <div class="section__head">
+        <span class="kicker">Make it yours</span>
+        <h2>Your tank, your way.</h2>
+        <p class="lead">
+          Eight waters, nineteen props to arrange however you like, something useful in the corner, and an app icon to
+          match.
+        </p>
+      </div>
+
+      <StyleRow />
+
+      <div class="grid grid--3 yours">
+        <article class="card">
+          <div class="yours__props" aria-hidden="true">
+            {propsOnShow.map((p, i) => <Image src={propMeta(p.raw)} alt="" width={120} height={120} densities={[1, 2]} format="webp" loading="lazy" style={`--i:${i}`} />)}
+          </div>
+          <p class="card__kicker">{allProps.filter((p) => p.isDecoration).length} props</p>
+          <h3>Decorate the bed</h3>
+          <p>Ferns, corals, shells, a pineapple house, a Moai. Drag them where you want them, resize, flip, undo. Save as many tanks as you like and swap between them.</p>
+        </article>
+
+        <article class="card">
+          <div class="yours__comp" aria-hidden="true">
+            <Tank
+              id="yours-time"
+              size="medium"
+              style="deepOcean"
+              fish={[{ species: 'sea_turtle', seed: 'yc-1' }, { species: 'angelfish', seed: 'yc-2' }, { species: 'dartfish', seed: 'yc-3' }]}
+              props={premadeProps('medium', 'deepOcean')}
+              complication={{ kind: 'time', corner: 'topRight' }}
+              bubbles={false}
+            />
+          </div>
+          <p class="card__kicker">Complications</p>
+          <h3>Something useful in the corner</h3>
+          <p>The time, the date, today's weather, your step goal or tonight's Moon, in white over the water. Included with All Fish.</p>
+        </article>
+
+        <article class="card">
+          <div class="yours__icons" aria-hidden="true">
+            {iconOrder.map((id) => <Image src={appIcons[`../assets/app-icons/${id}.png`].default} alt="" width={96} height={96} densities={[1, 2]} format="webp" loading="lazy" />)}
+          </div>
+          <p class="card__kicker">Six app icons</p>
+          <h3>An icon to match</h3>
+          <p>{iconOrder.map((id) => iconNames[id]).join(', ')}: pick the one that suits your Home Screen, in Settings.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- Promise -->
+  <section class="section" id="calm">
+    <div class="container">
+      <div class="section__head">
+        <span class="kicker">The easy kind of pet</span>
+        <h2>No feeding. No cleaning. No guilt.</h2>
+        <p class="lead">Just a few bright companions who are always there.</p>
+      </div>
+      <div class="grid grid--4 promise">
+        <div class="card">
+          <h3>Nothing ever dies</h3>
+          <p>Leave for a week, a month, a year. Your fish are exactly as you left them, swimming.</p>
+        </div>
+        <div class="card">
+          <h3>No account, no ads</h3>
+          <p>Nothing to sign up for, nothing tracking you, nothing to buy to keep playing. Your tank stays on your device.</p>
+        </div>
+        <div class="card">
+          <h3>Feed them if you like</h3>
+          <p>Tap the fork and knife, pinch some food into the water and watch them chase it. Skip it and nobody minds.</p>
+        </div>
+        <div class="card">
+          <h3>They say hello</h3>
+          <p>Some mornings a fish greets you as the app opens. Tap the glass and a puff of bubbles rises. Name them after anyone you like.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Questions -->
+  <section class="section section--surface" id="questions">
+    <div class="container container--narrow">
+      <div class="section__head">
+        <span class="kicker">Questions, answered</span>
+        <h2>Before you ask.</h2>
+      </div>
+      <div class="qa">
+        {
+          faqs.map((f) => (
+            <details>
+              <summary>{f.data.question}</summary>
+              <div class="qa__body">
+                <p>{f.data.summary}</p>
+                <a class="qa__more" href={`/help/${f.id}/`}>Read the full answer</a>
+              </div>
+            </details>
+          ))
+        }
+      </div>
+      <p class="section__more"><a class="btn btn--ghost" href="/help/">All questions and answers</a></p>
+    </div>
+  </section>
+
+  <!-- Guides -->
+  <section class="section" id="guides">
+    <div class="container">
+      <div class="section__head">
+        <span class="kicker">Guides</span>
+        <h2>Get the most out of your tank.</h2>
+      </div>
+      <div class="grid grid--3">
+        {
+          guides.map((g) => (
+            <a class="card card--link" href={`/guides/${g.id}/`}>
+              <p class="card__kicker">{g.data.kicker}</p>
+              <h3>{g.data.title}</h3>
+              <p>{g.data.description}</p>
+            </a>
+          ))
+        }
+      </div>
+      <p class="section__more"><a class="btn btn--ghost" href="/guides/">All guides</a></p>
+    </div>
+  </section>
+
+  <!-- Download -->
+  <section class="section download" id="download">
+    <div class="container download__inner">
+      <h2>Add a little life to your Home&nbsp;Screen.</h2>
+      <p class="lead">Free on the App Store. Available in {app.languages.length} languages.</p>
+      <Badge class="download__badge" />
+    </div>
+  </section>
+</Base>
+
+<style>
+  .section__more {
+    margin-top: clamp(28px, 4vw, 44px);
+    text-align: center;
+  }
+
+  /* Places */
+  .place {
+    display: flex;
+    flex-direction: column;
+  }
+  .place__art {
+    position: relative;
+    height: 240px;
+    margin: calc(-1 * clamp(20px, 3vw, 32px)) calc(-1 * clamp(20px, 3vw, 32px)) 22px;
+    border-radius: var(--radius-l) var(--radius-l) 0 0;
+    overflow: hidden;
+    display: grid;
+    place-items: center;
+  }
+  .place__art--home {
+    background: linear-gradient(135deg, #f7c8e4, #bfe0ff 55%, #d9f3ff);
+  }
+  .place__widget {
+    width: 128px;
+    position: relative;
+    z-index: 1;
+    margin-left: -140px;
+    margin-top: -40px;
+  }
+  .place__label {
+    display: block;
+    margin-top: 6px;
+    text-align: center;
+    color: #fff;
+    font-size: 0.75rem;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+  }
+  .place__icons {
+    position: absolute;
+    right: 26px;
+    top: 34px;
+    width: 128px;
+    display: grid;
+    grid-template-columns: repeat(2, 48px);
+    gap: 22px 32px;
+  }
+  .place__icons i {
+    display: block;
+    width: 48px;
+    height: 48px;
+    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.55);
+    box-shadow: 0 2px 6px rgba(20, 40, 80, 0.1);
+  }
+  .place__art--standby {
+    background: #06070a;
+  }
+  .place__landscape {
+    width: 280px;
+    height: 150px;
+    border-radius: 24px;
+    border: 5px solid #1b1d22;
+    background: #000;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    padding: 12px;
+    align-items: center;
+  }
+  .place__standby-tank {
+    width: 100%;
+  }
+  .place__standby-clock {
+    color: #fff;
+    text-align: center;
+    font-family: var(--font-display);
+    font-weight: 700;
+  }
+  .place__standby-clock span {
+    display: block;
+    font-size: 2.4rem;
+    letter-spacing: -0.03em;
+    line-height: 1;
+  }
+  .place__standby-clock small {
+    display: block;
+    margin-top: 6px;
+    font-size: 0.8rem;
+    color: #8c93a0;
+  }
+  .place__art--watch {
+    background: linear-gradient(160deg, #e9eef7, #cfdbee);
+  }
+  .place__watch {
+    position: relative;
+    width: 150px;
+    height: 236px;
+    margin-top: 10px;
+  }
+  .place__watch-picture {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
+  .place__watch-screen {
+    position: absolute;
+    left: 12.84%;
+    top: 21.82%;
+    width: 74.31%;
+    height: 56.37%;
+  }
+  .place__watch-screen :global(.tank-frame),
+  .place__watch-screen :global(.tank) {
+    height: 100%;
+  }
+  .place__art--mac {
+    background: linear-gradient(180deg, #1f3b6e, #4b86c9 60%, #8fc1ec);
+  }
+  .place__desktop {
+    position: absolute;
+    inset: 0;
+  }
+  .place__menubar {
+    height: 22px;
+    background: rgba(255, 255, 255, 0.35);
+    -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(10px);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 0 14px;
+  }
+  .place__menubar i {
+    display: block;
+    width: 34px;
+    height: 7px;
+    border-radius: 4px;
+    background: rgba(255, 255, 255, 0.8);
+  }
+  .place__mac-widget {
+    position: absolute;
+    right: 24px;
+    top: 48px;
+    width: 230px;
+    filter: drop-shadow(0 12px 24px rgba(0, 20, 50, 0.3));
+  }
+
+  /* Make it yours */
+  .yours {
+    margin-top: clamp(28px, 4vw, 44px);
+  }
+  .yours__props {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 8px;
+    margin-bottom: 18px;
+    padding: 12px;
+    border-radius: var(--radius-m);
+    background: linear-gradient(to bottom, #d7ecff, #f2f8ff);
+  }
+  .yours__props img {
+    width: 100%;
+    height: auto;
+  }
+  .yours__comp {
+    margin-bottom: 18px;
+  }
+  .yours__icons {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 8px;
+    margin-bottom: 18px;
+  }
+  .yours__icons img {
+    width: 100%;
+    height: auto;
+    border-radius: 22%;
+    box-shadow: 0 2px 6px rgba(11, 18, 32, 0.12);
+  }
+
+  /* Download */
+  .download {
+    background: linear-gradient(to bottom, var(--bg), var(--sky-2));
+  }
+  .download__inner {
+    text-align: center;
+    display: grid;
+    justify-items: center;
+  }
+  .download__inner .lead {
+    margin-top: 14px;
+  }
+  .download__badge {
+    margin-top: 28px;
+  }
+  .download__badge :global(img) {
+    height: 64px;
+  }
+</style>
