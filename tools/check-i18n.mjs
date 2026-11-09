@@ -3,12 +3,13 @@
  * Checks the translations against the English originals, with no dependencies.
  *
  *   node tools/check-i18n.mjs            the words: src/i18n/*.ts and src/content/i18n/
- *   node tools/check-i18n.mjs --strict   also fail when a page has no translation yet
+ *   node tools/check-i18n.mjs --strict   also fail on draft errors and missing translations
  *   node tools/check-i18n.mjs --dist     the built site in dist/: language tags, canonical
  *                                        and hreflang links, and every internal link
  *
  * `npm run build` runs the first form before building, so a language file that has
  * drifted out of shape, or a link into the wrong language, stops the site being published.
+ * Unpublished draft errors are warnings unless --strict is used.
  * A page with no translation yet is only reported: it is left out of that language (see
  * src/lib/content.ts) and can follow later.
  */
@@ -326,6 +327,16 @@ function checkDist() {
 
 if (args.has('--dist')) checkDist();
 else await checkSource();
+
+// Draft dictionaries are checked above, but cannot affect the published site.
+// Strict validation remains the gate for finishing and publishing a translation.
+if (!strict && !args.has('--dist')) {
+  for (let i = errors.length - 1; i >= 0; i--) {
+    if (drafts.some((code) => errors[i].startsWith(`src/i18n/${code}.ts:`) || errors[i].startsWith(`src/content/i18n/${code}/`) || errors[i].startsWith(`src/content/i18n/${code}:`))) {
+      warnings.push(`unpublished draft: ${errors.splice(i, 1)[0]}`);
+    }
+  }
+}
 
 for (const line of warnings) console.warn(`  warning  ${line}`);
 for (const line of errors) console.error(`  ERROR    ${line}`);
