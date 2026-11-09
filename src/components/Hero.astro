@@ -7,20 +7,21 @@
 import Phone from './Phone.astro';
 import Tank from './Tank.astro';
 import Badge from './Badge.astro';
-import { app } from '../lib/site';
 import { heroTank } from '../lib/tanks';
+import { useLocale } from '../i18n/index.ts';
+
+const { t } = useLocale(Astro.url);
 ---
 
-<section class="hero" data-hero aria-label="Introduction">
+<section class="hero" data-hero aria-label={t.hero.label}>
   <div class="hero__stage">
     <div class="hero__sky" aria-hidden="true"></div>
 
     <div class="hero__copy">
-      <h1 class="hero__title">A tiny aquarium<br />on your Home&nbsp;Screen.</h1>
-      <p class="hero__sub">{app.subtitle}</p>
+      <h1 class="hero__title" set:html={t.hero.titleHtml} />
+      <p class="hero__sub">{t.app.subtitle}</p>
       <div class="hero__cta">
-        <Badge />
-        <p class="hero__facts">Free on the App&nbsp;Store · {app.minimumOS} · iPhone, iPad, Mac and Apple&nbsp;Watch</p>
+        <Badge loading="eager" />
       </div>
     </div>
 
@@ -34,13 +35,13 @@ import { heroTank } from '../lib/tanks';
           fish={heroTank.fish}
           props={heroTank.props}
           fishSize={0}
-          label="The Companions widget: a clownfish, a Moorish idol, a regal tang and a seahorse swimming among ferns and a sponge"
+          label={t.hero.tankLabel}
         />
       </Phone>
     </div>
 
     <div class="hero__hint" aria-hidden="true">
-      <span>Scroll</span>
+      <span>{t.hero.scroll}</span>
       <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M2 5l5 5 5-5" /></svg>
     </div>
   </div>
@@ -99,12 +100,15 @@ import { heroTank } from '../lib/tanks';
     z-index: 3;
     left: 14.5vw;
     top: 50%;
-    max-width: min(46vw, 760px);
     transform: translateY(-50%) translateX(calc((1 - var(--tp)) * -48px));
     opacity: var(--tp);
   }
+  /* Two fixed lines, as in the mockup. The size is whatever lets "on your Home Screen."
+     (15.5 times the font size wide at this width and tracking) end 3vw short of the
+     phone, whose final left edge is 73.5vw minus half its 39.1vh width. */
   .hero__title {
-    font-size: clamp(2.6rem, 5.6vw, 5rem);
+    font-size: clamp(28px, calc(3.61vw - 1.26vh), 64px);
+    white-space: nowrap;
     color: var(--ink);
   }
   .hero__sub {
@@ -121,10 +125,6 @@ import { heroTank } from '../lib/tanks';
     flex-direction: column;
     gap: 14px;
     align-items: flex-start;
-  }
-  .hero__facts {
-    font-size: 0.95rem;
-    color: var(--ink-4);
   }
   .hero__hint {
     position: absolute;
@@ -165,7 +165,7 @@ import { heroTank } from '../lib/tanks';
     }
   }
 
-  @media (max-width: 767px) {
+  @media (max-width: 767px), (max-width: 999px) and (orientation: portrait) {
     .hero {
       --phone-w: min(78vw, 360px);
       --phone-top: 19vh;
@@ -181,7 +181,8 @@ import { heroTank } from '../lib/tanks';
       transform: translateY(calc((1 - var(--tp)) * 18px));
     }
     .hero__title {
-      font-size: clamp(2.1rem, 9.4vw, 2.9rem);
+      font-size: min(8vw, 2.3rem);
+      white-space: normal;
     }
     .hero__sub {
       font-size: 1rem;
@@ -197,17 +198,16 @@ import { heroTank } from '../lib/tanks';
     .hero__cta .badge-link img {
       height: 44px;
     }
-    .hero__facts {
-      font-size: 0.85rem;
-    }
   }
-  @media (min-width: 768px) and (max-width: 1099px) {
+  @media (min-width: 768px) and (max-width: 1099px) and (orientation: landscape), (min-width: 1000px) and (max-width: 1099px) {
     .hero {
       --phone-w: min(40vw, 420px);
     }
     .hero__copy {
       left: var(--gutter);
-      max-width: 44vw;
+    }
+    .hero__title {
+      font-size: clamp(22px, calc((72vw - 19.6vh - var(--gutter) - 24px) / 15.5), 44px);
     }
   }
 </style>

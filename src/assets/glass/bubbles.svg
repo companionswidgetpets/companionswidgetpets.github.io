@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1680" height="1400" viewBox="0 0 1680 1400">
+  <defs>
+    <radialGradient id="r">
+      <stop offset=".62" stop-color="#fff" stop-opacity="0"/>
+      <stop offset=".9" stop-color="#fff" stop-opacity=".14"/>
+      <stop offset="1" stop-color="#fff" stop-opacity=".62"/>
+    </radialGradient>
+    <g id="b">
+      <circle r="50" fill="url(#r)"/>
+      <path d="M-33-19A38 38 0 0 1-9-37" fill="none" stroke="#fff" stroke-opacity=".7" stroke-width="5" stroke-linecap="round"/>
+    </g>
+  </defs>
+  <use href="#b" transform="translate(148 176) scale(.4)"/>
+  <use href="#b" transform="translate(566 92) scale(.16)"/>
+  <use href="#b" transform="translate(1186 268) scale(.62)"/>
+  <use href="#b" transform="translate(1548 122) scale(.2)"/>
+  <use href="#b" transform="translate(842 418) scale(.22)"/>
+  <use href="#b" transform="translate(302 588) scale(.2)"/>
+  <use href="#b" transform="translate(1432 646) scale(.3)"/>
+  <use href="#b" transform="translate(96 884) scale(.54)"/>
+  <use href="#b" transform="translate(684 936) scale(.78)"/>
+  <use href="#b" transform="translate(1094 842) scale(.14)"/>
+  <use href="#b" transform="translate(1588 1068) scale(.44)"/>
+  <use href="#b" transform="translate(1008 1232) scale(.18)"/>
+  <use href="#b" transform="translate(414 1262) scale(.28)"/>
+</svg>

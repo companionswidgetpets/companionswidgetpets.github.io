@@ -1,0 +1,131 @@
+---
+import { render } from 'astro:content';
+import Base from '../../../layouts/Base.astro';
+import { absolute, app, isoDate } from '../../../lib/site';
+import { entryPaths, getGuides } from '../../../lib/content';
+import { useLocale } from '../../../i18n/index.ts';
+
+export async function getStaticPaths() {
+  return entryPaths('guides');
+}
+const { item, locales } = Astro.props;
+const { locale, t, l, date } = useLocale(Astro.url);
+const { Content, headings } = await render(item.entry);
+const toc = headings.filter((h) => h.depth === 2);
+
+const others = (await getGuides(locale.code)).filter((g) => g.id !== item.id).sort((a, b) => a.data.order - b.data.order).slice(0, 3);
+
+const published = isoDate(item.data.published);
+const modified = isoDate(item.data.updated ?? item.data.published);
+const articleLd = {
+  '@type': 'TechArticle',
+  headline: item.data.title,
+  description: item.data.description,
+  datePublished: published,
+  dateModified: modified,
+  author: { '@id': `${app.siteUrl}/#developer` },
+  publisher: { '@id': `${app.siteUrl}/#developer` },
+  mainEntityOfPage: absolute(l(`/guides/${item.id}/`)),
+  image: absolute(`/og/${locale.code === 'en' ? 'default' : locale.code}.png`),
+  about: { '@id': `${app.siteUrl}/#app` },
+};
+const crumbs = {
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'Companions', item: absolute(l('/')) },
+    { '@type': 'ListItem', position: 2, name: t.nav.guides, item: absolute(l('/guides/')) },
+    { '@type': 'ListItem', position: 3, name: item.data.title, item: absolute(l(`/guides/${item.id}/`)) },
+  ],
+};
+const byline = [
+  t.guides.by(app.developer),
+  date(item.data.published),
+  item.data.updated && t.common.updated(date(item.data.updated)),
+  `Companions ${app.version}`,
+].filter(Boolean);
+---
+
+<Base title={item.data.title} description={item.data.description} type="article" jsonLd={[articleLd, crumbs]} published={published} modified={modified} locales={locales}>
+  <article>
+    <header class="page-head">
+      <div class="container container--narrow">
+        <nav class="breadcrumbs" aria-label={t.common.breadcrumb}>
+          <ol>
+            <li><a href={l('/')}>Companions</a></li>
+            <li><a href={l('/guides/')}>{t.nav.guides}</a></li>
+          </ol>
+        </nav>
+        <span class="kicker">{item.data.kicker}</span>
+        <h1>{item.data.title}</h1>
+        <p class="lead">{item.data.description}</p>
+        <p class="meta">{byline.join(' · ')}</p>
+      </div>
+    </header>
+    <div class="container container--narrow">
+      {
+        toc.length > 2 && (
+          <nav class="toc" aria-label={t.guides.onThisPage}>
+            <p class="card__kicker">{t.guides.onThisPage}</p>
+            <ol>
+              {toc.map((h) => (
+                <li>
+                  <a href={`#${h.slug}`}>{h.text}</a>
+                </li>
+              ))}
+            </ol>
+          </nav>
+        )
+      }
+      <div class="prose">
+        <Content />
+      </div>
+      {
+        others.length > 0 && (
+          <aside class="more">
+            <h2>{t.guides.more}</h2>
+            <div class="grid grid--3">
+              {others.map((g) => (
+                <a class="card card--link" href={l(`/guides/${g.id}/`)}>
+                  <p class="card__kicker">{g.data.kicker}</p>
+                  <h3>{g.data.title}</h3>
+                </a>
+              ))}
+            </div>
+          </aside>
+        )
+      }
+    </div>
+  </article>
+</Base>
+
+<style>
+  .toc {
+    margin-bottom: clamp(28px, 4vw, 40px);
+    padding: 18px 22px;
+    border: 1px solid var(--line);
+    border-radius: var(--radius-m);
+    background: var(--surface);
+  }
+  .toc ol {
+    margin: 0;
+    padding-left: 1.2em;
+    columns: 2;
+    column-gap: 24px;
+    font-size: 0.95rem;
+  }
+  .toc li + li {
+    margin-top: 6px;
+  }
+  @media (max-width: 600px) {
+    .toc ol {
+      columns: 1;
+    }
+  }
+  .more {
+    margin-top: clamp(48px, 7vw, 80px);
+  }
+  .more h2 {
+    font-size: 1.2rem;
+    margin-bottom: 18px;
+  }
+</style>

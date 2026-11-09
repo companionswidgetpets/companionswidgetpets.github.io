@@ -1,12 +1,35 @@
 ---
-/** Apple's "Download on the App Store" badge, linking to the listing. */
+/**
+ * The "Download on the App Store" badge, linking to the listing. Apple draws the badge in
+ * each language and asks that the reader's own be shown: English is the site's own
+ * picture, the others are Apple's (src/assets/badge/app-store-badge-<language>.svg, from
+ * Apple's marketing tools).
+ */
+import { Image } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
+import english from '../assets/badge/app-store-badge.png';
 import { app } from '../lib/site';
+import { useLocale } from '../i18n/index.ts';
+
 interface Props {
   class?: string;
+  /** `eager` where the badge is on screen at once, as in the hero. */
+  loading?: 'eager' | 'lazy';
 }
-const { class: className = '' } = Astro.props;
+const { class: className = '', loading = 'lazy' } = Astro.props;
+const { locale, t } = useLocale(Astro.url);
+const localized = import.meta.glob<{ default: ImageMetadata }>('../assets/badge/app-store-badge-*.svg', { eager: true });
+const badge = localized[`../assets/badge/app-store-badge-${locale.code}.svg`]?.default;
+// Shown 54px tall, like the English one (see .badge-link in global.css).
+const height = 54;
 ---
 
-<a class={`badge-link ${className}`} href={app.appStoreUrl} rel="noopener" aria-label="Download Companions on the App Store">
-  <img src="/img/app-store-badge.svg" alt="Download on the App Store" width="162" height="54" loading="lazy" />
+<a class={`badge-link ${className}`} href={app.appStoreUrl} rel="noopener" aria-label={t.badge.label}>
+  {
+    badge ? (
+      <img src={badge.src} alt={t.badge.alt} width={Math.round((height * badge.width) / badge.height)} height={height} loading={loading} decoding="async" />
+    ) : (
+      <Image src={english} alt={t.badge.alt} width={226} densities={[1, 2, 3]} format="webp" quality={92} loading={loading} />
+    )
+  }
 </a>

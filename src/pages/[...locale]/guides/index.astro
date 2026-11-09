@@ -1,0 +1,46 @@
+---
+import Base from '../../../layouts/Base.astro';
+import { absolute } from '../../../lib/site';
+import { getGuides } from '../../../lib/content';
+import { useLocale, localePaths } from '../../../i18n/index.ts';
+
+export function getStaticPaths() {
+  return localePaths();
+}
+const { locale, t, l, date } = useLocale(Astro.url);
+
+const guides = (await getGuides(locale.code)).sort((a, b) => a.data.order - b.data.order);
+const crumbs = {
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'Companions', item: absolute(l('/')) },
+    { '@type': 'ListItem', position: 2, name: t.nav.guides, item: absolute(l('/guides/')) },
+  ],
+};
+---
+
+<Base title={t.guides.title} description={t.guides.description} jsonLd={[crumbs]}>
+  <section class="page-head">
+    <div class="container">
+      <span class="kicker">{t.guides.kicker}</span>
+      <h1>{t.guides.h1}</h1>
+      <p class="lead">{t.guides.lead}</p>
+    </div>
+  </section>
+  <section class="section--tight">
+    <div class="container">
+      <div class="grid grid--3">
+        {
+          guides.map((g) => (
+            <a class="card card--link" href={l(`/guides/${g.id}/`)}>
+              <p class="card__kicker">{g.data.kicker}</p>
+              <h3>{g.data.title}</h3>
+              <p>{g.data.description}</p>
+              <p class="meta" style="margin-top:14px">{date(g.data.updated ?? g.data.published)}</p>
+            </a>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+</Base>

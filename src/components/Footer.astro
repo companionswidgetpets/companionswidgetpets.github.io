@@ -1,45 +1,110 @@
 ---
 import { Image } from 'astro:assets';
-import { app, footerNav } from '../lib/site';
+import { app } from '../lib/site';
+import { useLocale } from '../i18n/index.ts';
 import tiaan from '../assets/devs/tiaan.png';
 import shea from '../assets/devs/shea.png';
 import Badge from './Badge.astro';
 
+interface Language {
+  code: string;
+  lang: string;
+  hreflang: string;
+  name: string;
+  href: string;
+  current: boolean;
+}
+interface Props {
+  /** Sits directly under the last section, with no margin of its own (the home page). */
+  flush?: boolean;
+  /** This page in every language, for the language menu (made by Base.astro). */
+  languages?: Language[];
+}
+const { flush = false, languages = [] } = Astro.props;
+const { t, l } = useLocale(Astro.url);
 const year = new Date().getFullYear();
+const columns = [
+  {
+    heading: t.footer.columnSite,
+    links: [
+      { href: l('/'), label: t.footer.home },
+      { href: l('/help/'), label: t.footer.help },
+      { href: l('/guides/'), label: t.footer.guides },
+      { href: l('/packs/'), label: t.footer.packs },
+      { href: l('/styles/'), label: t.footer.styles },
+      { href: l('/whats-new/'), label: t.footer.whatsNew },
+    ],
+  },
+  {
+    heading: t.footer.columnAbout,
+    links: [
+      { href: l('/press/'), label: t.footer.press },
+      { href: l('/support/'), label: t.footer.support },
+      { href: l('/privacy/'), label: t.footer.privacy },
+      { href: `mailto:${app.supportEmail}`, label: t.footer.email },
+    ],
+  },
+];
 ---
 
-<footer class="footer">
+<footer class={`footer ${flush ? 'footer--flush' : ''}`}>
   <div class="container footer__inner">
     <div class="footer__brand">
-      <p class="footer__name">{app.name}</p>
-      <p class="footer__tag">{app.tagline}</p>
+      <p class="footer__name">{t.app.name}</p>
+      <p class="footer__tag">{t.app.tagline}</p>
       <Badge />
-      <p class="footer__facts">Free · {app.minimumOS} or later · iPhone, iPad, Mac and Apple Watch</p>
+      <p class="footer__facts">{t.footer.facts(app.minimumOS)}</p>
     </div>
     {
-      Object.entries(footerNav).map(([heading, links]) => (
+      columns.map(({ heading, links }) => (
         <nav class="footer__col" aria-label={heading}>
           <h2>{heading}</h2>
           <ul>
-            {links.map((l) => (
+            {links.map((link) => (
               <li>
-                <a href={l.href}>{l.label}</a>
+                <a href={link.href}>{link.label}</a>
               </li>
             ))}
           </ul>
         </nav>
       ))
     }
-    <div class="footer__colophon">
-      <div class="footer__avatars" aria-hidden="true">
-        <Image src={tiaan} alt="" width={82} height={82} densities={[1, 2]} format="webp" />
-        <Image src={shea} alt="" width={82} height={82} densities={[1, 2]} format="webp" />
-      </div>
-      <p>Developed with ♡ by Tiaan and Shea in {app.madeIn}.</p>
+  </div>
+  <!-- This page in every language it is written in. Each name is in its own language, so
+       it can be found by someone who reads no other. -->
+  {
+    languages.length > 1 && (
+      <nav class="container footer__languages" aria-label={t.footer.language}>
+        <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true">
+          <circle cx="10" cy="10" r="7.75" />
+          <path d="M2.25 10h15.5M10 2.25c2.2 2.1 3.3 4.7 3.3 7.75s-1.1 5.65-3.3 7.75c-2.2-2.1-3.3-4.7-3.3-7.75S7.8 4.35 10 2.25Z" />
+        </svg>
+        <ul>
+          {languages.map((x) => (
+            <li>
+              <a href={x.href} lang={x.lang} hreflang={x.hreflang} aria-current={x.current ? 'true' : undefined}>
+                {x.name}
+              </a>
+            </li>
+          ))}
+        </ul>
+      </nav>
+    )
+  }
+  <!-- The app's own colophon, as at the foot of its Settings page: the two Memoji, the
+       line under them and the version, centred. -->
+  <div class="container footer__colophon">
+    <div class="footer__avatars" aria-hidden="true">
+      <Image src={tiaan} alt="" width={41} height={41} densities={[1, 2, 3]} format="webp" />
+      <Image src={shea} alt="" width={41} height={41} densities={[1, 2, 3]} format="webp" />
+    </div>
+    <div class="footer__made">
+      <p>{t.footer.madeWith}</p>
+      <p class="footer__version">Companions {app.version}</p>
     </div>
   </div>
   <div class="container footer__legal">
-    <p>© {year} {app.developerLegal}. Apple, the Apple logo, iPhone, iPad, Mac, Apple Watch and App Store are trademarks of Apple Inc.</p>
+    <p>{t.footer.legal(year, app.developerLegal)}</p>
   </div>
 </footer>
 
@@ -52,6 +117,9 @@ const year = new Date().getFullYear();
     color: var(--ink-3);
     font-size: 0.95rem;
   }
+  .footer--flush {
+    margin-top: 0;
+  }
   .footer__inner {
     display: grid;
     gap: 36px;
@@ -59,15 +127,16 @@ const year = new Date().getFullYear();
   }
   @media (min-width: 720px) {
     .footer__inner {
-      grid-template-columns: 1.6fr 1fr 1fr 1.4fr;
+      grid-template-columns: 2fr 1fr 1fr;
     }
   }
   .footer__name {
     font-family: var(--font-display);
-    font-weight: 800;
-    font-size: 1.25rem;
+    font-weight: 750;
+    font-stretch: 150%;
+    font-size: 1.05rem;
     color: var(--ink);
-    letter-spacing: -0.02em;
+    letter-spacing: 0.02em;
   }
   .footer__tag {
     margin: 4px 0 18px;
@@ -79,6 +148,7 @@ const year = new Date().getFullYear();
   }
   .footer__col h2 {
     font-family: var(--font-body);
+    font-stretch: normal;
     font-size: 0.8rem;
     font-weight: 700;
     letter-spacing: 0.08em;
@@ -96,11 +166,47 @@ const year = new Date().getFullYear();
   .footer__col a {
     color: var(--ink-2);
   }
-  .footer__colophon {
+  /* The language menu: a globe and the languages by their own names, the current one
+     in ink. */
+  .footer__languages {
+    margin-top: clamp(32px, 5vw, 48px);
+    padding-top: 22px;
+    border-top: 1px solid var(--line);
     display: flex;
-    align-items: center;
-    gap: 16px;
-    align-self: start;
+    align-items: flex-start;
+    gap: 12px;
+  }
+  .footer__languages svg {
+    flex: none;
+    width: 20px;
+    height: 20px;
+    margin-top: 1px;
+    color: var(--ink-4);
+  }
+  .footer__languages ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px 20px;
+  }
+  .footer__languages a {
+    color: var(--ink-3);
+    font-size: 0.9rem;
+  }
+  .footer__languages a[aria-current] {
+    color: var(--ink);
+    font-weight: 650;
+  }
+  /* The app's measures: 41pt discs, the second 3pt over the first with a 2pt clear ring
+     cut into it, 19pt down to the words, 4pt between the two lines. */
+  .footer__colophon {
+    margin-top: clamp(40px, 6vw, 64px);
+    display: grid;
+    justify-items: center;
+    gap: 19px;
+    text-align: center;
   }
   .footer__avatars {
     display: flex;
@@ -109,14 +215,26 @@ const year = new Date().getFullYear();
     width: 41px;
     height: 41px;
     border-radius: 50%;
-    background: var(--surface-2);
-    box-shadow: 0 0 0 2px var(--surface);
   }
   .footer__avatars img + img {
-    margin-left: -6px;
+    margin-left: -3px;
+    box-shadow: 0 0 0 2px var(--surface);
+  }
+  .footer__made {
+    display: grid;
+    gap: 4px;
+    font-size: 13px;
+    line-height: 1.3;
+    color: var(--ink-4);
+  }
+  .footer__made p + p {
+    margin-top: 0;
+  }
+  .footer__version {
+    font-size: 11px;
   }
   .footer__legal {
-    margin-top: 40px;
+    margin-top: 32px;
     padding-top: 20px;
     border-top: 1px solid var(--line);
     font-size: 0.8rem;

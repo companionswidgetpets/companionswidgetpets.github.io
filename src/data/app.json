@@ -28,5 +28,7 @@
     "Portuguese", "Russian", "Simplified Chinese", "Traditional Chinese"
   ],
   "siteUrl": "https://companionswidgetpets.github.io",
-  "campaignToken": "website"
+  "campaignToken": "website",
+  "googleAnalyticsId": "G-839Z3Y5BD9",
+  "googleSiteVerification": ""
 }

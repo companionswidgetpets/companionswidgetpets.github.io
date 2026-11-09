@@ -1,0 +1,55 @@
+---
+/**
+ * The page shown for an address that does not exist. GitHub Pages serves /404.html for
+ * every missing address, whatever its language; a small script on that page then swaps
+ * in the reader's language (/ja/404/ and so on) when the address began with one.
+ */
+import Base from '../layouts/Base.astro';
+import Tank from './Tank.astro';
+import { premadeProps } from '../lib/tanks';
+import { useLocale } from '../i18n/index.ts';
+
+const { t, l } = useLocale(Astro.url);
+---
+
+<Base title={t.notFound.title} description={t.notFound.description} noindex>
+  <slot name="head" slot="head" />
+  <section class="page-head">
+    <div class="container container--narrow lost">
+      <div class="lost__tank">
+        <Tank
+          id="lost"
+          size="medium"
+          style="deepOcean"
+          fish={[{ species: 'ghost', seed: 'lost-1' }, { species: 'submarine', seed: 'lost-2' }]}
+          props={premadeProps('medium', 'deepOcean')}
+        />
+      </div>
+      <h1>{t.notFound.h1}</h1>
+      <p class="lead">{t.notFound.lead}</p>
+      <p class="lost__links">
+        <a class="btn btn--pill" href={l('/')}>{t.notFound.home}</a>
+        <a class="btn btn--ghost" href={l('/help/')}>{t.notFound.help}</a>
+      </p>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .lost {
+    text-align: center;
+    display: grid;
+    justify-items: center;
+  }
+  .lost__tank {
+    width: min(100%, 420px);
+    margin-bottom: 32px;
+  }
+  .lost__links {
+    margin-top: 28px;
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+</style>

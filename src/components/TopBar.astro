@@ -1,35 +1,45 @@
 ---
 /**
  * The frosted-glass pill at the top of every page: the icon and wordmark, the section
- * links and the black Download button. On the home page the wordmark fades as the
- * headline arrives (the hero sets --tp); elsewhere it stays.
+ * links and the black Get the app button. Scrolling fades the wordmark and moves
+ * the desktop links into the middle of the bar.
  */
 import { Image } from 'astro:assets';
 import icon from '../assets/icon/app-icon.png';
-import { app, nav } from '../lib/site';
+import getAppIcon from '../assets/icon/get_app.svg';
+import { app } from '../lib/site';
+import { useLocale } from '../i18n/index.ts';
 
 interface Props {
-  /** The page's path, to mark the current section. */
+  /** The page's path without its language folder, to mark the current section. */
   current?: string;
-  /** Whether the wordmark gives way to the hero headline (home page only). */
+  /** Whether the bar narrows with the hero's scroll animation (home page only). */
   hero?: boolean;
 }
 const { current = '/', hero = false } = Astro.props;
-const isCurrent = (href: string) => (href === '/' ? current === '/' : current.startsWith(href));
+const { t, l } = useLocale(Astro.url);
+const nav = [
+  { path: '/help/', label: t.nav.help },
+  { path: '/guides/', label: t.nav.guides },
+  { path: '/packs/', label: t.nav.fish },
+  { path: '/styles/', label: t.nav.styles },
+  { path: '/whats-new/', label: t.nav.whatsNew },
+];
+const isCurrent = (path: string) => (path === '/' ? current === '/' : current.startsWith(path));
 ---
 
 <header class={`topbar ${hero ? 'topbar--hero' : ''}`} data-topbar>
   <div class="topbar__pill">
-    <a class="topbar__brand" href="/" aria-label="Companions home">
+    <a class="topbar__brand" href={l('/')} aria-label={t.nav.homeLabel}>
       <Image src={icon} alt="" width={88} height={88} densities={[1, 2]} format="webp" class="topbar__icon" loading="eager" />
       <span class="topbar__wordmark">{app.shortName}</span>
     </a>
-    <nav class="topbar__nav" aria-label="Site">
+    <nav class="topbar__nav" aria-label={t.nav.site}>
       <ul>
         {
           nav.map((item) => (
             <li>
-              <a href={item.href} aria-current={isCurrent(item.href) ? 'page' : undefined}>
+              <a href={l(item.path)} aria-current={isCurrent(item.path) ? 'page' : undefined}>
                 {item.label}
               </a>
             </li>
@@ -38,29 +48,30 @@ const isCurrent = (href: string) => (href === '/' ? current === '/' : current.st
       </ul>
     </nav>
     <div class="topbar__actions">
-      <a class="btn btn--pill topbar__cta" href={app.appStoreUrl} rel="noopener">
-        <span class="topbar__cta-long">Download</span>
-        <span class="topbar__cta-short">Get</span>
+      <a class="topbar__cta" href={app.appStoreUrl} rel="noopener">
+        <span class="topbar__cta-long">{t.nav.download}</span>
+        <span class="topbar__cta-short">{t.nav.get}</span>
+        <img src={getAppIcon.src} width="12" height="18" alt="" aria-hidden="true" />
       </a>
       <button class="topbar__menu-toggle" type="button" aria-expanded="false" aria-controls="site-menu" data-menu-toggle>
-        <span class="visually-hidden">Menu</span>
+        <span class="visually-hidden">{t.nav.menu}</span>
         <span class="topbar__burger" aria-hidden="true"><i></i><i></i></span>
       </button>
     </div>
   </div>
-  <nav class="topbar__sheet" id="site-menu" aria-label="Site" data-menu hidden>
+  <nav class="topbar__sheet" id="site-menu" aria-label={t.nav.site} data-menu hidden>
     <ul>
       {
         nav.map((item) => (
           <li>
-            <a href={item.href} aria-current={isCurrent(item.href) ? 'page' : undefined}>
+            <a href={l(item.path)} aria-current={isCurrent(item.path) ? 'page' : undefined}>
               {item.label}
             </a>
           </li>
         ))
       }
-      <li><a href="/support/">Support</a></li>
-      <li><a href="/press/">Press kit</a></li>
+      <li><a href={l('/support/')}>{t.nav.support}</a></li>
+      <li><a href={l('/press/')}>{t.nav.press}</a></li>
     </ul>
   </nav>
 </header>
@@ -90,7 +101,7 @@ const isCurrent = (href: string) => (href === '/' ? current === '/' : current.st
     width: 100%;
     max-width: calc(1400px - var(--tp) * 140px);
     min-height: var(--topbar-h);
-    padding: 10px 10px 10px 16px;
+    padding: 10px 16px;
     border-radius: 999px;
     background: var(--glass);
     -webkit-backdrop-filter: blur(22px) saturate(1.7);
@@ -103,6 +114,7 @@ const isCurrent = (href: string) => (href === '/' ? current === '/' : current.st
     background: var(--glass-strong);
   }
   .topbar__brand {
+    position: relative;
     display: flex;
     align-items: center;
     gap: 14px;
@@ -122,15 +134,18 @@ const isCurrent = (href: string) => (href === '/' ? current === '/' : current.st
   }
   .topbar__wordmark {
     font-family: var(--font-display);
-    font-weight: 800;
-    font-size: 1.75rem;
-    letter-spacing: -0.03em;
+    font-weight: 750;
+    font-stretch: 150%;
+    /* 33px on a 1920-wide screen, as in the mockup */
+    font-size: clamp(1.25rem, 1.75vw, 2.1rem);
+    letter-spacing: 0.02em;
     white-space: nowrap;
+    transition: opacity 0.25s ease, transform 0.35s ease;
   }
-  .topbar--hero .topbar__wordmark {
-    opacity: calc(1 - var(--tp));
-    transform: translateX(calc(var(--tp) * -8px));
-    transition: opacity 0.1s linear;
+  .topbar--scrolled .topbar__wordmark {
+    opacity: 0;
+    transform: translateX(-8px);
+    pointer-events: none;
   }
   .topbar__nav {
     margin-left: auto;
@@ -163,12 +178,32 @@ const isCurrent = (href: string) => (href === '/' ? current === '/' : current.st
     align-items: center;
     gap: 8px;
   }
-  .topbar__nav + .topbar__actions {
-    margin-left: 0;
-  }
   .topbar__cta {
-    min-height: 48px;
-    padding: 0 26px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex: none;
+    gap: 6px;
+    min-height: 32px;
+    padding: 5px 14px;
+    border: 0;
+    border-radius: 999px;
+    background: #000;
+    color: #fff;
+    font-family: var(--font-body);
+    font-size: 0.9375rem;
+    font-weight: 500;
+    line-height: 22px;
+    white-space: nowrap;
+    text-decoration: none;
+  }
+  .topbar__cta:hover {
+    text-decoration: none;
+  }
+  .topbar__cta img {
+    width: 12px;
+    height: 18px;
+    flex: none;
   }
   .topbar__cta-short {
     display: none;
@@ -230,19 +265,23 @@ const isCurrent = (href: string) => (href === '/' ? current === '/' : current.st
     color: var(--ink);
     font-family: var(--font-display);
     font-weight: 700;
-    font-size: 1.1rem;
+    font-stretch: 118%;
+    font-size: 1.05rem;
     text-decoration: none;
   }
   .topbar__sheet a:hover,
   .topbar__sheet a[aria-current="page"] {
     background: rgba(127, 127, 127, 0.12);
   }
-  @media (max-width: 479px) {
+  @media (max-width: 539px) {
     .topbar__wordmark {
-      font-size: 1.4rem;
+      font-size: 0.95rem;
+    }
+    .topbar__brand {
+      gap: 10px;
     }
     .topbar__cta {
-      padding: 0 18px;
+      padding-inline: 12px;
     }
     .topbar__cta-long {
       display: none;
@@ -251,13 +290,46 @@ const isCurrent = (href: string) => (href === '/' ? current === '/' : current.st
       display: inline;
     }
   }
-  @media (min-width: 900px) {
+  /* On the narrowest phones the icon alone is the home link. */
+  @media (max-width: 379px) {
+    .topbar__wordmark {
+      display: none;
+    }
+  }
+  @media (min-width: 1000px) {
+    .topbar__brand {
+      flex: 1 1 0;
+      min-width: 44px;
+    }
+    .topbar__wordmark {
+      position: absolute;
+      left: 58px;
+    }
     .topbar__nav {
       display: block;
+      flex: none;
+      margin-left: 0;
+    }
+    .topbar__actions {
+      flex: 0 1 0;
+      min-width: max-content;
+      margin-left: 0;
+      justify-content: flex-end;
+      transition: flex-grow 0.35s ease;
+    }
+    /* Equal side columns put the links at the bar's actual centre. */
+    .topbar--scrolled .topbar__actions {
+      flex-grow: 1;
     }
     .topbar__menu-toggle,
     .topbar__sheet {
       display: none;
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .topbar__wordmark,
+    .topbar__actions {
+      transition: none;
     }
   }
 </style>

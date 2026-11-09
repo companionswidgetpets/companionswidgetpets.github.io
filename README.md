@@ -31,13 +31,15 @@ npm run preview      # serves dist/ the way GitHub Pages will
 | `src/content/guides/*.md` | Longer articles (`/guides/<name>/`) |
 | `src/content/news/*.md` | Release notes, one per version (`/whats-new/<name>/`) |
 | `src/content.config.ts` | The frontmatter each kind of entry must have |
-| `src/components/` | `Hero`, `Phone`, `Tank`, `TopBar`, `Footer`, `SizesDemo`, `PackGrid`, `StyleRow`, `Badge` |
+| `src/components/` | `Hero`, `Phone`, `Tank`, `TopBar`, `Footer`, `SizesDemo`, `PackGrid`, `StyleRow`, `Badge`, `Analytics` |
 | `src/layouts/Base.astro` | The page shell: metadata, Open Graph, JSON-LD, Smart App Banner, fonts |
-| `src/scripts/` | `tank.js` (the simulation), `hero.js` (scroll choreography), `site.js` (menu, style picker) |
-| `src/styles/global.css` | Design tokens (light and dark), type, buttons, cards, prose |
+| `src/scripts/` | `tank.js` (the simulation), `hero.js` (scroll choreography), `site.js` (menu, style picker), `glass.js` (what is glass, and how much each browser gets), `analytics.js` (visitor statistics) |
+| `src/styles/global.css` | Design tokens (light only, like the app), the title faces, buttons, cards, prose |
+| `src/styles/glass.css` | The water behind the pages, and the glass look of the top bar, buttons and containers |
+| `src/vendor/liquid-glass/` | The Liquid Glass for the Web library, unmodified (see "Liquid glass" below) |
 | `src/data/*.json` | Facts pulled from the app by the sync script, plus `app.json` (hand-kept facts: version, URLs, languages) |
 | `src/assets/` | Pictures that go through Astro's image pipeline (fish, props, phone, widget capture, icon, screenshots) |
-| `public/` | Served as-is: fonts, `robots.txt`, `llms.txt`, icons, the App Store badge, `og/default.png` |
+| `public/` | Served as-is: fonts, `robots.txt`, `llms.txt`, icons, `og/default.png` |
 | `tools/` | `sync-from-app.py`, `footprints.swift`, `shots.mjs` (headless screenshots), `og/` (social card) |
 
 ### Writing a help answer
@@ -77,6 +79,39 @@ if the app changes shape.
 Hand-kept facts live in `src/data/app.json`: bump `version` and `versionDate` with each release
 and add a release note under `src/content/news/`.
 
+### Liquid glass
+
+The top bar, the buttons, the chips and the containers (cards, the question list, a guide's
+contents box) are liquid glass, drawn by [Liquid Glass for the Web](https://liquidglass.dev)
+(`src/vendor/liquid-glass/`). The pages themselves stay plain HTML: `src/scripts/glass.js`
+slips one of the library's `<lg-panel>` elements behind each of those elements as its body,
+and turns the top bar's links into the library's `<lg-navbar>`. Until an element has a body,
+and wherever it never gets one, it wears the frosted stand-in from `src/styles/glass.css`.
+
+How much glass a visitor gets is decided once per page load (`MODE` in `glass.js`, also set
+as `data-glass-mode` on `<html>`):
+
+| Mode | Who | What they see |
+| --- | --- | --- |
+| `refract` | Chrome and Edge on a computer | Everything bends light. The top bar refracts the page scrolling under it |
+| `frost` | Safari and Firefox, so every iPhone and iPad | The library's frosted glass: blur, tint and rim, with the same springy press and sliding lens |
+| `none` | Reduce Transparency, Increase Contrast, forced colours, Chrome on a phone, no JavaScript | The stand-ins, solid where transparency is unwanted |
+
+Safari is on `frost` for two reasons. It cannot refract a live page at all, and when it
+refracts a copy of the background instead, each element stalls the page as it appears: about
+60 ms for a button and up to half a second for a card, which took scrolling on the home page
+from 60 frames a second to 14. Measure again before changing that.
+
+To make something else glass, add its selector to `TARGETS` in `glass.js` as a `bar`,
+`button` or `panel`, and give it `--lg-tint`, `--glass-rim` and `--lg-shadow-2` in
+`glass.css`, as the others have. The glass refracts the background of `<main>` (the water in
+`glass.css`), so anything that paints its own background behind glass belongs in `ISLANDS`.
+
+To update the library, replace `liquid-glass.js` and `components.js` in
+`src/vendor/liquid-glass/` with the new ones from its repository and note the commit in the
+README there. `glass.js` relies on `<lg-panel>` keeping its glass in a `surface` property,
+and on `<lg-navbar>` having `moveTo()`.
+
 ### Checking the pages
 
 ```sh
@@ -112,8 +147,69 @@ Afterwards, every push to `main` republishes within a couple of minutes.
 - The sitemap is at `/sitemap-index.xml`. Submit the site once to
   [Google Search Console](https://search.google.com/search-console) and
   [Bing Webmaster Tools](https://www.bing.com/webmasters) (Bing feeds ChatGPT and Copilot).
+  Search Console shows which Google searches lead here. To prove the site is yours, add it
+  there as a **URL prefix** property, choose the **HTML tag** method, and put the tag's
+  `content` value in `googleSiteVerification` in `src/data/app.json`; push, wait for the
+  site to republish, then press Verify.
 - The home page's `<head>` carries the Smart App Banner (`apple-itunes-app`), so Safari on
   iPhone offers the app.
+
+## Visitor statistics
+
+The site can count its visitors with Google Analytics 4: how many there are, where they
+come from and which links and buttons they press. It is off until `googleAnalyticsId` in
+`src/data/app.json` is filled in, and until then no page carries any of it.
+
+To turn it on:
+
+1. At <https://analytics.google.com> create an account and a property, then a **Web** data
+   stream for `https://companionswidgetpets.github.io`. Leave Enhanced measurement on.
+2. Copy the stream's **Measurement ID** (`G-XXXXXXXXXX`) into `googleAnalyticsId` and push.
+3. Open the live site and look at **Reports › Realtime** in Google Analytics: the visit
+   should be there within a minute.
+4. Once `app_store_click` is listed under **Admin › Data display › Events** (up to a day
+   after the first one), mark it as a key event, so that presses of the App Store buttons
+   are counted as what the site is for.
+
+Where the answers are in Google Analytics:
+
+| Question | Where |
+|---|---|
+| How many people visit, and which pages | Reports › Engagement › Pages and screens |
+| Which countries and cities | Reports › User attributes › Demographic details |
+| Which sites and searches send them | Reports › Acquisition › Traffic acquisition |
+| How often each kind of button is pressed | Reports › Engagement › Events |
+| Which button, and where on the page | Explore › Free form, with rows *Event name*, *Link text* and *Content type* and the value *Event count* |
+
+`src/scripts/analytics.js` sends three events of its own, for every link, button and
+question on the site, so new ones are counted without being marked up:
+
+| Event | Sent for |
+|---|---|
+| `app_store_click` | a link to the App Store |
+| `email_click` | an email link |
+| `button_click` | every other link and button, and a question being opened |
+
+Each carries *Link text* (the button's label), *Link URL* (where it leads; not for email) and
+*Content type* (the part of the page: `top bar`, `hero`, `footer`, a home page section such as
+`fish` or `questions`, or `page`). Page views, and Google's own `click` for links that leave
+the site, come from Enhanced measurement. Safari's Smart App Banner is the browser's own, so
+taps on it cannot be counted.
+
+Who is counted:
+
+- Google Analytics sets cookies, so visitors whose browser is in a European time zone (the
+  EEA, the United Kingdom and Switzerland) are asked first, in a bar at the foot of the
+  window, and nothing is loaded from Google unless they allow it. Visitors elsewhere are
+  counted without being asked.
+- A browser that sends Global Privacy Control or Do Not Track is neither counted nor asked.
+- Anyone can change their mind with the switch under "This website" on the privacy page.
+  That section describes all this, and writes itself according to whether
+  `googleAnalyticsId` is set; revise `websiteUpdated` in `privacy.astro` if its words change.
+- Crawlers and automated browsers (`tools/shots.mjs` among them) are never counted. Nor is a
+  local preview: on `localhost` nothing is fetched from Google, and what would have been sent
+  is printed to the browser's console at its Verbose level. To see the bar there, set a
+  European location in Chrome's DevTools (More tools › Sensors).
 
 ## Still to do
 
@@ -128,6 +224,11 @@ Afterwards, every push to `main` republishes within a couple of minutes.
 
 ## Licences and credits
 
-Plus Jakarta Sans is used under the SIL Open Font License (`public/fonts/PlusJakartaSans-OFL.txt`).
+Titles are set in SF Pro at the promo films' custom width and weight, reached as the system
+font (see "Titles" in `src/styles/global.css`), so they appear on Apple devices only. SF Pro
+may not be served as a web font under Apple's licence, so elsewhere Plus Jakarta Sans stands in,
+used under the SIL Open Font License (`public/fonts/PlusJakartaSans-OFL.txt`).
 The App Store badge is Apple's, used as Apple's guidelines allow, to link to the app. The
 phone bezel and Home Screen pictures are the ones made for the promo film.
+The glass is [Liquid Glass for the Web](https://github.com/gentpan/liquidglass) by gentpan,
+used under the MIT licence (`src/vendor/liquid-glass/LICENSE`).

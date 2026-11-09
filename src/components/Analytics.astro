@@ -1,0 +1,96 @@
+---
+/**
+ * Visitor statistics with Google Analytics. Base.astro renders this only when
+ * src/data/app.json has a googleAnalyticsId, so without one no page carries any of it.
+ *
+ * All of the behaviour is in scripts/analytics.js, which also makes the bar that asks
+ * visitors in Europe before anything is counted. The bar's looks are here: a pane of the
+ * same frosted glass as the top bar's menu, floating at the foot of the window. Its words
+ * are handed to the script as data, in the page's language, so they stay out of the text
+ * search engines read.
+ */
+import { useLocale } from '../i18n/index.ts';
+
+const { t, l } = useLocale(Astro.url);
+const words = {
+  label: t.consent.label,
+  html: t.consent.html(`${l('/privacy/')}#website`),
+  no: t.consent.no,
+  allow: t.consent.allow,
+};
+---
+
+<script type="application/json" id="consent-words" set:html={JSON.stringify(words).replace(/</g, '\\u003c')} />
+<script>
+  import '../scripts/analytics.js';
+</script>
+
+<style is:global>
+  .consent {
+    position: fixed;
+    z-index: 40;
+    left: 50%;
+    bottom: max(16px, env(safe-area-inset-bottom));
+    translate: -50% 0;
+    width: min(100% - 2 * var(--gutter), 660px);
+    display: flex;
+    align-items: center;
+    gap: 14px 20px;
+    padding: 14px 14px 14px 22px;
+    border-radius: 28px;
+    background: var(--glass-strong);
+    -webkit-backdrop-filter: blur(22px) saturate(1.7);
+    backdrop-filter: blur(22px) saturate(1.7);
+    border: 1px solid var(--glass-line);
+    box-shadow: var(--glass-shadow);
+    color: var(--ink-2);
+    font-size: 0.9rem;
+    line-height: 1.45;
+    animation: consent-in 0.4s ease both;
+  }
+  .consent__text {
+    flex: 1;
+    text-wrap: pretty;
+  }
+  .consent__text strong {
+    color: var(--ink);
+    font-weight: 650;
+  }
+  .consent__text a {
+    font-weight: 600;
+    white-space: nowrap;
+  }
+  .consent__answers {
+    display: flex;
+    gap: 8px;
+  }
+  .consent__answers .btn {
+    color: var(--ink);
+  }
+  @keyframes consent-in {
+    from {
+      opacity: 0;
+      translate: -50% 12px;
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .consent {
+      animation: none;
+    }
+  }
+  /* On a phone the words sit above the two answers, which share the width. */
+  @media (max-width: 599px) {
+    .consent {
+      flex-direction: column;
+      align-items: stretch;
+      padding: 16px 14px 14px;
+      border-radius: 24px;
+    }
+    .consent__text {
+      padding: 0 6px;
+    }
+    .consent__answers .btn {
+      flex: 1;
+    }
+  }
+</style>

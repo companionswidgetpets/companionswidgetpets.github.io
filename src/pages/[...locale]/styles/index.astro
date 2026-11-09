@@ -1,0 +1,110 @@
+---
+import Base from '../../../layouts/Base.astro';
+import Tank from '../../../components/Tank.astro';
+import { absolute, styles, rgb } from '../../../lib/site';
+import { styleFish, premadeProps } from '../../../lib/tanks';
+import sync from '../../../data/sync.json';
+import { useLocale, localePaths } from '../../../i18n/index.ts';
+
+export function getStaticPaths() {
+  return localePaths();
+}
+const { locale, t, l, name, list, languageName } = useLocale(Astro.url);
+const blurbs: Record<string, string> = t.styles.blurbs;
+// The other languages the app names its styles in: all it speaks but the page's own.
+const langs = sync.languages.filter((lang) => lang !== locale.data);
+
+const crumbs = {
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'Companions', item: absolute(l('/')) },
+    { '@type': 'ListItem', position: 2, name: t.footer.styles, item: absolute(l('/styles/')) },
+  ],
+};
+---
+
+<Base title={t.styles.title} description={t.styles.description(list(styles.map((s) => name(s))))} jsonLd={[crumbs]}>
+  <section class="page-head">
+    <div class="container">
+      <span class="kicker">{t.styles.kicker(styles.length)}</span>
+      <h1>{t.styles.h1}</h1>
+      <p class="lead">{t.styles.lead}</p>
+    </div>
+  </section>
+
+  <section class="section--tight">
+    <div class="container">
+      {
+        styles.map((s, i) => (
+          <article class={`style ${i % 2 ? 'style--flip' : ''}`} id={s.id}>
+            <div class="style__tank">
+              <Tank
+                id={`styles-${s.id}`}
+                size="medium"
+                style={s.id}
+                fish={[...styleFish[s.id], { species: i % 2 ? 'sardine' : 'tang', seed: `styles-${s.id}-3` }]}
+                props={premadeProps('medium', s.id)}
+                label={t.styles.tankLabel(name(s))}
+              />
+            </div>
+            <div class="style__text">
+              <p class="card__kicker" style={`color:${rgb(s.palette.water[2].rgb)}`}>{t.styles.counter(i + 1, styles.length)}</p>
+              <h2>{name(s)}</h2>
+              <p>{blurbs[s.id]}</p>
+              <p class="style__langs">
+                {langs.map((lang) => (
+                  <span>
+                    <span class="meta">{languageName(lang)}</span> <span lang={lang}>{s.names[lang as keyof typeof s.names]}</span>
+                  </span>
+                ))}
+              </p>
+            </div>
+          </article>
+        ))
+      }
+
+      <div class="prose" style="margin-top:72px">
+        <h2>{t.styles.howTitle}</h2>
+        <ol class="steps">
+          {t.styles.stepsHtml.map((step) => <li set:html={step} />)}
+        </ol>
+        <p>{t.styles.after}</p>
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .style {
+    display: grid;
+    gap: clamp(20px, 4vw, 48px);
+    align-items: center;
+    grid-template-columns: 1fr;
+    padding-block: clamp(24px, 4vw, 40px);
+  }
+  .style + .style {
+    border-top: 1px solid var(--line);
+  }
+  @media (min-width: 820px) {
+    .style {
+      grid-template-columns: 1.15fr 1fr;
+    }
+    .style--flip .style__tank {
+      order: 2;
+    }
+  }
+  .style__text h2 {
+    font-size: 1.45rem;
+    margin-bottom: 12px;
+  }
+  .style__text p {
+    color: var(--ink-2);
+  }
+  .style__langs {
+    margin-top: 16px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px 16px;
+    font-size: 0.9rem;
+  }
+</style>

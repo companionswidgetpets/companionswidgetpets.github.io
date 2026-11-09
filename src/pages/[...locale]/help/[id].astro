@@ -1,0 +1,123 @@
+---
+import { render } from 'astro:content';
+import Base from '../../../layouts/Base.astro';
+import { absolute, app, isoDate, packs } from '../../../lib/site';
+import { entryPaths, getHelp, getGuides } from '../../../lib/content';
+import { useLocale } from '../../../i18n/index.ts';
+
+export async function getStaticPaths() {
+  return entryPaths('help');
+}
+const { item, locales } = Astro.props;
+const { locale, t, l, name, date } = useLocale(Astro.url);
+const { Content } = await render(item.entry);
+
+// "Related" names other questions by file name, and guides and pages by path. Whatever has
+// no translation in this language yet is left out rather than linked to in English.
+const questions = await getHelp(locale.code);
+const guides = await getGuides(locale.code);
+const pages: Record<string, string> = {
+  '/packs/': t.footer.packs,
+  '/styles/': t.footer.styles,
+  '/privacy/': t.footer.privacy,
+  '/support/': t.footer.support,
+  ...Object.fromEntries(packs.map((p) => [`/packs/${p.id}/`, name(p)])),
+};
+const related = item.data.related
+  .map((ref) => {
+    if (ref.startsWith('/guides/')) {
+      const g = guides.find((x) => `/guides/${x.id}/` === ref);
+      return g ? { href: l(ref), label: t.help.kindGuide, title: g.data.title } : null;
+    }
+    if (ref.startsWith('/')) return pages[ref] ? { href: l(ref), label: t.help.kindPage, title: pages[ref] } : null;
+    const q = questions.find((x) => x.id === ref);
+    return q ? { href: l(`/help/${q.id}/`), label: t.help.kindQuestion, title: q.data.question } : null;
+  })
+  .filter(Boolean) as { href: string; label: string; title: string }[];
+
+const faqLd = {
+  '@type': 'FAQPage',
+  mainEntity: [
+    {
+      '@type': 'Question',
+      name: item.data.question,
+      dateModified: isoDate(item.data.updated),
+      acceptedAnswer: { '@type': 'Answer', text: item.data.summary },
+    },
+  ],
+};
+const crumbs = {
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'Companions', item: absolute(l('/')) },
+    { '@type': 'ListItem', position: 2, name: t.nav.help, item: absolute(l('/help/')) },
+    { '@type': 'ListItem', position: 3, name: item.data.question, item: absolute(l(`/help/${item.id}/`)) },
+  ],
+};
+const email = `<a href="mailto:${app.supportEmail}">${app.supportEmail}</a>`;
+---
+
+<Base title={item.data.question} description={item.data.summary} type="article" jsonLd={[faqLd, crumbs]} modified={isoDate(item.data.updated)} locales={locales}>
+  <article>
+    <header class="page-head">
+      <div class="container container--narrow">
+        <nav class="breadcrumbs" aria-label={t.common.breadcrumb}>
+          <ol>
+            <li><a href={l('/')}>Companions</a></li>
+            <li><a href={l('/help/')}>{t.nav.help}</a></li>
+          </ol>
+        </nav>
+        <h1>{item.data.question}</h1>
+        <p class="lead">{item.data.summary}</p>
+        <p class="meta">{t.common.updated(date(item.data.updated))} · Companions {app.version}</p>
+      </div>
+    </header>
+    <div class="container container--narrow">
+      <div class="prose">
+        <Content />
+      </div>
+      {
+        related.length > 0 && (
+          <aside class="related">
+            <h2>{t.help.related}</h2>
+            <ul>
+              {related.map((r) => (
+                <li>
+                  <a href={r.href}>{r.title}</a> <span class="meta">{r.label}</span>
+                </li>
+              ))}
+            </ul>
+          </aside>
+        )
+      }
+      <aside class="help-foot card">
+        <h2>{t.help.stuckTitle}</h2>
+        <p set:html={t.help.stuckHtml(email, l('/help/'))} />
+      </aside>
+    </div>
+  </article>
+</Base>
+
+<style>
+  .related {
+    margin-top: clamp(40px, 6vw, 64px);
+  }
+  .related h2,
+  .help-foot h2 {
+    font-size: 1.05rem;
+    margin-bottom: 12px;
+  }
+  .related ul {
+    padding-left: 1.2em;
+    color: var(--ink-2);
+  }
+  .related li + li {
+    margin-top: 6px;
+  }
+  .help-foot {
+    margin-top: clamp(32px, 5vw, 48px);
+  }
+  .help-foot p {
+    color: var(--ink-2);
+  }
+</style>

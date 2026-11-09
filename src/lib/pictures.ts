@@ -7,6 +7,21 @@ import type { ImageMetadata } from 'astro';
 const fishFiles = import.meta.glob<{ default: ImageMetadata }>('../assets/fish/*.png', { eager: true });
 const propFiles = import.meta.glob<{ default: ImageMetadata }>('../assets/props/*.png', { eager: true });
 
+const iconFiles = import.meta.glob<{ default: ImageMetadata }>('../assets/app-icons/*.png', { eager: true });
+const shotFiles = import.meta.glob<{ default: ImageMetadata }>('../assets/screenshots/*.png', { eager: true });
+
+/** One of the app's alternative icons (src/assets/app-icons/<id>.png). */
+export function appIconMeta(id: string): ImageMetadata {
+  const file = iconFiles[`../assets/app-icons/${id}.png`];
+  if (!file) throw new Error(`No picture for app icon "${id}" in src/assets/app-icons`);
+  return file.default;
+}
+
+/** The App Store screenshots, in file-name order. */
+export const screenshots: ImageMetadata[] = Object.keys(shotFiles)
+  .sort()
+  .map((key) => shotFiles[key].default);
+
 export function fishMeta(id: string): ImageMetadata {
   const file = fishFiles[`../assets/fish/${id}.png`];
   if (!file) throw new Error(`No picture for fish "${id}" in src/assets/fish`);

@@ -1,0 +1,460 @@
+---
+import { Image } from 'astro:assets';
+import Base from '../../layouts/Base.astro';
+import Hero from '../../components/Hero.astro';
+import SizesDemo from '../../components/SizesDemo.astro';
+import PackGrid from '../../components/PackGrid.astro';
+import StyleRow from '../../components/StyleRow.astro';
+import Tank from '../../components/Tank.astro';
+import { props as allProps, species, packs, absolute } from '../../lib/site';
+import { propMeta, appIconMeta } from '../../lib/pictures';
+import { premadeProps } from '../../lib/tanks';
+import { getHelp, getGuides } from '../../lib/content';
+import { useLocale, localePaths } from '../../i18n/index.ts';
+import watch from '../../assets/watch/apple_watch.png';
+
+export function getStaticPaths() {
+  return localePaths();
+}
+const { locale, t, l, list } = useLocale(Astro.url);
+const h = t.home;
+
+const iconOrder = ['minimal', 'twilight', 'pond', 'reed', 'blossom', 'dark'] as const;
+
+const faqs = (await getHelp(locale.code)).filter((e) => e.data.featured).sort((a, b) => a.data.order - b.data.order);
+const guides = (await getGuides(locale.code)).filter((e) => e.data.featured).sort((a, b) => a.data.order - b.data.order).slice(0, 3);
+
+const showProps = ['ferns', 'coral', 'tubeSponge', 'pineappleHouse', 'moaiHouse', 'anemone', 'murexShell', 'rock'];
+const propsOnShow = showProps.map((id) => allProps.find((p) => p.id === id)!);
+const decorations = allProps.filter((p) => p.isDecoration).length;
+
+const faqLd = {
+  '@type': 'FAQPage',
+  mainEntity: faqs.map((f) => ({
+    '@type': 'Question',
+    name: f.data.question,
+    acceptedAnswer: { '@type': 'Answer', text: `${f.data.summary} <a href="${absolute(l(`/help/${f.id}/`))}">${h.questions.readMore}</a>` },
+  })),
+};
+
+const title = h.title(t.app.name);
+const description = h.description(species.length);
+---
+
+<Base title={title} description={description} home jsonLd={faqs.length ? [faqLd] : []}>
+  <Hero />
+
+  <!-- Where it shows up -->
+  <section class="section places" id="everywhere">
+    <div class="container">
+      <div class="section__head">
+        <span class="kicker">{h.places.kicker}</span>
+        <h2>{h.places.title}</h2>
+        <p class="lead">{h.places.lead}</p>
+      </div>
+      <div class="grid grid--2 places__grid">
+        <article class="card place">
+          <div class="place__art place__art--home" aria-hidden="true">
+            <div class="place__widget">
+              <Tank
+                id="place-home"
+                size="small"
+                style="blossom"
+                fish={[{ species: 'spotted_koi', seed: 'ph-1' }, { species: 'gold_koi', seed: 'ph-2' }, { species: 'seahorse', seed: 'ph-3' }]}
+                props={premadeProps('small', 'blossom')}
+                bubbles={false}
+              />
+              <span class="place__label">Companions</span>
+            </div>
+            <div class="place__icons"><i></i><i></i><i></i><i></i><i></i><i></i></div>
+          </div>
+          <h3>{h.places.homeScreen.title}</h3>
+          <p>{h.places.homeScreen.text}</p>
+        </article>
+
+        <article class="card place">
+          <div class="place__art place__art--standby" aria-hidden="true">
+            <div class="place__landscape">
+              <div class="place__standby-tank">
+                <Tank
+                  id="place-standby"
+                  size="small"
+                  style="dark"
+                  fish={[{ species: 'ghost', seed: 'ps-1' }, { species: 'neon', seed: 'ps-2' }, { species: 'jellyfish', seed: 'ps-3' }]}
+                  props={premadeProps('small', 'dark')}
+                  bubbles={false}
+                />
+              </div>
+              <div class="place__standby-clock"><span>9:41</span><small>{h.places.standby.date}</small></div>
+            </div>
+          </div>
+          <h3>{h.places.standby.title}</h3>
+          <p>{h.places.standby.text}</p>
+        </article>
+
+        <article class="card place">
+          <div class="place__art place__art--watch" aria-hidden="true">
+            <div class="place__watch">
+              <div class="place__watch-screen">
+                <Tank
+                  id="place-watch"
+                  size="watch"
+                  style="minimal"
+                  fish={[{ species: 'clownfish', seed: 'pw-1' }, { species: 'regal_tang', seed: 'pw-2' }, { species: 'puffer', seed: 'pw-3' }]}
+                  props={premadeProps('small', 'minimal')}
+                  bubbles={false}
+                />
+              </div>
+              <Image src={watch} alt="" width={257} height={404} densities={[1, 2]} format="webp" loading="lazy" class="place__watch-picture" />
+            </div>
+          </div>
+          <h3>{h.places.watch.title}</h3>
+          <p>{h.places.watch.text}</p>
+        </article>
+
+        <article class="card place">
+          <div class="place__art place__art--mac" aria-hidden="true">
+            <div class="place__desktop">
+              <div class="place__menubar"><i></i><i></i><i></i></div>
+              <div class="place__mac-widget">
+                <Tank
+                  id="place-mac"
+                  size="medium"
+                  style="reed"
+                  fish={[{ species: 'trout', seed: 'pm-1' }, { species: 'minnow', seed: 'pm-2' }, { species: 'frog', seed: 'pm-3' }, { species: 'catfish', seed: 'pm-4' }]}
+                  props={premadeProps('medium', 'reed')}
+                  bubbles={false}
+                />
+              </div>
+            </div>
+          </div>
+          <h3>{h.places.mac.title}</h3>
+          <p>{h.places.mac.text}</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <SizesDemo />
+
+  <!-- Fish -->
+  <section class="section" id="fish">
+    <div class="container">
+      <div class="section__head">
+        <span class="kicker">{h.fish.kicker(species.length, packs.length)}</span>
+        <h2>{h.fish.title}</h2>
+        <p class="lead">{h.fish.lead}</p>
+      </div>
+      <PackGrid compact />
+      <p class="section__more"><a class="btn btn--ghost" href={l('/packs/')}>{h.fish.more}</a></p>
+    </div>
+  </section>
+
+  <!-- Make it yours -->
+  <section class="section section--surface" id="customize">
+    <div class="container">
+      <div class="section__head">
+        <span class="kicker">{h.customize.kicker}</span>
+        <h2>{h.customize.title}</h2>
+        <p class="lead">{h.customize.lead}</p>
+      </div>
+
+      <StyleRow />
+
+      <div class="grid grid--3 yours">
+        <article class="card">
+          <div class="yours__props" aria-hidden="true">
+            {propsOnShow.map((p, i) => <Image src={propMeta(p.raw)} alt="" width={120} height={120} densities={[1, 2]} format="webp" loading="lazy" style={`--i:${i}`} />)}
+          </div>
+          <p class="card__kicker">{h.customize.props.kicker(decorations)}</p>
+          <h3>{h.customize.props.title}</h3>
+          <p>{h.customize.props.text}</p>
+        </article>
+
+        <article class="card">
+          <div class="yours__comp" aria-hidden="true">
+            <Tank
+              id="yours-time"
+              size="medium"
+              style="deepOcean"
+              fish={[{ species: 'sea_turtle', seed: 'yc-1' }, { species: 'angelfish', seed: 'yc-2' }, { species: 'dartfish', seed: 'yc-3' }]}
+              props={premadeProps('medium', 'deepOcean')}
+              complication={{ kind: 'time', corner: 'topRight' }}
+              bubbles={false}
+            />
+          </div>
+          <p class="card__kicker">{h.customize.complications.kicker}</p>
+          <h3>{h.customize.complications.title}</h3>
+          <p>{h.customize.complications.text}</p>
+        </article>
+
+        <article class="card">
+          <div class="yours__icons" aria-hidden="true">
+            {iconOrder.map((id) => <Image src={appIconMeta(id)} alt="" width={96} height={96} densities={[1, 2]} format="webp" loading="lazy" />)}
+          </div>
+          <p class="card__kicker">{h.customize.icons.kicker}</p>
+          <h3>{h.customize.icons.title}</h3>
+          <p>{h.customize.icons.text(list(iconOrder.map((id) => h.customize.icons.names[id])))}</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- Promise -->
+  <section class="section" id="calm">
+    <div class="container">
+      <div class="section__head">
+        <span class="kicker">{h.calm.kicker}</span>
+        <h2>{h.calm.title}</h2>
+        <p class="lead">{h.calm.lead}</p>
+      </div>
+      <div class="grid grid--4 promise">
+        {
+          h.calm.cards.map((card) => (
+            <div class="card">
+              <h3>{card.title}</h3>
+              <p>{card.text}</p>
+            </div>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- Questions -->
+  {
+    faqs.length > 0 && (
+      <section class="section section--surface" id="questions">
+        <div class="container container--narrow">
+          <div class="section__head">
+            <span class="kicker">{h.questions.kicker}</span>
+            <h2>{h.questions.title}</h2>
+          </div>
+          <div class="qa">
+            {faqs.map((f) => (
+              <details>
+                <summary>{f.data.question}</summary>
+                <div class="qa__body">
+                  <p>{f.data.summary}</p>
+                  <a class="qa__more" href={l(`/help/${f.id}/`)}>{h.questions.readFull}</a>
+                </div>
+              </details>
+            ))}
+          </div>
+          <p class="section__more"><a class="btn btn--ghost" href={l('/help/')}>{h.questions.all}</a></p>
+        </div>
+      </section>
+    )
+  }
+
+  <!-- Guides -->
+  {
+    guides.length > 0 && (
+      <section class="section" id="guides">
+        <div class="container">
+          <div class="section__head">
+            <span class="kicker">{h.guides.kicker}</span>
+            <h2>{h.guides.title}</h2>
+          </div>
+          <div class="grid grid--3">
+            {guides.map((g) => (
+              <a class="card card--link" href={l(`/guides/${g.id}/`)}>
+                <p class="card__kicker">{g.data.kicker}</p>
+                <h3>{g.data.title}</h3>
+                <p>{g.data.description}</p>
+              </a>
+            ))}
+          </div>
+          <p class="section__more"><a class="btn btn--ghost" href={l('/guides/')}>{h.guides.all}</a></p>
+        </div>
+      </section>
+    )
+  }
+</Base>
+
+<style>
+  .section__more {
+    margin-top: clamp(28px, 4vw, 44px);
+    text-align: center;
+  }
+
+  /* Places */
+  .place {
+    display: flex;
+    flex-direction: column;
+  }
+  /* The picture sits 8px inside the card's glass, its corners concentric with the card's,
+     so the glass shows as a rim around it. */
+  .place__art {
+    --inset: 8px;
+    position: relative;
+    height: 240px;
+    margin: calc(var(--inset) - clamp(20px, 3vw, 32px)) calc(var(--inset) - clamp(20px, 3vw, 32px)) 22px;
+    border-radius: calc(var(--radius-l) - var(--inset));
+    overflow: hidden;
+    display: grid;
+    place-items: center;
+  }
+  .place__art--home {
+    background: linear-gradient(135deg, #f7c8e4, #bfe0ff 55%, #d9f3ff);
+  }
+  .place__widget {
+    width: 128px;
+    position: relative;
+    z-index: 1;
+    margin-left: -140px;
+    margin-top: -40px;
+  }
+  .place__label {
+    display: block;
+    margin-top: 6px;
+    text-align: center;
+    color: #fff;
+    font-size: 0.75rem;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+  }
+  .place__icons {
+    position: absolute;
+    right: 26px;
+    top: 34px;
+    width: 128px;
+    display: grid;
+    grid-template-columns: repeat(2, 48px);
+    gap: 22px 32px;
+  }
+  .place__icons i {
+    display: block;
+    width: 48px;
+    height: 48px;
+    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.55);
+    box-shadow: 0 2px 6px rgba(20, 40, 80, 0.1);
+  }
+  .place__art--standby {
+    background: #06070a;
+  }
+  .place__landscape {
+    width: 280px;
+    height: 150px;
+    border-radius: 24px;
+    border: 5px solid #1b1d22;
+    background: #000;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    padding: 12px;
+    align-items: center;
+  }
+  .place__standby-tank {
+    width: 100%;
+  }
+  .place__standby-clock {
+    color: #fff;
+    text-align: center;
+    font-family: var(--font-body);
+    font-weight: 700;
+  }
+  .place__standby-clock span {
+    display: block;
+    font-size: 2.4rem;
+    letter-spacing: -0.03em;
+    line-height: 1;
+  }
+  .place__standby-clock small {
+    display: block;
+    margin-top: 6px;
+    font-size: 0.8rem;
+    color: #8c93a0;
+  }
+  .place__art--watch {
+    background: linear-gradient(160deg, #e9eef7, #cfdbee);
+  }
+  .place__watch {
+    position: relative;
+    width: 150px;
+    height: 236px;
+    margin-top: 10px;
+  }
+  .place__watch-picture {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
+  .place__watch-screen {
+    position: absolute;
+    left: 12.84%;
+    top: 21.82%;
+    width: 74.31%;
+    height: 56.37%;
+  }
+  .place__watch-screen :global(.tank-frame),
+  .place__watch-screen :global(.tank) {
+    height: 100%;
+  }
+  .place__art--mac {
+    background: linear-gradient(180deg, #1f3b6e, #4b86c9 60%, #8fc1ec);
+  }
+  .place__desktop {
+    position: absolute;
+    inset: 0;
+  }
+  .place__menubar {
+    height: 22px;
+    background: rgba(255, 255, 255, 0.35);
+    -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(10px);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 0 14px;
+  }
+  .place__menubar i {
+    display: block;
+    width: 34px;
+    height: 7px;
+    border-radius: 4px;
+    background: rgba(255, 255, 255, 0.8);
+  }
+  .place__mac-widget {
+    position: absolute;
+    right: 24px;
+    top: 48px;
+    width: 230px;
+    filter: drop-shadow(0 12px 24px rgba(0, 20, 50, 0.3));
+  }
+
+  /* Make it yours */
+  .yours {
+    margin-top: clamp(28px, 4vw, 44px);
+  }
+  .yours__props {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 8px;
+    margin-bottom: 18px;
+    padding: 12px;
+    border-radius: var(--radius-m);
+    background: linear-gradient(to bottom, #d7ecff, #f2f8ff);
+  }
+  .yours__props img {
+    width: 100%;
+    height: auto;
+  }
+  .yours__comp {
+    margin-bottom: 18px;
+  }
+  .yours__icons {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 8px;
+    margin-bottom: 18px;
+  }
+  .yours__icons img {
+    width: 100%;
+    height: auto;
+    border-radius: 22%;
+    box-shadow: 0 2px 6px rgba(11, 18, 32, 0.12);
+  }
+</style>

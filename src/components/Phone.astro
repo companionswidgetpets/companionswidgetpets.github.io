@@ -10,6 +10,7 @@
 import { Image } from 'astro:assets';
 import bezel from '../assets/phone/bezel.png';
 import home from '../assets/phone/home-minimal.png';
+import { useLocale } from '../i18n/index.ts';
 
 interface Props {
   class?: string;
@@ -18,13 +19,14 @@ interface Props {
   sizes?: string;
 }
 const { class: className = '', loading = 'lazy', sizes = '(min-width: 1100px) 29vw, (min-width: 768px) 40vw, 78vw' } = Astro.props;
+const { t } = useLocale(Astro.url);
 ---
 
 <div class={`phone ${className}`} aria-hidden="false">
   <div class="phone__screen">
     <Image
       src={home}
-      alt="An iPhone Home Screen with the Companions aquarium widget in the top-left corner"
+      alt={t.hero.phoneAlt}
       widths={[480, 720, 1206]}
       sizes={sizes}
       format="webp"

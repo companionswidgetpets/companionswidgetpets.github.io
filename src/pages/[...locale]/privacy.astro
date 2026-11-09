@@ -1,0 +1,101 @@
+---
+import Base from '../../layouts/Base.astro';
+import { absolute, app } from '../../lib/site';
+import { useLocale, localePaths } from '../../i18n/index.ts';
+
+export function getStaticPaths() {
+  return localePaths();
+}
+const { t, l, date } = useLocale(Astro.url);
+const p = t.privacy;
+
+// Kept word for word with the policy shown in the app (PrivacyPolicyView.swift), which is
+// the policy of record, in every language; its date is revised whenever the wording changes.
+const lastUpdated = '2026-11-01';
+// "This website" is the one section the app's policy does not have. It describes Google
+// Analytics only while app.json names a property, so the page is true either way; revise
+// this date when its wording changes.
+const websiteUpdated = '2026-11-09';
+const counted = Boolean(app.googleAnalyticsId);
+const github = 'https://docs.github.com/en/site-policy/privacy-policies/github-general-privacy-statement';
+const google = 'https://policies.google.com/privacy';
+const crumbs = {
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'Companions', item: absolute(l('/')) },
+    { '@type': 'ListItem', position: 2, name: t.footer.privacy, item: absolute(l('/privacy/')) },
+  ],
+};
+const email = `<a href="mailto:${app.supportEmail}">${app.supportEmail}</a>`;
+---
+
+<Base title={p.title} description={p.description} jsonLd={[crumbs]}>
+  <section class="page-head">
+    <div class="container container--narrow">
+      <span class="kicker">{p.kicker}</span>
+      <h1>{p.h1}</h1>
+      <p class="meta">{p.meta(date(lastUpdated))}</p>
+    </div>
+  </section>
+
+  <section class="section--tight">
+    <div class="container container--narrow prose">
+      {
+        p.sections.map((section) => (
+          <>
+            <h2>{section.title}</h2>
+            <Fragment set:html={section.html} />
+          </>
+        ))
+      }
+
+      <h2 id="website">{p.website.title}</h2>
+      {
+        counted ? (
+          <>
+            <Fragment set:html={p.website.countedHtml(github, google)} />
+            <p
+              class="note statistics"
+              data-statistics-setting
+              data-on={p.website.on}
+              data-off={p.website.off}
+              data-turn-on={p.website.turnOn}
+              data-turn-off={p.website.turnOff}
+              hidden
+            >
+              <span set:html={p.website.statisticsHtml(`<strong data-statistics-state>${p.website.off}</strong>`)} />
+              <button class="btn btn--small" type="button">{p.website.turnOn}</button>
+            </p>
+            <p class="meta">{p.website.updated(date(websiteUpdated))}</p>
+          </>
+        ) : (
+          <Fragment set:html={p.website.uncountedHtml(github)} />
+        )
+      }
+
+      <h2>{p.changes.title}</h2>
+      <Fragment set:html={p.changes.html} />
+
+      <h2>{p.contact.title}</h2>
+      <Fragment set:html={p.contact.html(email)} />
+    </div>
+  </section>
+</Base>
+
+<style>
+  /* The statistics switch: the words on the left, the button on the right, and the button
+     under the words where there is no room. */
+  .statistics {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px 20px;
+  }
+  .statistics[hidden] {
+    display: none;
+  }
+  .statistics .btn {
+    color: var(--ink);
+  }
+</style>

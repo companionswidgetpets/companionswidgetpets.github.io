@@ -1,0 +1,229 @@
+/* Liquid glass: the water the glass floats on, and how the top bar, buttons and containers
+   look as glass.
+
+   Every glass element sets the same three things on itself: --lg-tint (the colour laid over
+   the glass), --glass-rim (the light on its edge) and --lg-shadow-2 (the shadow under it).
+   Until scripts/glass.js gives the element a real glass body from the library, and wherever
+   it never does (no JavaScript, Reduce Transparency, Increase Contrast), those three draw a
+   frosted stand-in. With a body, .glass clears the stand-in and the library draws the glass
+   from the same --lg-tint and --lg-shadow-2. */
+
+:root {
+  /* The water behind the page: the hero's sky, carried down. */
+  --water: var(--sky-2);
+  --bubbles: url("../assets/glass/bubbles.svg");
+
+  /* The library's theme, in the site's colours. */
+  --lg-accent: var(--accent);
+  --lg-focus: var(--accent);
+  --lg-text: var(--ink);
+  --lg-indicator: rgb(255 255 255 / 0.72);
+  --lg-shadow-1: 0 1px 3px rgba(20, 60, 120, 0.14);
+  --lg-fallback: blur(18px) saturate(1.7);
+
+  /* The three glasses. */
+  --glass-clear: rgb(255 255 255 / 0.36);
+  --glass-frost: rgb(255 255 255 / 0.52);
+  --glass-smoke: rgb(14 17 22 / 0.8);
+  /* Light from the upper left, as the library draws it: a bright near rim, a dimmer far one. */
+  --rim-light: inset 1px 1px 0.5px rgb(255 255 255 / 0.9), inset -1px -1px 0.5px rgb(255 255 255 / 0.5),
+    inset 0 0 0 1px rgb(255 255 255 / 0.22);
+  --rim-dark: inset 1px 1px 0.5px rgb(255 255 255 / 0.34), inset -1px -1px 0.5px rgb(255 255 255 / 0.16);
+  --drop: 0 12px 32px rgba(20, 60, 120, 0.12), 0 1px 2px rgba(20, 60, 120, 0.08);
+  --drop-small: 0 6px 16px rgba(20, 60, 120, 0.14), 0 1px 2px rgba(20, 60, 120, 0.08);
+}
+
+/* Reduce Transparency, Increase Contrast and forced colours: no glass is made (see
+   scripts/glass.js), and the stand-ins turn solid. */
+@media (prefers-reduced-transparency: reduce), (prefers-contrast: more), (forced-colors: active) {
+  :root {
+    --glass: #fff;
+    --glass-strong: #fff;
+    --glass-clear: #fff;
+    --glass-frost: #fff;
+    --glass-smoke: var(--pill);
+    --rim-light: inset 0 0 0 1px var(--line-strong);
+    --rim-dark: inset 0 0 0 0 transparent;
+  }
+}
+
+/* ---------- The water ---------- */
+
+/* One background for the whole page, on <main>, so the glass has a single known backdrop to
+   refract and no section starts or ends with an edge. Front to back: a fade that settles
+   everything before the footer, a few bubbles, two pools of colour that repeat down the page,
+   and the sky under the page heading. The hero and the widget-size demo paint over it
+   themselves. */
+body {
+  background: var(--water);
+}
+main {
+  background-color: var(--water);
+  background-image:
+    linear-gradient(to top, var(--water), transparent 240px),
+    var(--bubbles),
+    radial-gradient(720px 520px at 4% 520px, rgb(185 217 251 / 0.95), transparent 72%),
+    radial-gradient(640px 480px at 98% 1250px, rgb(164 230 224 / 0.6), transparent 72%),
+    linear-gradient(to bottom, var(--sky-1), var(--water) 440px);
+  background-size: auto, 1680px 1400px, 100% 1700px, 100% 1700px, auto;
+  background-repeat: no-repeat, repeat, repeat-y, repeat-y, no-repeat;
+}
+/* global.css gives the page heading and the alternate sections a background of their own;
+   here the water shows through them instead. */
+.page-head,
+.section--surface {
+  background: none;
+}
+/* The hero ends in white; the section after it lets the water in from there. (Not
+   `.hero + .section`: the hero's script tag sits between the two.) */
+.hero ~ .section:nth-of-type(2) {
+  background: linear-gradient(to bottom, var(--bg), transparent 220px);
+}
+
+/* ---------- Glass bodies ---------- */
+
+/* An element with a live glass body. The body is one of the library's panels, laid behind
+   the element's content. */
+.glass {
+  position: relative;
+  isolation: isolate;
+  background: transparent !important;
+  box-shadow: none !important;
+  -webkit-backdrop-filter: none !important;
+  backdrop-filter: none !important;
+}
+.glass > .glass__body {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+}
+.lg-surface__tint {
+  transition: background-color 0.2s ease;
+}
+.lg-surface__shadow {
+  transition: box-shadow 0.2s ease;
+}
+/* The library's frosted mode (Safari and Firefox) has no rim of its own: refraction draws
+   it, and there is none. */
+.lg-surface__glass--fallback ~ .lg-surface__tint {
+  box-shadow: var(--glass-rim);
+}
+
+/* ---------- Containers ---------- */
+
+.card,
+.qa,
+.toc,
+.prose .note {
+  --lg-tint: var(--glass-frost);
+  --glass-rim: var(--rim-light);
+  --lg-shadow-2: var(--drop);
+  border: 0;
+  background: var(--lg-tint);
+  box-shadow: var(--glass-rim), var(--lg-shadow-2);
+}
+.card--link:hover {
+  --lg-tint: rgb(255 255 255 / 0.68);
+  --lg-shadow-2: 0 20px 44px rgba(20, 60, 120, 0.16), 0 1px 2px rgba(20, 60, 120, 0.08);
+  box-shadow: var(--glass-rim), var(--lg-shadow-2);
+}
+/* The questions sit together on one pane, as a grouped list. */
+.qa {
+  padding: 4px clamp(18px, 3vw, 28px);
+  border-radius: var(--radius-l);
+}
+.qa details:last-of-type {
+  border-bottom: 0;
+}
+
+/* ---------- Buttons ---------- */
+
+.btn,
+.chip,
+.topbar__menu-toggle {
+  --lg-tint: var(--glass-clear);
+  --glass-rim: var(--rim-light);
+  --lg-shadow-2: var(--drop-small);
+}
+.btn,
+.chip,
+.chip[aria-pressed="true"],
+.chip--active {
+  border: 0;
+  background: var(--lg-tint);
+  box-shadow: var(--glass-rim), var(--lg-shadow-2);
+}
+/* The press is the glass squashing (scripts/glass.js), not the whole button shrinking. */
+.btn.glass:active {
+  transform: none;
+}
+.btn--pill,
+.chip[aria-pressed="true"],
+.chip--active {
+  --lg-tint: var(--glass-smoke);
+  --glass-rim: var(--rim-dark);
+  color: #fff;
+}
+.btn--accent {
+  --lg-tint: color-mix(in srgb, var(--accent) 88%, transparent);
+  --glass-rim: var(--rim-dark);
+}
+
+/* ---------- Top bar ---------- */
+
+/* Its stand-in is the frosted bar TopBar.astro already draws. Clear over the sky at the top
+   of a page; denser once text scrolls under it, and denser still for the menu, which has to
+   be read over whatever is behind (TopBar.astro's own --glass and --glass-strong). */
+.topbar__pill,
+.topbar__sheet {
+  --lg-tint: var(--glass-clear);
+  --glass-rim: var(--rim-light);
+  --lg-shadow-2: var(--glass-shadow);
+}
+.topbar--scrolled .topbar__pill {
+  --lg-tint: var(--glass);
+}
+.topbar__sheet {
+  --lg-tint: var(--glass-strong);
+}
+.topbar__pill.glass,
+.topbar__sheet.glass {
+  border-color: transparent;
+}
+
+/* The links, once they are the library's navbar. Its lens holds a copy of the labels, so the
+   links and the copies must be set identically. The navbar's own capsule is not drawn: the
+   bar is the glass. */
+.topbar__nav lg-navbar {
+  gap: 4px;
+  padding: 0;
+}
+.topbar__nav lg-navbar > .lg-surface {
+  display: none;
+}
+.topbar__nav lg-navbar > a,
+.topbar__nav .lg-nav__copy > span {
+  display: inline-flex;
+  height: 44px;
+  padding: 0 16px;
+  border-radius: 22px;
+  font-size: 0.975rem;
+  font-weight: 600;
+  line-height: 44px;
+}
+.topbar__nav lg-navbar > a:hover,
+.topbar__nav lg-navbar > a[aria-current="page"] {
+  background: transparent;
+}
+.topbar__nav .lg-nav__copy {
+  gap: 4px;
+  padding: 0;
+}
+.topbar__nav :is(.lg-nav__copy, .lg-lens-shadow) {
+  transition: opacity 0.18s ease;
+}
+/* On a page that is none of the links, the lens only shows under the pointer or the focus. */
+.topbar__nav lg-navbar.is-idle:not(:hover, :focus-within) > :is(.lg-nav__copy, .lg-lens-shadow) {
+  opacity: 0;
+}

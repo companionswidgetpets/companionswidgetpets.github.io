@@ -1,0 +1,12 @@
+---
+/** The "not found" page in each language other than English (/ja/404/ …); see
+    components/NotFound.astro for how a reader arrives here. */
+import NotFound from '../../components/NotFound.astro';
+import { translatedCodes } from '../../i18n/index.ts';
+
+export function getStaticPaths() {
+  return translatedCodes.map((code) => ({ params: { locale: code } }));
+}
+---
+
+<NotFound />

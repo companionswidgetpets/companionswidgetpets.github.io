@@ -5,22 +5,21 @@
 import Tank from './Tank.astro';
 import { styles, paletteVars, pageTint, rgb } from '../lib/site';
 import { demoFish, premadeProps } from '../lib/tanks';
+import { useLocale } from '../i18n/index.ts';
 
+const { t, name } = useLocale(Astro.url);
 const initial = styles[0];
 ---
 
 <section class="section demo" id="sizes" data-style-scope style={`--demo-tint:${pageTint(initial)}`}>
   <div class="container">
     <div class="section__head section__head--center">
-      <span class="kicker">Three sizes, eight waters</span>
-      <h2>One tank. Any widget size.</h2>
-      <p class="lead">
-        The widget comes in small, medium and large, and each size keeps its own fish. Pick a style and every tank
-        changes to match.
-      </p>
+      <span class="kicker">{t.sizes.kicker}</span>
+      <h2>{t.sizes.title}</h2>
+      <p class="lead">{t.sizes.lead}</p>
     </div>
 
-    <div class="chip-row demo__picker" data-style-picker role="group" aria-label="Tank style">
+    <div class="chip-row demo__picker" data-style-picker role="group" aria-label={t.sizes.pickerLabel}>
       {
         styles.map((s) => (
           <button
@@ -29,14 +28,14 @@ const initial = styles[0];
             aria-pressed={s.id === initial.id ? 'true' : 'false'}
             data-pick-style={s.id}
             data-vars={paletteVars(s)}
-            data-name={s.names.en}
+            data-name={name(s)}
             data-tint={pageTint(s)}
           >
             <span
               class="chip__swatch"
               style={`background: linear-gradient(${rgb(s.palette.water[0].rgb)}, ${rgb(s.palette.water[2].rgb)})`}
             />
-            {s.names.en}
+            {name(s)}
           </button>
         ))
       }
@@ -45,31 +44,37 @@ const initial = styles[0];
     <div class="demo__tanks">
       <div class="demo__large">
         <Tank id="demo-large" size="large" style={initial.id} fish={demoFish.large} props={premadeProps('large', initial.id)} />
-        <p class="demo__label">Large</p>
+        <p class="demo__label">{t.sizes.large}</p>
       </div>
       <div class="demo__stack">
         <div>
           <Tank id="demo-medium" size="medium" style={initial.id} fish={demoFish.medium} props={premadeProps('medium', initial.id)} />
-          <p class="demo__label">Medium</p>
+          <p class="demo__label">{t.sizes.medium}</p>
         </div>
         <div class="demo__small">
           <Tank id="demo-small" size="small" style={initial.id} fish={demoFish.small} props={premadeProps('small', initial.id)} />
-          <p class="demo__label">Small</p>
+          <p class="demo__label">{t.sizes.small}</p>
         </div>
       </div>
     </div>
 
-    <p class="demo__caption">
-      The <strong data-style-name>{initial.names.en}</strong> tank in all three sizes. Change the style once and
-      every widget on your Home Screen follows.
-    </p>
+    <p class="demo__caption" set:html={t.sizes.captionHtml(`<strong data-style-name>${name(initial)}</strong>`)} />
   </div>
 </section>
 
 <style>
+  /* A band of the chosen style's colour that fades into the page's water at both ends.
+     Registering --demo-tint as a colour is what lets the band cross-fade when the style
+     changes; a gradient cannot be transitioned directly. */
+  @property --demo-tint {
+    syntax: '<color>';
+    inherits: true;
+    initial-value: transparent;
+  }
   .demo {
-    background: color-mix(in oklab, var(--demo-tint) 38%, var(--bg));
-    transition: background-color 0.5s ease;
+    --band: color-mix(in oklab, var(--demo-tint) 38%, var(--bg));
+    background: linear-gradient(to bottom, transparent, var(--band) 140px, var(--band) calc(100% - 140px), transparent);
+    transition: --demo-tint 0.5s ease;
   }
   .demo__picker {
     justify-content: center;

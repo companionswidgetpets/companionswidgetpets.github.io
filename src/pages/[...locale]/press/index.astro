@@ -1,0 +1,103 @@
+---
+import { Image } from 'astro:assets';
+import Base from '../../../layouts/Base.astro';
+import Badge from '../../../components/Badge.astro';
+import { absolute, app, species, packs, styles, props as allProps } from '../../../lib/site';
+import { screenshots } from '../../../lib/pictures';
+import sync from '../../../data/sync.json';
+import { useLocale, localePaths } from '../../../i18n/index.ts';
+import icon from '../../../assets/icon/app-icon.png';
+
+export function getStaticPaths() {
+  return localePaths();
+}
+const { t, l, name, date, list, languageName } = useLocale(Astro.url);
+const p = t.press;
+const f = p.facts;
+
+const decorations = allProps.filter((x) => x.isDecoration).length;
+const facts: [string, string][] = [
+  [f.name, t.app.name],
+  [f.what, f.whatValue],
+  [f.price, f.priceValue],
+  [f.platforms, f.platformsValue(app.minimumOS)],
+  [f.fish, f.fishValue(species.length, packs.length)],
+  [f.styles, list(styles.map((s) => name(s)))],
+  [f.props, f.propsValue(decorations)],
+  [f.complications, f.complicationsValue],
+  [f.languages, list(sync.languages.map((lang) => languageName(lang)))],
+  [f.firstReleased, date(app.firstReleased)],
+  [f.currentVersion, f.currentVersionValue(app.version, date(app.versionDate))],
+  [f.developer, f.developerValue(app.developer)],
+  [f.appStore, app.appStoreUrlUS],
+  [f.contact, app.supportEmail],
+];
+const crumbs = {
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'Companions', item: absolute(l('/')) },
+    { '@type': 'ListItem', position: 2, name: t.nav.press, item: absolute(l('/press/')) },
+  ],
+};
+const email = `<a href="mailto:${app.supportEmail}">${app.supportEmail}</a>`;
+---
+
+<Base title={p.title} description={p.description} jsonLd={[crumbs]}>
+  <section class="page-head">
+    <div class="container container--narrow">
+      <span class="kicker">{p.kicker}</span>
+      <h1>{p.h1}</h1>
+      <p class="lead" set:html={p.leadHtml(email)} />
+    </div>
+  </section>
+
+  <section class="section--tight">
+    <div class="container container--narrow prose">
+      <h2>{p.sentenceTitle}</h2>
+      <p>{t.app.oneLiner}</p>
+
+      <h2>{p.paragraphTitle}</h2>
+      <p>{p.paragraph({ species: species.length, props: decorations, languages: sync.languages.length, developer: app.developer })}</p>
+
+      <h2>{p.factsTitle}</h2>
+      <table>
+        <tbody>
+          {facts.map(([k, v]) => <tr><th scope="row">{k}</th><td>{v}</td></tr>)}
+        </tbody>
+      </table>
+
+      <h2>{p.iconTitle}</h2>
+      <p>{p.iconText}</p>
+      <p class="press-icon">
+        <a href={icon.src} download="companions-icon-1024.png"><Image src={icon} alt={p.iconAlt} width={256} height={256} densities={[1, 2]} format="png" /></a>
+      </p>
+
+      <h2>{p.screenshotsTitle}</h2>
+      <p>{p.screenshotsText}</p>
+      <div class="press-shots">
+        {screenshots.map((shot, i) => <a href={shot.src}><Image src={shot} alt={p.screenshotAlt(i + 1)} width={300} height={Math.round((300 * shot.height) / shot.width)} densities={[1, 2]} format="webp" loading="lazy" /></a>)}
+      </div>
+
+      <h2>{p.downloadTitle}</h2>
+      <p><Badge /></p>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .press-icon img {
+    width: 160px;
+    height: 160px;
+    border-radius: 36px;
+    box-shadow: 0 10px 30px rgba(11, 18, 32, 0.15);
+  }
+  .press-shots {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 14px;
+  }
+  .press-shots img {
+    border-radius: 18px;
+    border: 1px solid var(--line);
+  }
+</style>

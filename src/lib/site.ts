@@ -6,40 +6,12 @@ import props from '../data/props.json';
 
 export { app, packs, species, styles, props };
 
-export const nav = [
-  { href: '/help/', label: 'Help' },
-  { href: '/guides/', label: 'Guides' },
-  { href: '/packs/', label: 'Fish' },
-  { href: '/styles/', label: 'Styles' },
-  { href: '/whats-new/', label: "What's new" },
-];
-
-export const footerNav = {
-  Companions: [
-    { href: '/', label: 'Home' },
-    { href: '/help/', label: 'Help and questions' },
-    { href: '/guides/', label: 'Guides' },
-    { href: '/packs/', label: 'Fish and packs' },
-    { href: '/styles/', label: 'Tank styles' },
-    { href: '/whats-new/', label: "What's new" },
-  ],
-  About: [
-    { href: '/press/', label: 'Press kit' },
-    { href: '/support/', label: 'Support' },
-    { href: '/privacy/', label: 'Privacy policy' },
-    { href: `mailto:${app.supportEmail}`, label: 'Email us' },
-  ],
-};
-
 /** An absolute URL on the site for a path such as "/help/". */
 export function absolute(path: string): string {
   return new URL(path, app.siteUrl).toString();
 }
 
-export function formatDate(date: Date | string): string {
-  const d = typeof date === 'string' ? new Date(date) : date;
-  return d.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
-}
+export { formatDate } from '../i18n/index.ts';
 
 export function isoDate(date: Date | string): string {
   const d = typeof date === 'string' ? new Date(date) : date;

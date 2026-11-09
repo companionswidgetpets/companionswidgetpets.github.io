@@ -1,0 +1,44 @@
+---
+import Base from '../../../layouts/Base.astro';
+import PackGrid from '../../../components/PackGrid.astro';
+import { absolute, species, packs, freeSpecies } from '../../../lib/site';
+import { useLocale, localePaths } from '../../../i18n/index.ts';
+
+export function getStaticPaths() {
+  return localePaths();
+}
+const { t, l, name } = useLocale(Astro.url);
+
+const crumbs = {
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'Companions', item: absolute(l('/')) },
+    { '@type': 'ListItem', position: 2, name: t.footer.packs, item: absolute(l('/packs/')) },
+  ],
+};
+const list = {
+  '@type': 'ItemList',
+  name: t.packs.listName,
+  numberOfItems: packs.length,
+  itemListElement: packs.map((p, i) => ({ '@type': 'ListItem', position: i + 1, name: name(p), url: absolute(l(`/packs/${p.id}/`)) })),
+};
+---
+
+<Base title={t.packs.title} description={t.packs.description(species.length, freeSpecies.length)} jsonLd={[crumbs, list]}>
+  <section class="page-head">
+    <div class="container">
+      <span class="kicker">{t.packs.kicker(species.length, packs.length)}</span>
+      <h1>{t.packs.h1}</h1>
+      <p class="lead">{t.packs.lead(freeSpecies.length)}</p>
+    </div>
+  </section>
+  <section class="section--tight">
+    <div class="container">
+      <PackGrid />
+      <div class="prose" style="margin-top:56px">
+        <h2>{t.packs.howTitle}</h2>
+        {t.packs.howHtml.map((paragraph) => <p set:html={paragraph} />)}
+      </div>
+    </div>
+  </section>
+</Base>

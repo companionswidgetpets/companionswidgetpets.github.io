@@ -57,4 +57,41 @@ const news = defineCollection({
   }),
 });
 
-export const collections = { help, guides, news };
+/*
+ * Translations. The files above are the English originals; each has a translation per
+ * language at src/content/i18n/<language>/<kind>/<same file name>.md. A translation holds
+ * only the words: where an entry sits, whether it is featured and what it relates to are
+ * read from the English file, so the two can never disagree. A page whose translation is
+ * missing is simply not published in that language (see src/lib/content.ts).
+ */
+const translations = './src/content/i18n';
+
+const helpI18n = defineCollection({
+  loader: glob({ pattern: '*/help/*.md', base: translations }),
+  schema: z.object({
+    question: z.string(),
+    summary: z.string(),
+    /** When the translation itself was last revised, if later than the English. */
+    updated: z.coerce.date().optional(),
+  }),
+});
+
+const guidesI18n = defineCollection({
+  loader: glob({ pattern: '*/guides/*.md', base: translations }),
+  schema: z.object({
+    title: z.string(),
+    description: z.string(),
+    kicker: z.string(),
+    updated: z.coerce.date().optional(),
+  }),
+});
+
+const newsI18n = defineCollection({
+  loader: glob({ pattern: '*/news/*.md', base: translations }),
+  schema: z.object({
+    title: z.string(),
+    summary: z.string(),
+  }),
+});
+
+export const collections = { help, guides, news, helpI18n, guidesI18n, newsI18n };

@@ -1,0 +1,90 @@
+---
+import Base from '../../../layouts/Base.astro';
+import { absolute, app } from '../../../lib/site';
+import { getHelp } from '../../../lib/content';
+import { useLocale, localePaths } from '../../../i18n/index.ts';
+
+export function getStaticPaths() {
+  return localePaths();
+}
+const { locale, t, l } = useLocale(Astro.url);
+
+const categories: Record<string, string> = t.help.categories;
+
+const entries = (await getHelp(locale.code)).sort(
+  (a, b) => a.data.order - b.data.order || a.data.question.localeCompare(b.data.question, locale.lang)
+);
+const groups = Object.keys(categories)
+  .map((key) => ({ key, title: categories[key], items: entries.filter((e) => e.data.category === key) }))
+  .filter((g) => g.items.length);
+
+const faqLd = {
+  '@type': 'FAQPage',
+  mainEntity: entries.map((e) => ({
+    '@type': 'Question',
+    name: e.data.question,
+    acceptedAnswer: { '@type': 'Answer', text: `${e.data.summary} <a href="${absolute(l(`/help/${e.id}/`))}">${t.help.fullAnswer}</a>` },
+  })),
+};
+const crumbs = {
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'Companions', item: absolute(l('/')) },
+    { '@type': 'ListItem', position: 2, name: t.nav.help, item: absolute(l('/help/')) },
+  ],
+};
+const email = `<a href="mailto:${app.supportEmail}">${app.supportEmail}</a>`;
+---
+
+<Base title={t.help.title} description={t.help.description} jsonLd={entries.length ? [faqLd, crumbs] : [crumbs]}>
+  <section class="page-head">
+    <div class="container container--narrow">
+      <span class="kicker">{t.help.kicker}</span>
+      <h1>{t.help.h1}</h1>
+      <p class="lead" set:html={t.help.leadHtml(email)} />
+    </div>
+  </section>
+
+  <section class="section--tight">
+    <div class="container container--narrow">
+      <nav class="help-toc" aria-label={t.help.categoriesLabel}>
+        <ul class="chip-row">
+          {groups.map((g) => <li><a class="chip" href={`#${g.key}`}>{g.title}</a></li>)}
+        </ul>
+      </nav>
+      {
+        groups.map((g) => (
+          <section class="help-group" id={g.key}>
+            <h2>{g.title}</h2>
+            <div class="qa">
+              {g.items.map((e) => (
+                <details>
+                  <summary>{e.data.question}</summary>
+                  <div class="qa__body">
+                    <p>{e.data.summary}</p>
+                    <a class="qa__more" href={l(`/help/${e.id}/`)}>{t.help.fullAnswer}</a>
+                  </div>
+                </details>
+              ))}
+            </div>
+          </section>
+        ))
+      }
+    </div>
+  </section>
+</Base>
+
+<style>
+  .help-toc ul {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 clamp(32px, 5vw, 56px);
+  }
+  .help-group + .help-group {
+    margin-top: clamp(40px, 6vw, 72px);
+  }
+  .help-group h2 {
+    font-size: 1.2rem;
+    margin-bottom: 14px;
+  }
+</style>

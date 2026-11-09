@@ -3,12 +3,15 @@
 import Tank from './Tank.astro';
 import { styles } from '../lib/site';
 import { styleFish, premadeProps } from '../lib/tanks';
+import { useLocale } from '../i18n/index.ts';
+
+const { t, l, name } = useLocale(Astro.url);
 ---
 
 <div class="style-row" role="list">
   {
     styles.map((s) => (
-      <a class="style-row__item" href={`/styles/#${s.id}`} role="listitem">
+      <a class="style-row__item" href={`${l('/styles/')}#${s.id}`} role="listitem">
         <Tank
           id={`style-${s.id}`}
           size="small"
@@ -16,9 +19,9 @@ import { styleFish, premadeProps } from '../lib/tanks';
           fish={styleFish[s.id]}
           props={premadeProps('small', s.id)}
           bubbles={false}
-          label={`The ${s.names.en} tank style`}
+          label={t.styleRow.label(name(s))}
         />
-        <span>{s.names.en}</span>
+        <span>{name(s)}</span>
       </a>
     ))
   }

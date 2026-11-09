@@ -1,9 +1,8 @@
 {
   "shots": [
-    { "url": "http://127.0.0.1:4321/", "out": "shots/home-top.png", "width": 1440, "height": 900, "scroll": 0, "wait": 1500, "settle": 1200, "media": [{ "name": "prefers-color-scheme", "value": "light" }] },
+    { "url": "http://127.0.0.1:4321/", "out": "shots/home-top.png", "width": 1440, "height": 900, "scroll": 0, "wait": 1500, "settle": 1200 },
     { "url": "http://127.0.0.1:4321/", "out": "shots/home-settled.png", "width": 1440, "height": 900, "scroll": 900, "wait": 800 },
-    { "url": "http://127.0.0.1:4321/", "out": "shots/home-dark.png", "width": 1440, "height": 900, "scroll": 900, "wait": 800, "reload": true, "media": [{ "name": "prefers-color-scheme", "value": "dark" }] },
-    { "url": "http://127.0.0.1:4321/", "out": "shots/mobile-top.png", "width": 390, "height": 844, "scale": 2, "mobile": true, "scroll": 0, "wait": 1200, "reload": true, "media": [{ "name": "prefers-color-scheme", "value": "light" }] },
+    { "url": "http://127.0.0.1:4321/", "out": "shots/mobile-top.png", "width": 390, "height": 844, "scale": 2, "mobile": true, "scroll": 0, "wait": 1200, "reload": true },
     { "url": "http://127.0.0.1:4321/", "out": "shots/mobile-settled.png", "width": 390, "height": 844, "scale": 2, "mobile": true, "scroll": 844, "wait": 800 },
     { "url": "http://127.0.0.1:4321/help/", "out": "shots/help.png", "width": 1440, "height": 900, "scroll": 0, "wait": 600 },
     { "url": "http://127.0.0.1:4321/packs/reef/", "out": "shots/pack.png", "width": 1440, "height": 900, "scroll": 0, "wait": 900 }

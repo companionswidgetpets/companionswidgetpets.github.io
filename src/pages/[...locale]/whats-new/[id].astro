@@ -1,0 +1,50 @@
+---
+import { render } from 'astro:content';
+import Base from '../../../layouts/Base.astro';
+import { absolute, app, isoDate } from '../../../lib/site';
+import { entryPaths } from '../../../lib/content';
+import { useLocale } from '../../../i18n/index.ts';
+
+export async function getStaticPaths() {
+  return entryPaths('news');
+}
+const { item, locales } = Astro.props;
+const { t, l, date } = useLocale(Astro.url);
+const w = t.whatsNew;
+const { Content } = await render(item.entry);
+const day = isoDate(item.data.date);
+const title = w.entryTitle(item.data.version, item.data.title);
+const ld = {
+  '@type': 'TechArticle',
+  headline: title,
+  description: item.data.summary,
+  datePublished: day,
+  dateModified: day,
+  author: { '@id': `${app.siteUrl}/#developer` },
+  about: { '@id': `${app.siteUrl}/#app` },
+  mainEntityOfPage: absolute(l(`/whats-new/${item.id}/`)),
+};
+---
+
+<Base title={title} description={item.data.summary} type="article" jsonLd={[ld]} published={day} modified={day} locales={locales}>
+  <article>
+    <header class="page-head">
+      <div class="container container--narrow">
+        <nav class="breadcrumbs" aria-label={t.common.breadcrumb}>
+          <ol>
+            <li><a href={l('/')}>Companions</a></li>
+            <li><a href={l('/whats-new/')}>{t.nav.whatsNew}</a></li>
+          </ol>
+        </nav>
+        <span class="kicker">{w.versionKicker(item.data.version)}</span>
+        <h1>{item.data.title}</h1>
+        <p class="lead">{item.data.summary}</p>
+        <p class="meta"><time datetime={day}>{date(item.data.date)}</time></p>
+      </div>
+    </header>
+    <div class="container container--narrow">
+      <div class="prose"><Content /></div>
+      <p style="margin-top:40px"><a href={l('/whats-new/')}>{w.all}</a></p>
+    </div>
+  </article>
+</Base>

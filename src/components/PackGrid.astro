@@ -3,40 +3,39 @@
 import { Image } from 'astro:assets';
 import { packs, speciesById } from '../lib/site';
 import { fishMeta } from '../lib/pictures';
+import { useLocale } from '../i18n/index.ts';
 
 interface Props {
   /** Fewer words per card, for the home page. */
   compact?: boolean;
 }
 const { compact = false } = Astro.props;
+const { t, l, name, tagline } = useLocale(Astro.url);
 ---
 
 <div class="packs grid grid--3">
   {
     packs.map((pack, i) => (
-      <a class="card card--link pack" href={`/packs/${pack.id}/`}>
+      <a class="card card--link pack" href={l(`/packs/${pack.id}/`)}>
         <div class="pack__fish" aria-hidden="true">
-          {pack.species.map((id, j) => {
-            const s = speciesById(id);
-            return (
-              <Image
-                src={fishMeta(id)}
-                alt=""
-                width={112}
-                height={112}
-                densities={[1, 2]}
-                format="webp"
-                loading="lazy"
-                class="fish-pic"
-                style={`--delay:${(-(i * 5 + j) * 0.7).toFixed(1)}s`}
-              />
-            );
-          })}
+          {pack.species.map((id, j) => (
+            <Image
+              src={fishMeta(id)}
+              alt=""
+              width={112}
+              height={112}
+              densities={[1, 2]}
+              format="webp"
+              loading="lazy"
+              class="fish-pic"
+              style={`--delay:${(-(i * 5 + j) * 0.7).toFixed(1)}s`}
+            />
+          ))}
         </div>
-        <p class="card__kicker">{pack.comesWithApp ? 'Comes with the app' : 'Pack'}</p>
-        <h3>{pack.names.en}</h3>
-        {!compact && <p>{pack.taglines.en}</p>}
-        <p class="pack__names">{pack.species.map((id) => speciesById(id).names.en).join(' · ')}</p>
+        <p class="card__kicker">{pack.comesWithApp ? t.packGrid.comesWithApp : t.packGrid.pack}</p>
+        <h3>{name(pack)}</h3>
+        {!compact && <p>{tagline(pack)}</p>}
+        <p class="pack__names">{pack.species.map((id) => name(speciesById(id))).join(' · ')}</p>
       </a>
     ))
   }

@@ -26,6 +26,13 @@ const DESIGN = {
   },
 };
 const BED_HEIGHT = DESIGN.glyph * 0.4;
+
+/* The language a complication's time and date are written in: the page's. A visitor whose
+   browser speaks that language keeps their own region's habits (9 Nov or Nov 9, a 24-hour
+   clock or not); Chinese always follows the page, whose script the region would change. */
+const PAGE_LANG = document.documentElement.lang || undefined;
+const sameLanguage = PAGE_LANG && !PAGE_LANG.startsWith('zh') && (navigator.language || '').split('-')[0] === PAGE_LANG.split('-')[0];
+const LANG = sameLanguage ? undefined : PAGE_LANG;
 const TAU = Math.PI * 2;
 
 /* SwimStyle.recipe: the ranges a pattern is drawn from, per style. Rates are radians per
@@ -287,7 +294,7 @@ class Tank {
       const img = document.createElement('img');
       img.className = 'tank__fish';
       img.src = species.image;
-      img.alt = entry.name ? `${entry.name}, a ${species.name}` : species.name;
+      img.alt = entry.alt ?? species.name;
       img.decoding = 'async';
       img.style.setProperty('--g', String(DESIGN.glyph * scale));
       this.scene.appendChild(img);
@@ -336,9 +343,9 @@ class Tank {
     const kind = this.comp.dataset.kind;
     const d = new Date();
     if (kind === 'time') {
-      this.comp.textContent = d.toLocaleTimeString(undefined, { hour: 'numeric', minute: '2-digit' });
+      this.comp.textContent = d.toLocaleTimeString(LANG, { hour: 'numeric', minute: '2-digit' });
     } else if (kind === 'date') {
-      this.comp.textContent = d.toLocaleDateString(undefined, { weekday: 'short', day: 'numeric', month: 'short' });
+      this.comp.textContent = d.toLocaleDateString(LANG, { weekday: 'short', day: 'numeric', month: 'short' });
     }
     setTimeout(() => this.tickComplication(), 15000);
   }

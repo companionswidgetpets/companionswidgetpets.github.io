@@ -1,46 +1,26 @@
 ---
-import Base from '../layouts/Base.astro';
-import Tank from '../components/Tank.astro';
-import { premadeProps } from '../lib/tanks';
+import NotFound from '../components/NotFound.astro';
+import { translatedCodes } from '../i18n/index.ts';
 ---
 
-<Base title="Page not found" description="That page swam off. Try the help pages or the home page." noindex>
-  <section class="page-head">
-    <div class="container container--narrow lost">
-      <div class="lost__tank">
-        <Tank
-          id="lost"
-          size="medium"
-          style="deepOcean"
-          fish={[{ species: 'ghost', seed: 'lost-1' }, { species: 'submarine', seed: 'lost-2' }]}
-          props={premadeProps('medium', 'deepOcean')}
-        />
-      </div>
-      <h1>That page swam off.</h1>
-      <p class="lead">There's nothing at this address. The fish, however, are fine.</p>
-      <p class="lost__links">
-        <a class="btn btn--pill" href="/">Back to the start</a>
-        <a class="btn btn--ghost" href="/help/">Help and questions</a>
-      </p>
-    </div>
-  </section>
-</Base>
-
-<style>
-  .lost {
-    text-align: center;
-    display: grid;
-    justify-items: center;
-  }
-  .lost__tank {
-    width: min(100%, 420px);
-    margin-bottom: 32px;
-  }
-  .lost__links {
-    margin-top: 28px;
-    display: flex;
-    gap: 12px;
-    flex-wrap: wrap;
-    justify-content: center;
-  }
-</style>
+<NotFound>
+  <!-- GitHub Pages shows this one page for every missing address. When the address is in
+       one of the site's other languages, fetch that language's own "not found" page and
+       show it in place of this one, keeping the address as it was typed. -->
+  <script slot="head" is:inline define:vars={{ codes: translatedCodes }}>
+    const code = location.pathname.split('/')[1];
+    if (codes.includes(code)) {
+      document.documentElement.style.visibility = 'hidden';
+      fetch(`/${code}/404/`)
+        .then((response) => (response.ok ? response.text() : Promise.reject()))
+        .then((html) => {
+          document.open();
+          document.write(html);
+          document.close();
+        })
+        .catch(() => {
+          document.documentElement.style.visibility = '';
+        });
+    }
+  </script>
+</NotFound>

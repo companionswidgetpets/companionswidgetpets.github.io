@@ -22,8 +22,9 @@ if (hero) {
   function measure() {
     const vw = window.innerWidth;
     const vh = window.innerHeight;
-    const narrow = vw < 768;
-    const tablet = vw >= 768 && vw < 1100;
+    // Stacked (headline over phone) on phones and on tablets held upright; side by side otherwise.
+    const narrow = vw < 768 || (vw < 1000 && vh > vw);
+    const tablet = !narrow && vw < 1100;
 
     // The phone's layout width: about 29% of a wide viewport, most of a narrow one.
     const width = narrow ? Math.min(vw * 0.78, 360) : Math.min(Math.max(vw * 0.29, 320), 620);
@@ -34,9 +35,12 @@ if (hero) {
 
     let scale, dx, dy;
     if (narrow) {
-      // The phone shrinks and settles lower, under the headline.
-      scale = Math.min(0.6, (vh * 0.48) / height);
-      const endTop = vh * 0.54;
+      // The phone settles under the copy, as large as the room below it allows: small on
+      // a phone, nearly full size on an upright tablet.
+      const copy = hero.querySelector('.hero__copy');
+      const copyBottom = copy ? copy.offsetTop + copy.offsetHeight : vh * 0.48;
+      const endTop = copyBottom + 28;
+      scale = Math.min(1, Math.max(0.45, (vh - endTop - 16) / height));
       dx = 0;
       dy = endTop - startTop + ((scale - 1) * height) / 2;
     } else {
@@ -85,6 +89,11 @@ if (hero) {
     update();
     window.addEventListener('scroll', onScroll, { passive: true });
     window.addEventListener('resize', () => {
+      measure();
+      update();
+    });
+    // Where the copy ends depends on the title font, which may arrive after first paint.
+    document.fonts?.ready.then(() => {
       measure();
       update();
     });

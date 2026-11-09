@@ -14,6 +14,7 @@ import widgetSmall from '../assets/widget/small-minimal.png';
 import widgetMedium from '../assets/widget/medium-minimal.png';
 import widgetLarge from '../assets/widget/large-minimal.png';
 import bubblePng from '../assets/props/bubble.png';
+import { useLocale } from '../i18n/index.ts';
 
 interface FishEntry {
   species: string;
@@ -60,6 +61,7 @@ const {
   label,
 } = Astro.props;
 
+const { t, name } = useLocale(Astro.url);
 const style = styleById(styleId);
 const design = {
   small: { w: 190, h: 190 },
@@ -75,9 +77,11 @@ const fishConfig = await Promise.all(
     return {
       seed: f.seed,
       name: f.name,
+      // What a screen reader calls this fish, in the page's language.
+      alt: f.name ? t.tank.namedFish(f.name, name(s)) : name(s),
       species: {
         id: s.id,
-        name: s.names.en,
+        name: name(s),
         image: await fishUrl(s.id),
         tankScale: s.tankScale,
         swimStyle: s.swimStyle,
@@ -125,7 +129,7 @@ const cornerClass = complication?.corner ?? 'topRight';
     data-tank={JSON.stringify(config)}
     style={inline}
     role="img"
-    aria-label={label ?? `A ${size} ${style.names.en} tank with ${fish.length} fish`}
+    aria-label={label ?? t.tank.label(size, name(style), fish.length)}
   >
     {
       widget ? (
