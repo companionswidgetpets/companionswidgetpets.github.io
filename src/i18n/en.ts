@@ -71,7 +71,7 @@ const en = {
     menu: 'Menu',
     /** The top bar. Keep these to a word or two: they share one narrow pill. */
     help: 'Help',
-    guides: 'Guides',
+    blog: 'Blog',
     fish: 'Fish',
     styles: 'Styles',
     whatsNew: "What's new",
@@ -88,7 +88,7 @@ const en = {
     columnAbout: 'About',
     home: 'Home',
     help: 'Help and questions',
-    guides: 'Guides',
+    blog: 'Blog',
     packs: 'Fish and packs',
     styles: 'Tank styles',
     whatsNew: "What's new",
@@ -223,10 +223,10 @@ const en = {
       readMore: 'Read more',
     },
 
-    guides: {
-      kicker: 'Guides',
-      title: 'Get the most out of your tank.',
-      all: 'All guides',
+    blog: {
+      kicker: 'From the blog',
+      title: 'Ideas for a happier Home Screen.',
+      all: 'Read the blog',
     },
   },
 
@@ -278,7 +278,7 @@ const en = {
     related: 'Related',
     /** What kind of page a related link leads to. */
     kindQuestion: 'Question',
-    kindGuide: 'Guide',
+    kindArticle: 'Article',
     kindPage: 'Page',
     stuckTitle: 'Still stuck?',
     /** `email` is the support address, already a link; `helpUrl` is the help index. */
@@ -286,16 +286,50 @@ const en = {
       `Email ${email} with your iPhone model and iOS version and we'll sort it out. <a href="${helpUrl}">Back to all questions</a>.`,
   },
 
-  guides: {
-    title: 'Guides',
+  blog: {
+    title: 'Blog: iPhone widget ideas, app picks and guides',
     description:
-      'Step-by-step guides to the Companions aquarium widget: adding it to your iPhone Home Screen, StandBy, Apple Watch and Mac, designing tanks, complications, feeding and sharing.',
-    kicker: 'Guides',
-    h1: 'Get the most out of your tank.',
-    lead: 'Longer reads: how the widget works, how to set it up everywhere, and the little things worth knowing.',
+      'The best aquarium, pet and cute widget apps for iPhone, aesthetic Home Screen ideas, fish facts and step-by-step guides to the Companions aquarium widget.',
+    kicker: 'Blog',
+    h1: 'Ideas for a happier Home Screen.',
+    lead: 'Widget and pet apps worth trying, Home Screen ideas, fish facts and step-by-step guides, from the two people who make Companions.',
+    /** The accessible name of the row of topic links. */
+    topicsLabel: 'Topics',
+    /** The blog's topics: each one's name, and the line under its heading on the blog's page. */
+    categories: {
+      'app-picks': {
+        name: 'App picks',
+        lead: 'Widget, pet and cozy apps worth a place on your iPhone.',
+      },
+      'home-screen': {
+        name: 'Home Screen ideas',
+        lead: 'Colours, layouts and widgets for a Home Screen you enjoy unlocking.',
+      },
+      fish: {
+        name: 'Fish and aquariums',
+        lead: 'Fish facts, name ideas and themed tanks to build.',
+      },
+      guides: {
+        name: 'Companions guides',
+        lead: 'Step by step through the widget, StandBy, Apple Watch, Mac and everything in the app.',
+      },
+      troubleshooting: {
+        name: 'Troubleshooting',
+        lead: 'When a widget misbehaves: what to check, in order.',
+      },
+    },
     by: (author: string) => `By ${author}`,
+    /** How long a post takes to read, in whole minutes. */
+    readingTime: (minutes: number) => `${minutes} min read`,
     onThisPage: 'On this page',
-    more: 'More guides',
+    more: 'Keep reading',
+    /** The box at the end of every post, under the app's name and tagline. */
+    cta: (species: number) =>
+      `Pick your fish from ${species} hand-drawn species, name them, and watch them swim in your widget all day. Free, with eight fish, every tank style and all three widget sizes.`,
+    /** The blog's name in feed readers. */
+    feedTitle: 'The Companions blog',
+    /** The link to the blog's RSS feed. */
+    feed: 'RSS feed',
   },
 
   packs: {

@@ -4,7 +4,7 @@ summary: "Three: small (a square), medium (twice as wide) and large (twice as wi
 category: getting-started
 order: 2
 updated: 2026-11-09
-related: ["add-widget-home-screen", "different-fish-per-size"]
+related: ["add-widget-home-screen", "different-fish-per-size", "/blog/iphone-widget-sizes/"]
 ---
 Companions offers the three Home Screen sizes iOS has for every app:
 

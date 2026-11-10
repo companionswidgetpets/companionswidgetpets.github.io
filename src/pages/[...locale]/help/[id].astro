@@ -2,7 +2,7 @@
 import { render } from 'astro:content';
 import Base from '../../../layouts/Base.astro';
 import { absolute, app, isoDate, packs } from '../../../lib/site';
-import { entryPaths, getHelp, getGuides } from '../../../lib/content';
+import { entryPaths, getHelp, getBlog } from '../../../lib/content';
 import { useLocale } from '../../../i18n/index.ts';
 
 export async function getStaticPaths() {
@@ -12,10 +12,10 @@ const { item, locales } = Astro.props;
 const { locale, t, l, name, date } = useLocale(Astro.url);
 const { Content } = await render(item.entry);
 
-// "Related" names other questions by file name, and guides and pages by path. Whatever has
+// "Related" names other questions by file name, and blog posts and pages by path. Whatever has
 // no translation in this language yet is left out rather than linked to in English.
 const questions = await getHelp(locale.code);
-const guides = await getGuides(locale.code);
+const posts = await getBlog(locale.code);
 const pages: Record<string, string> = {
   '/packs/': t.footer.packs,
   '/styles/': t.footer.styles,
@@ -25,9 +25,9 @@ const pages: Record<string, string> = {
 };
 const related = item.data.related
   .map((ref) => {
-    if (ref.startsWith('/guides/')) {
-      const g = guides.find((x) => `/guides/${x.id}/` === ref);
-      return g ? { href: l(ref), label: t.help.kindGuide, title: g.data.title } : null;
+    if (ref.startsWith('/blog/')) {
+      const post = posts.find((x) => `/blog/${x.id}/` === ref);
+      return post ? { href: l(ref), label: t.help.kindArticle, title: post.data.title } : null;
     }
     if (ref.startsWith('/')) return pages[ref] ? { href: l(ref), label: t.help.kindPage, title: pages[ref] } : null;
     const q = questions.find((x) => x.id === ref);

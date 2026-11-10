@@ -1,0 +1,53 @@
+---
+/** The box at the end of every blog post: the app, in a sentence, and the App Store badge. */
+import { Image } from 'astro:assets';
+import icon from '../assets/icon/app-icon.png';
+import Badge from './Badge.astro';
+import { species } from '../lib/site';
+import { useLocale } from '../i18n/index.ts';
+
+const { t } = useLocale(Astro.url);
+---
+
+<aside class="card blog-cta">
+  <Image src={icon} alt="" width={76} height={76} densities={[1, 2]} format="webp" loading="lazy" class="blog-cta__icon" />
+  <div class="blog-cta__text">
+    <p class="card__kicker">{t.app.name}</p>
+    <p class="blog-cta__title">{t.app.tagline}</p>
+    <p>{t.blog.cta(species.length)}</p>
+    <Badge />
+  </div>
+</aside>
+
+<style>
+  .blog-cta {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    gap: clamp(16px, 2.4vw, 24px);
+    align-items: start;
+    margin-top: clamp(40px, 6vw, 64px);
+  }
+  .blog-cta__icon {
+    width: 76px;
+    height: 76px;
+    border-radius: 18px;
+    box-shadow: 0 2px 8px rgba(11, 18, 32, 0.16);
+  }
+  .blog-cta__title {
+    font-family: var(--font-display);
+    font-weight: 760;
+    font-stretch: 118%;
+    font-size: 1.2rem;
+    line-height: 1.25;
+    color: var(--ink);
+    margin-bottom: 8px;
+  }
+  .blog-cta__text .badge-link {
+    margin-top: 16px;
+  }
+  @media (max-width: 480px) {
+    .blog-cta {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+</style>

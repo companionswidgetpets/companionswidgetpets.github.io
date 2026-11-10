@@ -1,6 +1,7 @@
 ---
 import { Image } from 'astro:assets';
 import { app } from '../lib/site';
+import { blogLocales } from '../lib/content';
 import { useLocale } from '../i18n/index.ts';
 import tiaan from '../assets/devs/tiaan.png';
 import shea from '../assets/devs/shea.png';
@@ -21,7 +22,8 @@ interface Props {
   languages?: Language[];
 }
 const { flush = false, languages = [] } = Astro.props;
-const { t, l } = useLocale(Astro.url);
+const { locale, t, l } = useLocale(Astro.url);
+const hasBlog = (await blogLocales()).includes(locale.code);
 const year = new Date().getFullYear();
 const columns = [
   {
@@ -29,7 +31,7 @@ const columns = [
     links: [
       { href: l('/'), label: t.footer.home },
       { href: l('/help/'), label: t.footer.help },
-      { href: l('/guides/'), label: t.footer.guides },
+      ...(hasBlog ? [{ href: l('/blog/'), label: t.footer.blog }] : []),
       { href: l('/packs/'), label: t.footer.packs },
       { href: l('/styles/'), label: t.footer.styles },
       { href: l('/whats-new/'), label: t.footer.whatsNew },
@@ -109,17 +111,14 @@ const columns = [
       </nav>
     )
   }
-  <!-- The app's own colophon, as at the foot of its Settings page: the two Memoji, the
-       line under them and the version, centred. -->
+  <!-- The app's own colophon, as at the foot of its Settings page: the two Memoji and the
+       line under them, centred. -->
   <div class="container footer__colophon">
     <div class="footer__avatars" aria-hidden="true">
       <Image src={tiaan} alt="" width={41} height={41} densities={[1, 2, 3]} format="webp" />
       <Image src={shea} alt="" width={41} height={41} densities={[1, 2, 3]} format="webp" />
     </div>
-    <div class="footer__made">
-      <p>{t.footer.madeWith}</p>
-      <p class="footer__version">Companions {app.version}</p>
-    </div>
+    <p class="footer__made">{t.footer.madeWith}</p>
   </div>
   <div class="container footer__legal">
     <p>{t.footer.legal(year, app.developerLegal)}</p>
@@ -242,7 +241,7 @@ const columns = [
     font-weight: 650;
   }
   /* The app's measures: 41pt discs, the second 3pt over the first with a 2pt clear ring
-     cut into it, 19pt down to the words, 4pt between the two lines. */
+     cut into it, 19pt down to the words. */
   .footer__colophon {
     margin-top: clamp(40px, 6vw, 64px);
     display: grid;
@@ -263,17 +262,9 @@ const columns = [
     box-shadow: 0 0 0 2px var(--surface);
   }
   .footer__made {
-    display: grid;
-    gap: 4px;
     font-size: 13px;
     line-height: 1.3;
     color: var(--ink-4);
-  }
-  .footer__made p + p {
-    margin-top: 0;
-  }
-  .footer__version {
-    font-size: 11px;
   }
   .footer__legal {
     margin-top: 32px;

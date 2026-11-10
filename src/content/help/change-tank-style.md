@@ -4,7 +4,7 @@ summary: "Open the ⋯ menu, choose Edit this tank, and pick a style from the me
 category: tanks-and-styles
 order: 1
 updated: 2026-11-09
-related: ["/styles/", "decorate-tank", "widget-looks-lighter"]
+related: ["/styles/", "decorate-tank", "widget-looks-lighter", "/blog/aesthetic-iphone-home-screen-ideas/"]
 ---
 A tank's water is its **style**. There are eight: Minimal (blue), Twilight (deep blue to indigo), Pond (green over sand), Reed (teal over tan), Blossom (pink), Dark (black, for all-black Home Screens), Pumpkin (orange) and Lavender.
 

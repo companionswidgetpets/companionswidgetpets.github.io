@@ -4,7 +4,7 @@ summary: "iOS lays a translucent white highlight and a bright rim over every Hom
 category: troubleshooting
 order: 3
 updated: 2026-11-09
-related: ["change-tank-style", "/styles/"]
+related: ["change-tank-style", "/styles/", "/blog/aesthetic-iphone-home-screen-ideas/"]
 ---
 Every widget on an iOS 26 Home Screen is shown through the system's glass: a wash of white that is strongest at the top and fades towards the bottom, plus a bright specular rim along the edges. It is what makes widgets look like they sit on the wallpaper rather than being cut out of it, and no app can turn it off.
 

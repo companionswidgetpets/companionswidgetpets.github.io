@@ -5,7 +5,7 @@ category: widgets
 order: 2
 featured: true
 updated: 2026-11-09
-related: ["do-fish-move-in-widget", "/guides/how-the-widget-animates/"]
+related: ["do-fish-move-in-widget", "/blog/how-the-widget-animates/"]
 ---
 No more than any other widget. A Home Screen widget isn't allowed to run code while it is on screen, and Companions doesn't try to. The app hands iOS a description of the tank, including a small set of turning "clock hands" for each fish's path, and iOS draws it, in the same way it draws the sweeping seconds hand of a clock widget. There is no process of Companions' running behind your Home Screen, no timer waking it up and no network connection.
 

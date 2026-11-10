@@ -1,0 +1,123 @@
+---
+import Base from '../../../layouts/Base.astro';
+import BlogCard from '../../../components/BlogCard.astro';
+import { absolute, app, isoDate } from '../../../lib/site';
+import { blogLocales, getBlog, sortPosts } from '../../../lib/content';
+import { blogCategories } from '../../../lib/blog';
+import { useLocale, localeParam } from '../../../i18n/index.ts';
+
+// Only the languages with at least one post translated have a blog page.
+export async function getStaticPaths() {
+  return (await blogLocales()).map((code) => ({ params: { locale: localeParam(code) } }));
+}
+const { locale, t, l } = useLocale(Astro.url);
+const b = t.blog;
+
+const posts = sortPosts(await getBlog(locale.code));
+const groups = blogCategories
+  .map((key) => ({ key, ...b.categories[key], posts: posts.filter((p) => p.data.category === key) }))
+  .filter((g) => g.posts.length);
+
+const url = absolute(l('/blog/'));
+const feed = l('/blog/rss.xml');
+const blogLd = {
+  '@type': 'Blog',
+  '@id': `${url}#blog`,
+  name: b.feedTitle,
+  description: b.description,
+  url,
+  publisher: { '@id': `${app.siteUrl}/#developer` },
+  blogPost: groups.flatMap((g) =>
+    g.posts.map((p) => ({
+      '@type': 'BlogPosting',
+      headline: p.data.title,
+      url: absolute(l(`/blog/${p.id}/`)),
+      datePublished: isoDate(p.data.published),
+      dateModified: isoDate(p.data.updated ?? p.data.published),
+      articleSection: g.name,
+    }))
+  ),
+};
+const crumbs = {
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'Companions', item: absolute(l('/')) },
+    { '@type': 'ListItem', position: 2, name: t.nav.blog, item: url },
+  ],
+};
+---
+
+<Base title={b.title} description={b.description} jsonLd={[blogLd, crumbs]} locales={await blogLocales()}>
+  <link slot="head" rel="alternate" type="application/rss+xml" title={b.feedTitle} href={absolute(feed)} />
+  <section class="page-head">
+    <div class="container">
+      <span class="kicker">{b.kicker}</span>
+      <h1>{b.h1}</h1>
+      <p class="lead">{b.lead}</p>
+      {
+        groups.length > 1 && (
+          <nav class="blog-topics" aria-label={b.topicsLabel}>
+            <ul class="chip-row">
+              {groups.map((g) => (
+                <li>
+                  <a class="chip" href={`#${g.key}`}>
+                    {g.name}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </nav>
+        )
+      }
+    </div>
+  </section>
+  {
+    groups.map((g) => (
+      <section class="section--tight blog-group" id={g.key}>
+        <div class="container">
+          <div class="blog-group__head">
+            <h2>{g.name}</h2>
+            <p class="lead">{g.lead}</p>
+          </div>
+          <div class="grid grid--3">
+            {g.posts.map((p) => (
+              <BlogCard post={p} />
+            ))}
+          </div>
+        </div>
+      </section>
+    ))
+  }
+  <p class="container meta blog-feed"><a href={feed}>{b.feed}</a></p>
+</Base>
+
+<style>
+  .blog-topics {
+    margin-top: clamp(24px, 3.5vw, 36px);
+  }
+  .blog-topics ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  .blog-group {
+    scroll-margin-top: calc(var(--topbar-h) + 24px);
+  }
+  .blog-group + .blog-group {
+    padding-top: 0;
+  }
+  .blog-group__head {
+    max-width: 760px;
+    margin-bottom: clamp(20px, 3vw, 32px);
+  }
+  .blog-group__head h2 {
+    font-size: clamp(1.25rem, 2.2vw, 1.7rem);
+    margin-bottom: 8px;
+  }
+  .blog-group__head .lead {
+    font-size: 1.02rem;
+  }
+  .blog-feed {
+    padding-bottom: clamp(40px, 6vw, 80px);
+  }
+</style>

@@ -9,7 +9,8 @@ import Tank from '../../components/Tank.astro';
 import { props as allProps, species, packs, absolute } from '../../lib/site';
 import { propMeta, appIconMeta } from '../../lib/pictures';
 import { premadeProps } from '../../lib/tanks';
-import { getHelp, getGuides } from '../../lib/content';
+import BlogCard from '../../components/BlogCard.astro';
+import { getHelp, getBlog, sortPosts } from '../../lib/content';
 import { useLocale, localePaths } from '../../i18n/index.ts';
 import watch from '../../assets/watch/apple_watch.png';
 
@@ -22,7 +23,7 @@ const h = t.home;
 const iconOrder = ['minimal', 'twilight', 'pond', 'reed', 'blossom', 'dark'] as const;
 
 const faqs = (await getHelp(locale.code)).filter((e) => e.data.featured).sort((a, b) => a.data.order - b.data.order);
-const guides = (await getGuides(locale.code)).filter((e) => e.data.featured).sort((a, b) => a.data.order - b.data.order).slice(0, 3);
+const posts = sortPosts((await getBlog(locale.code)).filter((e) => e.data.featured)).slice(0, 3);
 
 const showProps = ['ferns', 'coral', 'tubeSponge', 'pineappleHouse', 'moaiHouse', 'anemone', 'murexShell', 'rock'];
 const propsOnShow = showProps.map((id) => allProps.find((p) => p.id === id)!);
@@ -43,6 +44,8 @@ const description = h.description(species.length);
 
 <Base title={title} description={description} home jsonLd={faqs.length ? [faqLd] : []}>
   <Hero />
+
+  <SizesDemo />
 
   <!-- Where it shows up -->
   <section class="section places" id="everywhere">
@@ -160,8 +163,6 @@ const description = h.description(species.length);
     </div>
   </section>
 
-  <SizesDemo />
-
   <!-- Fish -->
   <section class="section" id="fish">
     <div class="container">
@@ -272,25 +273,21 @@ const description = h.description(species.length);
     )
   }
 
-  <!-- Guides -->
+  <!-- From the blog -->
   {
-    guides.length > 0 && (
-      <section class="section" id="guides">
+    posts.length > 0 && (
+      <section class="section" id="blog">
         <div class="container">
           <div class="section__head">
-            <span class="kicker">{h.guides.kicker}</span>
-            <h2>{h.guides.title}</h2>
+            <span class="kicker">{h.blog.kicker}</span>
+            <h2>{h.blog.title}</h2>
           </div>
           <div class="grid grid--3">
-            {guides.map((g) => (
-              <a class="card card--link" href={l(`/guides/${g.id}/`)}>
-                <p class="card__kicker">{g.data.kicker}</p>
-                <h3>{g.data.title}</h3>
-                <p>{g.data.description}</p>
-              </a>
+            {posts.map((p) => (
+              <BlogCard post={p} topic />
             ))}
           </div>
-          <p class="section__more"><a class="btn btn--ghost" href={l('/guides/')}>{h.guides.all}</a></p>
+          <p class="section__more"><a class="btn btn--ghost" href={l('/blog/')}>{h.blog.all}</a></p>
         </div>
       </section>
     )

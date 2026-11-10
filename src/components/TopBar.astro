@@ -8,6 +8,7 @@ import { Image } from 'astro:assets';
 import icon from '../assets/icon/app-icon.png';
 import getAppIcon from '../assets/icon/get_app.svg';
 import { app } from '../lib/site';
+import { blogLocales } from '../lib/content';
 import { useLocale } from '../i18n/index.ts';
 
 interface Props {
@@ -17,10 +18,12 @@ interface Props {
   hero?: boolean;
 }
 const { current = '/', hero = false } = Astro.props;
-const { t, l } = useLocale(Astro.url);
+const { locale, t, l } = useLocale(Astro.url);
+// The blog is linked only in the languages it has posts in.
+const hasBlog = (await blogLocales()).includes(locale.code);
 const nav = [
   { path: '/help/', label: t.nav.help },
-  { path: '/guides/', label: t.nav.guides },
+  ...(hasBlog ? [{ path: '/blog/', label: t.nav.blog }] : []),
   { path: '/packs/', label: t.nav.fish },
   { path: '/styles/', label: t.nav.styles },
   { path: '/whats-new/', label: t.nav.whatsNew },

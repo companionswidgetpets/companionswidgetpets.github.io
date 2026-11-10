@@ -4,7 +4,7 @@ summary: "Yes. The Edit Tank page has 19 props: ferns, corals, shells, rocks, a 
 category: tanks-and-styles
 order: 2
 updated: 2026-11-09
-related: ["change-tank-style", "multiple-tanks", "/guides/design-a-tank/"]
+related: ["change-tank-style", "multiple-tanks", "/blog/design-a-tank/", "/blog/aquarium-tank-ideas/"]
 ---
 Yes. Tap **⋯** at the top of the main page, then **Edit this tank**. Under the actions, tap **Add prop** and choose from the nineteen: Coral, Ferns, Sponge, Branches, Plants, Vallisneria, Rock, Pebble, Murex Shell, Scallop, Pearl, Conch, Coral Reef, Anemone, Brain Coral, Tube Sponge, Pineapple House, Moai House and Rock House.
 

@@ -11,7 +11,7 @@ import Footer from '../components/Footer.astro';
 import Analytics from '../components/Analytics.astro';
 import { app, absolute, species, packs, props as allProps } from '../lib/site';
 import sync from '../data/sync.json';
-import { useLocale, locales, localeCodes, localePath, splitLocale, defaultLocale, type LocaleCode } from '../i18n/index.ts';
+import { useLocale, locales, localeCodes, localePath, splitLocale, defaultLocale, hreflangsOf, type LocaleCode } from '../i18n/index.ts';
 
 interface Props {
   title: string;
@@ -56,7 +56,9 @@ const ogImage = image ?? absolute(`/og/${locale.code === defaultLocale ? 'defaul
 // has no translation, and on pages that are not indexed at all.
 const shared = splitLocale(path).path;
 const inLocales = locales.filter((x) => available.includes(x.code));
-const alternates = noindex ? [] : inLocales.map((x) => ({ hreflang: x.hreflang, href: absolute(localePath(x.code, shared)) }));
+const alternates = noindex
+  ? []
+  : inLocales.flatMap((x) => hreflangsOf(x).map((hreflang) => ({ hreflang, href: absolute(localePath(x.code, shared)) })));
 const xDefault = !noindex && available.includes(defaultLocale) ? absolute(localePath(defaultLocale, shared)) : null;
 const languages = locales.map((x) => ({
   code: x.code,

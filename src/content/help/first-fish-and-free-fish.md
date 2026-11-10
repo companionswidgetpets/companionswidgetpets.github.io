@@ -5,7 +5,7 @@ category: getting-started
 order: 4
 featured: true
 updated: 2026-11-09
-related: ["packs-and-pricing", "/packs/freshwater/", "/packs/stock/"]
+related: ["packs-and-pricing", "/packs/freshwater/", "/packs/stock/", "/blog/aquarium-tank-ideas/"]
 ---
 Companions is free to download, and eight of its fish are free to keep:
 

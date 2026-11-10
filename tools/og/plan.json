@@ -6,9 +6,119 @@
       "width": 1200,
       "height": 630,
       "scale": 1,
-      "wait": 800,
+      "reload": true,
       "settle": 800,
-      "probe": "'og card rendered'"
+      "wait": 500,
+      "eval": "window.setWords({\"lang\":\"en\",\"title\":\"A tiny aquarium on your Home&nbsp;Screen.\",\"text\":\"Your fish swim around right on your widget, all day long.\",\"facts\":\"Free on the App Store · iPhone, iPad, Mac and Apple Watch\"})",
+      "probe": "'en: ' + window.cardReport()"
+    },
+    {
+      "url": "file:///Users/mac/Desktop/companions-website/tools/og/template.html",
+      "out": "public/og/de.png",
+      "width": 1200,
+      "height": 630,
+      "scale": 1,
+      "reload": true,
+      "settle": 800,
+      "wait": 500,
+      "eval": "window.setWords({\"lang\":\"de\",\"title\":\"Dein kleines Aquarium auf dem Home-Bildschirm.\",\"text\":\"Deine Fische ziehen den ganzen Tag ihre Runden, direkt in deinem Widget.\",\"facts\":\"Kostenlos im App Store · iPhone, iPad, Mac und Apple Watch\"})",
+      "probe": "'de: ' + window.cardReport()"
+    },
+    {
+      "url": "file:///Users/mac/Desktop/companions-website/tools/og/template.html",
+      "out": "public/og/es.png",
+      "width": 1200,
+      "height": 630,
+      "scale": 1,
+      "reload": true,
+      "settle": 800,
+      "wait": 500,
+      "eval": "window.setWords({\"lang\":\"es\",\"title\":\"Un pequeño acuario en tu pantalla de&nbsp;inicio.\",\"text\":\"Tus peces nadan por tu widget todo el día.\",\"facts\":\"Gratis en el App Store · iPhone, iPad, Mac y Apple Watch\"})",
+      "probe": "'es: ' + window.cardReport()"
+    },
+    {
+      "url": "file:///Users/mac/Desktop/companions-website/tools/og/template.html",
+      "out": "public/og/fr.png",
+      "width": 1200,
+      "height": 630,
+      "scale": 1,
+      "reload": true,
+      "settle": 800,
+      "wait": 500,
+      "eval": "window.setWords({\"lang\":\"fr\",\"title\":\"Un tout petit aquarium sur l’écran&nbsp;d’accueil.\",\"text\":\"Vos poissons nagent dans votre widget, à longueur de journée.\",\"facts\":\"Gratuit sur l’App Store · iPhone, iPad, Mac et Apple Watch\"})",
+      "probe": "'fr: ' + window.cardReport()"
+    },
+    {
+      "url": "file:///Users/mac/Desktop/companions-website/tools/og/template.html",
+      "out": "public/og/pt.png",
+      "width": 1200,
+      "height": 630,
+      "scale": 1,
+      "reload": true,
+      "settle": 800,
+      "wait": 500,
+      "eval": "window.setWords({\"lang\":\"pt-BR\",\"title\":\"Um pequeno aquário na sua Tela&nbsp;de&nbsp;Início.\",\"text\":\"Seus peixes nadam no próprio widget, o dia inteiro.\",\"facts\":\"Grátis na App Store · iPhone, iPad, Mac e Apple Watch\"})",
+      "probe": "'pt: ' + window.cardReport()"
+    },
+    {
+      "url": "file:///Users/mac/Desktop/companions-website/tools/og/template.html",
+      "out": "public/og/ru.png",
+      "width": 1200,
+      "height": 630,
+      "scale": 1,
+      "reload": true,
+      "settle": 800,
+      "wait": 500,
+      "eval": "window.setWords({\"lang\":\"ru\",\"title\":\"Маленький аквариум на&nbsp;экране&nbsp;«Домой».\",\"text\":\"Ваши рыбки плавают прямо в виджете, весь день напролёт.\",\"facts\":\"Бесплатно в App Store · iPhone, iPad, Mac и Apple Watch\"})",
+      "probe": "'ru: ' + window.cardReport()"
+    },
+    {
+      "url": "file:///Users/mac/Desktop/companions-website/tools/og/template.html",
+      "out": "public/og/ja.png",
+      "width": 1200,
+      "height": 630,
+      "scale": 1,
+      "reload": true,
+      "settle": 800,
+      "wait": 500,
+      "eval": "window.setWords({\"lang\":\"ja\",\"title\":\"ホーム画面に、<br />小さな水槽を。\",\"text\":\"ウィジェットの中で、魚たちが一日じゅう泳いでいます。\",\"facts\":\"App Storeで無料 · iPhone、iPad、Mac、Apple Watch対応\"})",
+      "probe": "'ja: ' + window.cardReport()"
+    },
+    {
+      "url": "file:///Users/mac/Desktop/companions-website/tools/og/template.html",
+      "out": "public/og/ko.png",
+      "width": 1200,
+      "height": 630,
+      "scale": 1,
+      "reload": true,
+      "settle": 800,
+      "wait": 500,
+      "eval": "window.setWords({\"lang\":\"ko\",\"title\":\"홈&nbsp;화면에 사는<br />작은&nbsp;어항 하나.\",\"text\":\"내 물고기가 하루 종일 위젯 속을 헤엄쳐 다닙니다.\",\"facts\":\"App Store에서 무료 · iPhone, iPad, Mac, Apple Watch\"})",
+      "probe": "'ko: ' + window.cardReport()"
+    },
+    {
+      "url": "file:///Users/mac/Desktop/companions-website/tools/og/template.html",
+      "out": "public/og/zh-hans.png",
+      "width": 1200,
+      "height": 630,
+      "scale": 1,
+      "reload": true,
+      "settle": 800,
+      "wait": 500,
+      "eval": "window.setWords({\"lang\":\"zh-Hans\",\"title\":\"一个小小的鱼缸，<br />住在你的主屏幕上。\",\"text\":\"你的鱼儿就在小组件里游来游去，从早游到晚。\",\"facts\":\"App Store 免费下载 · iPhone、iPad、Mac 和 Apple Watch\"})",
+      "probe": "'zh-hans: ' + window.cardReport()"
+    },
+    {
+      "url": "file:///Users/mac/Desktop/companions-website/tools/og/template.html",
+      "out": "public/og/zh-hant.png",
+      "width": 1200,
+      "height": 630,
+      "scale": 1,
+      "reload": true,
+      "settle": 800,
+      "wait": 500,
+      "eval": "window.setWords({\"lang\":\"zh-Hant\",\"title\":\"小小的魚缸，<br />就住在你的主畫面上。\",\"text\":\"你的魚就在小工具裡，整天游來游去。\",\"facts\":\"App Store 免費下載 · iPhone、iPad、Mac 和 Apple Watch\"})",
+      "probe": "'zh-hant: ' + window.cardReport()"
     }
   ]
 }

@@ -4,7 +4,7 @@ summary: "Tap the fish in the tray under the tank. From there you can change its
 category: fish-and-packs
 order: 3
 updated: 2026-11-09
-related: ["how-many-fish", "tank-is-full"]
+related: ["how-many-fish", "tank-is-full", "/blog/cute-fish-names/"]
 ---
 The tray under the tank shows the fish in it, with their names. Tap one:
 

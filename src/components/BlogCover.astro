@@ -1,0 +1,34 @@
+---
+/**
+ * The picture on a blog post's card: the post's tank as a live medium widget, with its
+ * fish swimming among the props of the Explore page's ready-made medium tank in that style.
+ * Its corners follow the card's, not the widget's. Tanks only animate while they're on
+ * screen (see scripts/tank.js), so a page full of cards stays light.
+ */
+import Tank from './Tank.astro';
+import { premadeProps } from '../lib/tanks';
+
+interface Props {
+  /** The post's file name, which keeps each tank's id unique on the page. */
+  id: string;
+  tank: { style: string; fish: string[] };
+}
+const { id, tank } = Astro.props;
+const fish = tank.fish.map((species, i) => ({ species, seed: `${id}-card-${i}` }));
+---
+
+<div class="blog-cover" aria-hidden="true">
+  <Tank id={`card-${id}`} size="medium" style={tank.style} fish={fish} props={premadeProps('medium', tank.style)} bubbles={false} />
+</div>
+
+<style>
+  .blog-cover {
+    margin-bottom: 18px;
+  }
+  /* The card's rounding rather than the widget's squircle, so the tank sits in the card
+     the way the card sits on the page. The rim inherits it. */
+  .blog-cover :global(.tank) {
+    border-radius: var(--radius-m);
+    corner-shape: round;
+  }
+</style>

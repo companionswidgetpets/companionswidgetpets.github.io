@@ -4,7 +4,7 @@ summary: "Yes. The Companions watch app shows your small tank on your wrist, wit
 category: other-devices
 order: 2
 updated: 2026-11-09
-related: ["/guides/apple-watch/"]
+related: ["/blog/apple-watch/"]
 ---
 Yes. Companions comes with an Apple Watch app. It shows your **small** tank: the same water, the same props and the same fish swimming the same way, synced from your iPhone over the connection the two already share.
 
@@ -14,6 +14,6 @@ A few things are different on the wrist:
 
 - The watch shows the small tank only, the one in use on the small shelf.
 - Complications (the time, date, weather, steps and Moon in a corner) are left off: the watch has a clock of its own.
-- The watch doesn't feed the fish or let you add them; that happens on the iPhone and syncs over.
+- You add fish on the iPhone, and they sync over. Feeding works on the watch too: tap the knife and fork in the corner, then tap the tank to drop food in.
 
 If the Settings page says **No watch connected**, make sure your watch is paired to this iPhone and nearby, and that Companions is installed on it.

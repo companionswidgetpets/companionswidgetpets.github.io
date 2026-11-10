@@ -5,7 +5,7 @@ category: widgets
 order: 1
 featured: true
 updated: 2026-11-09
-related: ["battery", "/guides/how-the-widget-animates/", "widget-not-updating"]
+related: ["battery", "/blog/how-the-widget-animates/", "widget-not-updating", "/blog/aquarium-live-wallpaper-iphone/"]
 ---
 Yes, and that is the whole point. Your fish glide back and forth, rise and fall, turn to face the way they are going and let out the odd bubble, right on the Home Screen, with the app closed.
 

@@ -4,7 +4,7 @@ summary: "Something useful in a corner of the tank, in white over the water: the
 category: complications
 order: 1
 updated: 2026-11-09
-related: ["weather-not-showing", "packs-and-pricing", "/guides/complications/"]
+related: ["weather-not-showing", "packs-and-pricing", "/blog/complications/"]
 ---
 Borrowed from watch faces, a complication is a small, useful thing in a corner of the glass. Companions has five:
 

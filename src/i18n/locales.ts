@@ -15,6 +15,10 @@ export interface Locale {
   /** The value search engines are told in `hreflang`: the language, without a country,
       so one set of pages serves every country that speaks it. */
   hreflang: string;
+  /** More `hreflang` values for the same pages, where the language alone is read unevenly:
+      Chinese is matched by country (zh-TW) as often as by script (zh-Hant), so each script
+      also names the places that write it. */
+  regions?: readonly string[];
   /** The key of this language in the names pulled from the app (src/data/*.json). */
   data: string;
   /** Open Graph locale, for link previews. */
@@ -32,8 +36,8 @@ const every = [
   { code: 'ru', lang: 'ru', hreflang: 'ru', data: 'ru', og: 'ru_RU', name: 'Русский' },
   { code: 'ja', lang: 'ja', hreflang: 'ja', data: 'ja', og: 'ja_JP', name: '日本語' },
   { code: 'ko', lang: 'ko', hreflang: 'ko', data: 'ko', og: 'ko_KR', name: '한국어' },
-  { code: 'zh-hans', lang: 'zh-Hans', hreflang: 'zh-Hans', data: 'zh-Hans', og: 'zh_CN', name: '简体中文' },
-  { code: 'zh-hant', lang: 'zh-Hant', hreflang: 'zh-Hant', data: 'zh-Hant', og: 'zh_TW', name: '繁體中文' },
+  { code: 'zh-hans', lang: 'zh-Hans', hreflang: 'zh-Hans', regions: ['zh', 'zh-CN', 'zh-SG'], data: 'zh-Hans', og: 'zh_CN', name: '简体中文' },
+  { code: 'zh-hant', lang: 'zh-Hant', hreflang: 'zh-Hant', regions: ['zh-TW', 'zh-HK', 'zh-MO'], data: 'zh-Hant', og: 'zh_TW', name: '繁體中文' },
 ] as const satisfies readonly Locale[];
 
 export type LocaleCode = (typeof every)[number]['code'];
@@ -44,7 +48,7 @@ export type LocaleCode = (typeof every)[number]['code'];
  * list when its words are complete and `npm run check:i18n` passes. To look at one before
  * then, build with I18N_DRAFTS=1 (`I18N_DRAFTS=1 npm run dev`).
  */
-export const drafts: LocaleCode[] = ['de', 'es', 'fr', 'pt', 'ru', 'ja', 'ko', 'zh-hans', 'zh-hant'];
+export const drafts: LocaleCode[] = [];
 
 const showDrafts = Boolean(globalThis.process?.env?.I18N_DRAFTS);
 
@@ -54,6 +58,11 @@ export const locales: readonly Locale[] = every.filter((l) => showDrafts || !dra
 export const defaultLocale: LocaleCode = 'en';
 export const localeCodes = locales.map((l) => l.code) as LocaleCode[];
 export const translatedCodes = localeCodes.filter((c) => c !== defaultLocale);
+
+/** Every `hreflang` value a language's pages are announced under. */
+export function hreflangsOf(locale: Locale): string[] {
+  return [locale.hreflang, ...(locale.regions ?? [])];
+}
 
 export function getLocale(code: string | undefined): Locale {
   const found = locales.find((l) => l.code === (code ?? defaultLocale));

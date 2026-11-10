@@ -1,6 +1,7 @@
 import { defineCollection } from 'astro:content';
 import { glob } from 'astro/loaders';
 import { z } from 'astro/zod';
+import { blogCategories } from './lib/blog.ts';
 
 /** One question and its answer, at /help/<file name>/. */
 const help = defineCollection({
@@ -25,24 +26,35 @@ const help = defineCollection({
     /** Shown on the home page. Keep to about eight. */
     featured: z.boolean().default(false),
     updated: z.coerce.date(),
-    /** Ids of related help entries or guide paths such as "/guides/add-the-widget/". */
+    /** Ids of related help entries or blog paths such as "/blog/add-the-widget/". */
     related: z.array(z.string()).default([]),
   }),
 });
 
-/** A longer article, at /guides/<file name>/. */
-const guides = defineCollection({
-  loader: glob({ pattern: '**/*.md', base: './src/content/guides' }),
+/** A blog post, at /blog/<file name>/. */
+const blog = defineCollection({
+  loader: glob({ pattern: '**/*.md', base: './src/content/blog' }),
   schema: z.object({
+    /** The page title and the H1, as people would search for it. */
     title: z.string(),
+    /** One or two sentences: the meta description, and the line under the title. */
     description: z.string(),
     published: z.coerce.date(),
     updated: z.coerce.date().optional(),
-    /** Lower comes first in the index. */
+    category: z.enum(blogCategories),
+    /** Lower comes first within its topic. */
     order: z.number().default(100),
-    /** A short label for cards, such as "Getting started". */
-    kicker: z.string().default('Guide'),
+    /** Shown on the home page. Keep to three. */
     featured: z.boolean().default(false),
+    /** The live tank at the top of the post; its style and first fish also make the card's picture. */
+    tank: z.object({
+      style: z.string(),
+      size: z.enum(['small', 'medium', 'large', 'watch']).default('medium'),
+      fish: z.array(z.string()).min(1).max(5),
+      complication: z.enum(['time', 'date']).optional(),
+    }),
+    /** Other posts to suggest at the end, by file name; the rest are filled from the same topic. */
+    related: z.array(z.string()).default([]),
   }),
 });
 
@@ -76,12 +88,11 @@ const helpI18n = defineCollection({
   }),
 });
 
-const guidesI18n = defineCollection({
-  loader: glob({ pattern: '*/guides/*.md', base: translations }),
+const blogI18n = defineCollection({
+  loader: glob({ pattern: '*/blog/*.md', base: translations }),
   schema: z.object({
     title: z.string(),
     description: z.string(),
-    kicker: z.string(),
     updated: z.coerce.date().optional(),
   }),
 });
@@ -94,4 +105,4 @@ const newsI18n = defineCollection({
   }),
 });
 
-export const collections = { help, guides, news, helpI18n, guidesI18n, newsI18n };
+export const collections = { help, blog, news, helpI18n, blogI18n, newsI18n };

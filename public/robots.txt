@@ -44,4 +44,13 @@ Allow: /
 User-agent: Bytespider
 Allow: /
 
+# The search engines of Korea (Naver), Russia (Yandex) and mainland China (Baidu), which
+# this site is also written for.
+User-agent: Yeti
+Allow: /
+User-agent: YandexBot
+Allow: /
+User-agent: Baiduspider
+Allow: /
+
 Sitemap: https://companionswidgetpets.github.io/sitemap-index.xml

@@ -5,7 +5,7 @@ category: other-devices
 order: 1
 featured: true
 updated: 2026-11-09
-related: ["/guides/standby/", "lock-screen-widget"]
+related: ["/blog/standby/", "lock-screen-widget", "/blog/best-standby-widgets/", "/blog/standby-not-working/"]
 ---
 Yes. StandBy is the full-screen view your iPhone shows when it is charging, locked and lying on its side, and its widget view takes the same small widgets as the Home Screen.
 

@@ -72,6 +72,8 @@ const SAMPLES = {
   'press.paragraph': [[{ species: 58, props: 19, languages: 12, developer: SENTINEL(0) }]],
   'footer.legal': [[2026, SENTINEL(1)]],
 };
+/** Lists whose length is the language's own choice. */
+const FREE_LENGTH = ['ld.alternateNames'];
 /** Counts, tried at several sizes so that a language's plural rules are all exercised. */
 const COUNTS = [1, 2, 3, 5, 8, 12, 19, 21, 58, 101];
 
@@ -110,6 +112,12 @@ function compare(a, b, file, path) {
   const isHtml = /html$/i.test(path.split('.').pop() ?? '') || /\.html$|Html\[|\.html\b/.test(path) || path.includes('Html');
   if (ka === 'string') return compareText(a, b, file, path, isHtml);
   if (ka === 'array') {
+    // A list of search phrases is as long as each language needs; every other list is a
+    // set of paragraphs, steps or cards that must match the English one for one.
+    if (FREE_LENGTH.includes(path)) {
+      if (!b.length) error(file, `${path} is empty`);
+      return b.forEach((item, i) => compare(a[0], item, file, `${path}[${i}]`));
+    }
     if (a.length !== b.length) return error(file, `${path} has ${b.length} item(s) where English has ${a.length}`);
     return a.forEach((item, i) => compare(item, b[i], file, `${path}[${i}]`));
   }
@@ -159,7 +167,7 @@ function compare(a, b, file, path) {
 
 const KINDS = {
   help: { required: ['question', 'summary'], optional: ['updated'], route: 'help' },
-  guides: { required: ['title', 'description', 'kicker'], optional: ['updated'], route: 'guides' },
+  blog: { required: ['title', 'description'], optional: ['updated'], route: 'blog' },
   news: { required: ['title', 'summary'], optional: [], route: 'whats-new' },
 };
 
@@ -175,6 +183,27 @@ function markdown(file) {
   return { front, body: match[2] };
 }
 const count = (text, pattern) => (text.match(pattern) ?? []).length;
+
+/**
+ * Bold that Markdown will not render. `**` only opens before punctuation when it does not
+ * follow a letter, and only closes after punctuation when no letter follows it, so
+ * `**“设置”**会` or `「**設定」**を` stays as literal asterisks. (Quotation marks and full
+ * stops belong outside the bold: `“**设置**”会`.)
+ */
+function brokenBold(text) {
+  const found = [];
+  const punct = /[\p{P}\p{S}]/u;
+  const word = /[\p{L}\p{N}]/u;
+  for (const line of text.split('\n')) {
+    for (const m of line.matchAll(/\*\*(?=\S)(.+?)(?<=\S)\*\*/gu)) {
+      const before = line[m.index - 1] ?? ' ';
+      const after = line[m.index + m[0].length] ?? ' ';
+      const inner = [...m[1]];
+      if ((punct.test(inner[0]) && word.test(before)) || (punct.test(inner.at(-1)) && word.test(after))) found.push(m[0]);
+    }
+  }
+  return found;
+}
 const links = (text) => [...text.matchAll(/\]\(([^)\s]+)\)/g), ...text.matchAll(/href="([^"]+)"/g)].map((m) => m[1]);
 const list = (dir) => (existsSync(dir) ? readdirSync(dir).filter((f) => f.endsWith('.md')).sort() : []);
 
@@ -182,7 +211,7 @@ function checkContent() {
   const packs = JSON.parse(readFileSync(join(ROOT, 'src/data/packs.json'), 'utf8')).map((p) => p.id);
   const originals = Object.fromEntries(Object.keys(KINDS).map((k) => [k, list(join(ROOT, 'src/content', k))]));
   // Every address a page may link to, without its language.
-  const routes = new Set(['/', '/help/', '/guides/', '/packs/', '/styles/', '/whats-new/', '/press/', '/support/', '/privacy/']);
+  const routes = new Set(['/', '/help/', '/blog/', '/packs/', '/styles/', '/whats-new/', '/press/', '/support/', '/privacy/']);
   for (const [k, files] of Object.entries(originals)) for (const f of files) routes.add(`/${KINDS[k].route}/${f.slice(0, -3)}/`);
   for (const id of packs) routes.add(`/packs/${id}/`);
 
@@ -221,6 +250,7 @@ function checkContent() {
           const b = count(translation.body, pattern);
           if (a !== b) warn(where, `${b} ${label} where English has ${a}`);
         };
+        for (const bold of brokenBold(translation.body)) error(where, `bold will not render: ${bold} (keep punctuation outside the **)`);
         same('headings', /^## /gm);
         same('step lists', /<ol class="steps">/g);
         same('list items', /<li>|^[-*] |^\d+\. /gm);
@@ -266,7 +296,10 @@ function checkDist() {
   const pages = new Map();
   for (const file of walk(dist)) {
     const rel = `/${relative(dist, file)}`.replace(/index\.html$/, '');
-    pages.set(rel, readFileSync(file, 'utf8'));
+    const text = readFileSync(file, 'utf8');
+    // Files served as they are (a search engine's verification file) are not pages.
+    if (!/<html[\s>]/i.test(text)) continue;
+    pages.set(rel, text);
   }
   const exists = (path) => pages.has(path) || existsSync(join(dist, path));
   const localeOf = (path) => others.find((l) => path.startsWith(`/${l.code}/`)) ?? locales.find((l) => l.code === defaultLocale);
@@ -299,7 +332,11 @@ function checkDist() {
       for (const l of locales) {
         if (!published.has(l.code)) continue;
         const twin = l.code === defaultLocale ? path.replace(new RegExp(`^/${locale.code}/`), '/') : `/${l.code}${path.replace(new RegExp(`^/${locale.code}/`), '/')}`;
-        if (pages.has(twin) && !alternates[l.hreflang]) error(path, `is missing hreflang="${l.hreflang}" although ${twin} exists`);
+        if (pages.has(twin)) {
+          for (const code of [l.hreflang, ...(l.regions ?? [])]) {
+            if (alternates[code] !== site + twin) error(path, `is missing hreflang="${code}" for ${twin}`);
+          }
+        }
       }
     }
 
@@ -338,7 +375,8 @@ if (!strict && !args.has('--dist')) {
   }
 }
 
-for (const line of warnings) console.warn(`  warning  ${line}`);
-for (const line of errors) console.error(`  ERROR    ${line}`);
-console.log(`check-i18n: ${errors.length} error(s), ${warnings.length} warning(s)`);
+// A function is tried with many arguments, so one fault can be found many times over.
+for (const line of new Set(warnings)) console.warn(`  warning  ${line}`);
+for (const line of new Set(errors)) console.error(`  ERROR    ${line}`);
+console.log(`check-i18n: ${new Set(errors).size} error(s), ${new Set(warnings).size} warning(s)`);
 process.exit(errors.length ? 1 : 0);

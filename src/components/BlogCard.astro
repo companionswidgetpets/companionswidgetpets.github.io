@@ -1,0 +1,46 @@
+---
+/** A blog post's card, for the blog's page, the end of each post and the home page. */
+import BlogCover from './BlogCover.astro';
+import type { Localized } from '../lib/content';
+import { readingMinutes } from '../lib/blog';
+import { useLocale } from '../i18n/index.ts';
+
+interface Props {
+  post: Localized<'blog'>;
+  /** Name the post's topic above its title (not needed under the topic's own heading). */
+  topic?: boolean;
+  /** The heading level of the title, to fit the page's outline. */
+  level?: 'h2' | 'h3';
+}
+const { post, topic = false, level = 'h3' } = Astro.props;
+const { t, l } = useLocale(Astro.url);
+const Heading = level;
+---
+
+<a class="card card--link blog-card" href={l(`/blog/${post.id}/`)}>
+  <BlogCover id={post.id} tank={post.data.tank} />
+  {topic && <p class="card__kicker">{t.blog.categories[post.data.category].name}</p>}
+  <Heading class="blog-card__title">{post.data.title}</Heading>
+  <p>{post.data.description}</p>
+  <p class="meta blog-card__meta">{t.blog.readingTime(readingMinutes(post.entry.body))}</p>
+</a>
+
+<style>
+  .blog-card {
+    display: flex;
+    flex-direction: column;
+    padding: clamp(14px, 1.6vw, 18px) clamp(14px, 1.6vw, 18px) clamp(18px, 2.4vw, 24px);
+  }
+  .blog-card > :not(.blog-cover) {
+    padding-inline: 6px;
+  }
+  .blog-card__title {
+    font-size: 1.12rem;
+    line-height: 1.3;
+    margin-bottom: 8px;
+  }
+  .blog-card__meta {
+    margin-top: auto;
+    padding-top: 14px;
+  }
+</style>

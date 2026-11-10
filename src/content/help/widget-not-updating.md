@@ -4,7 +4,7 @@ summary: "Open the app once, which asks iOS to redraw its widgets. If that doesn
 category: troubleshooting
 order: 1
 updated: 2026-11-09
-related: ["add-widget-home-screen", "do-fish-move-in-widget"]
+related: ["add-widget-home-screen", "do-fish-move-in-widget", "/blog/iphone-widget-not-updating/"]
 ---
 Companions saves your tank in a storage area the widget reads, and asks iOS to redraw the widget whenever you change something. Almost always the widget follows within a second or two. When it doesn't:
 

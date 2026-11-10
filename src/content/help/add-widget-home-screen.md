@@ -5,7 +5,7 @@ category: getting-started
 order: 1
 featured: true
 updated: 2026-11-09
-related: ["which-widget-sizes", "/guides/add-the-widget/", "widget-not-updating"]
+related: ["which-widget-sizes", "/blog/add-the-widget/", "widget-not-updating"]
 ---
 Companions is a widget first and an app second, so this is the step that matters.
 

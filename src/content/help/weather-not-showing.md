@@ -4,7 +4,7 @@ summary: "The weather needs your location once: open the Complications sheet and
 category: troubleshooting
 order: 2
 updated: 2026-11-09
-related: ["what-are-complications", "/guides/complications/"]
+related: ["what-are-complications", "/blog/complications/"]
 ---
 The Weather complication asks Apple's weather service for the forecast where you are, so it needs two things: permission to know your location, and a moment to fetch.
 

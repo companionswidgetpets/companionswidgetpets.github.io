@@ -1,0 +1,204 @@
+---
+import { render } from 'astro:content';
+import Base from '../../../layouts/Base.astro';
+import Tank from '../../../components/Tank.astro';
+import BlogCard from '../../../components/BlogCard.astro';
+import BlogCta from '../../../components/BlogCta.astro';
+import { absolute, app, isoDate } from '../../../lib/site';
+import { entryPaths, getBlog, sortPosts } from '../../../lib/content';
+import { closingQuestions, readingMinutes } from '../../../lib/blog';
+import { premadeProps } from '../../../lib/tanks';
+import { useLocale } from '../../../i18n/index.ts';
+
+export async function getStaticPaths() {
+  return entryPaths('blog');
+}
+const { item, locales } = Astro.props;
+const { locale, t, l, date } = useLocale(Astro.url);
+const b = t.blog;
+const { Content, headings } = await render(item.entry);
+// The contents box numbers the sections itself, so a heading's own number ("1. Companions")
+// is left out of it.
+const toc = headings.filter((h) => h.depth === 2).map((h) => ({ ...h, text: h.text.replace(/^\d+[.)]\s*/, '') }));
+const minutes = readingMinutes(item.entry.body);
+const topic = b.categories[item.data.category];
+
+// Keep reading: the posts this one names first, then others on its topic, then the
+// featured ones. Whatever has no translation in this language yet is simply not there.
+const posts = sortPosts(await getBlog(locale.code)).filter((p) => p.id !== item.id);
+const more = [
+  ...item.data.related.map((id) => posts.find((p) => p.id === id)),
+  ...posts.filter((p) => p.data.category === item.data.category),
+  ...posts.filter((p) => p.data.featured),
+  ...posts,
+]
+  .filter((p, i, all): p is (typeof posts)[number] => Boolean(p) && all.findIndex((x) => x?.id === p!.id) === i)
+  .slice(0, 3);
+
+// The live tank at the top: the post's water and fish, standing among the props of the
+// Explore page's ready-made tank in that style.
+const tank = item.data.tank;
+const fish = tank.fish.map((species, i) => ({ species, seed: `${item.id}-${i}` }));
+const props = premadeProps(tank.size === 'watch' ? 'small' : tank.size, tank.style);
+
+const url = absolute(l(`/blog/${item.id}/`));
+const published = isoDate(item.data.published);
+const modified = isoDate(item.data.updated ?? item.data.published);
+const postLd = {
+  '@type': 'BlogPosting',
+  '@id': `${url}#post`,
+  headline: item.data.title,
+  description: item.data.description,
+  datePublished: published,
+  dateModified: modified,
+  author: { '@id': `${app.siteUrl}/#developer` },
+  publisher: { '@id': `${app.siteUrl}/#developer` },
+  mainEntityOfPage: url,
+  url,
+  image: absolute(`/og/${locale.code === 'en' ? 'default' : locale.code}.png`),
+  articleSection: topic.name,
+  timeRequired: `PT${minutes}M`,
+  isPartOf: { '@type': 'Blog', '@id': `${absolute(l('/blog/'))}#blog`, name: b.feedTitle },
+  // A guide is about the app; every other post mentions it.
+  [item.data.category === 'guides' ? 'about' : 'mentions']: { '@id': `${app.siteUrl}/#app` },
+};
+const crumbs = {
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'Companions', item: absolute(l('/')) },
+    { '@type': 'ListItem', position: 2, name: t.nav.blog, item: absolute(l('/blog/')) },
+    { '@type': 'ListItem', position: 3, name: item.data.title, item: url },
+  ],
+};
+// The questions the post closes with, as search engines and assistants read them.
+const questions = closingQuestions(item.entry.rendered?.html);
+const faqLd = questions.length
+  ? {
+      '@type': 'FAQPage',
+      '@id': `${url}#questions`,
+      mainEntity: questions.map((q) => ({ '@type': 'Question', name: q.question, acceptedAnswer: { '@type': 'Answer', text: q.answer } })),
+    }
+  : null;
+const byline = [
+  b.by(app.developer),
+  date(item.data.published),
+  item.data.updated && t.common.updated(date(item.data.updated)),
+  b.readingTime(minutes),
+  // Guides follow the app, so they say which version they describe.
+  item.data.category === 'guides' && `Companions ${app.version}`,
+].filter(Boolean);
+---
+
+<Base title={item.data.title} description={item.data.description} type="article" jsonLd={faqLd ? [postLd, faqLd, crumbs] : [postLd, crumbs]} published={published} modified={modified} locales={locales}>
+  <link slot="head" rel="alternate" type="application/rss+xml" title={b.feedTitle} href={absolute(l('/blog/rss.xml'))} />
+  <article>
+    <header class="page-head">
+      <div class="container container--narrow">
+        <nav class="breadcrumbs" aria-label={t.common.breadcrumb}>
+          <ol>
+            <li><a href={l('/')}>Companions</a></li>
+            <li><a href={l('/blog/')}>{t.nav.blog}</a></li>
+          </ol>
+        </nav>
+        <span class="kicker">{topic.name}</span>
+        <h1>{item.data.title}</h1>
+        <p class="lead">{item.data.description}</p>
+        <p class="meta">{byline.join(' · ')}</p>
+      </div>
+    </header>
+    <div class={`container container--narrow post-tank post-tank--${tank.size}`}>
+      <Tank
+        id={`post-${item.id}`}
+        size={tank.size}
+        style={tank.style}
+        fish={fish}
+        props={props}
+        complication={tank.complication ? { kind: tank.complication, corner: 'topLeft' } : undefined}
+      />
+    </div>
+    <div class="container container--narrow">
+      {
+        toc.length > 2 && (
+          <nav class="toc" aria-label={b.onThisPage}>
+            <p class="card__kicker">{b.onThisPage}</p>
+            <ol>
+              {toc.map((h) => (
+                <li>
+                  <a href={`#${h.slug}`}>{h.text}</a>
+                </li>
+              ))}
+            </ol>
+          </nav>
+        )
+      }
+      <div class="prose">
+        <Content />
+      </div>
+      <BlogCta />
+    </div>
+    {
+      more.length > 0 && (
+        <aside class="container more">
+          <h2>{b.more}</h2>
+          <div class="grid grid--3">
+            {more.map((p) => (
+              <BlogCard post={p} topic />
+            ))}
+          </div>
+        </aside>
+      )
+    }
+  </article>
+</Base>
+
+<style>
+  .post-tank {
+    margin-bottom: clamp(32px, 5vw, 48px);
+  }
+  .post-tank :global(.tank-frame) {
+    margin-inline: auto;
+  }
+  .post-tank--small :global(.tank-frame),
+  .post-tank--watch :global(.tank-frame) {
+    max-width: 260px;
+  }
+  .post-tank--medium :global(.tank-frame) {
+    max-width: 620px;
+  }
+  .post-tank--large :global(.tank-frame) {
+    max-width: 520px;
+  }
+  .toc {
+    margin-bottom: clamp(28px, 4vw, 40px);
+    padding: 18px 22px;
+    border: 1px solid var(--line);
+    border-radius: var(--radius-m);
+    background: var(--surface);
+  }
+  .toc ol {
+    margin: 0;
+    padding-left: 1.2em;
+    columns: 2;
+    column-gap: 24px;
+    font-size: 0.95rem;
+  }
+  .toc li {
+    break-inside: avoid;
+  }
+  .toc li + li {
+    margin-top: 6px;
+  }
+  @media (max-width: 600px) {
+    .toc ol {
+      columns: 1;
+    }
+  }
+  .more {
+    margin-top: clamp(48px, 7vw, 80px);
+    padding-bottom: clamp(48px, 7vw, 80px);
+  }
+  .more h2 {
+    font-size: 1.2rem;
+    margin-bottom: 18px;
+  }
+</style>

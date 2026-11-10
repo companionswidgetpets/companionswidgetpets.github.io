@@ -26,15 +26,15 @@ npm run preview      # serves dist/ the way GitHub Pages will
 
 | Path | What |
 |---|---|
-| `src/pages/[...locale]/` | One file per page or route, each built once per language: `index.astro` (home), `help/`, `guides/`, `packs/`, `styles/`, `whats-new/`, `press/`, `support.astro`, `privacy.astro`. `src/pages/404.astro` is the one page outside it |
+| `src/pages/[...locale]/` | One file per page or route, each built once per language: `index.astro` (home), `help/`, `blog/` (with `rss.xml.ts`, the feed), `packs/`, `styles/`, `whats-new/`, `press/`, `support.astro`, `privacy.astro`. `src/pages/404.astro` is the one page outside it |
 | `src/i18n/` | The languages (`locales.ts`) and every word of the pages and components: `en.ts` is the original, with one file of the same shape per language (see "Languages" below) |
 | `src/content/help/*.md` | One question and answer per file, in English; the file name is the URL (`/help/<name>/`) |
-| `src/content/guides/*.md` | Longer articles (`/guides/<name>/`) |
+| `src/content/blog/*.md` | Blog posts (`/blog/<name>/`): app picks, Home Screen ideas, fish, guides to the app and troubleshooting. The blog used to be "Guides"; the old `/guides/` addresses redirect (`redirects` in `astro.config.mjs`) |
 | `src/content/news/*.md` | Release notes, one per version (`/whats-new/<name>/`) |
 | `src/content/i18n/<language>/` | The translations of those three folders, file for file |
 | `src/content.config.ts` | The frontmatter each kind of entry must have |
-| `src/lib/content.ts` | Gives a page its help answers, guides and release notes in its own language |
-| `src/components/` | `Hero`, `Phone`, `Tank`, `TopBar`, `Footer`, `SizesDemo`, `PackGrid`, `StyleRow`, `Badge`, `Analytics` |
+| `src/lib/content.ts` | Gives a page its help answers, blog posts and release notes in its own language |
+| `src/components/` | `Hero`, `Phone`, `Tank`, `TopBar`, `Footer`, `SizesDemo`, `PackGrid`, `StyleRow`, `Badge`, `Analytics`, and the blog's `BlogCard`, `BlogCover` (a card's picture: the post's tank, live, as a medium widget) and `BlogCta` (the App Store box at the end of a post) |
 | `src/layouts/Base.astro` | The page shell: metadata, Open Graph, JSON-LD, Smart App Banner, fonts |
 | `src/scripts/` | `tank.js` (the simulation), `hero.js` (scroll choreography), `site.js` (menu, style picker), `glass.js` (what is glass, and how much each browser gets), `analytics.js` (visitor statistics) |
 | `src/styles/global.css` | Design tokens (light only, like the app), the title faces, buttons, cards, prose |
@@ -57,13 +57,53 @@ category: widgets                     # see content.config.ts for the list
 order: 10                             # position within the category
 featured: false                       # true puts it on the home page (keep to about eight)
 updated: 2026-11-09
-related: ["another-help-slug", "/guides/some-guide/"]
+related: ["another-help-slug", "/blog/some-post/"]
 ---
 The full answer in Markdown. Numbered steps can use <ol class="steps"> … </ol>.
 ```
 
 One question per page, answered in the first two sentences, with facts taken from the app.
-Guides and release notes work the same way; their fields are in `src/content.config.ts`.
+Release notes work the same way; their fields are in `src/content.config.ts`.
+
+### Writing a blog post
+
+Create `src/content/blog/<url-slug>.md`. The slug is the address in every language, so make
+it the English search phrase (`best-aquarium-widget-apps-iphone`).
+
+```md
+---
+title: "The best aquarium widget apps for iPhone in 2026"   # <title> and H1; about 50 characters
+description: "One or two sentences, about 150 characters."    # meta description and card text
+published: 2026-11-09
+updated: 2026-12-01                   # optional, when the post is revised
+category: app-picks                   # app-picks, home-screen, fish, guides or troubleshooting
+order: 1                              # position within its topic
+featured: true                        # true puts it on the home page (keep to three)
+tank: { style: minimal, size: medium, fish: [clownfish, regal_tang], complication: time }
+related: ["another-post-slug"]        # suggested at the end, before others on the same topic
+---
+```
+
+The `tank` is the live tank at the top of the post (any style id from `styles.json`, size
+`small`, `medium`, `large` or `watch`, up to five species ids from `species.json`); its card
+shows the same water and fish as a medium tank, among the props of the Explore page's
+ready-made medium tank in that style. The topics' names live in
+`src/i18n/<language>.ts` under `blog.categories`; adding a topic means adding it there and
+to `blogCategories` in `src/lib/blog.ts`.
+
+Write for search first: the title is what someone would type, the post answers it in the
+opening paragraphs, and the headings and the closing questions ("Questions people ask", as
+`###` headings) carry the phrases people search with. Link to other posts and help answers
+with site paths (`/blog/standby/`, `/help/battery/`). Anything said about another app must
+come from its App Store listing; say when it was checked. Companions is ours, and posts say
+so where they compare it.
+
+A post appears in another language when `src/content/i18n/<language>/blog/<same-slug>.md`
+exists, with only `title` and `description` in its frontmatter. A language's blog page,
+its feed and the Blog link in its top bar and footer appear once it has at least one
+translated post (`blogLocales()` in `src/lib/content.ts`), so a language never shows an
+empty blog. Before publishing, `node tools/check-i18n.mjs --dist` catches a translated post
+that links to one not yet translated.
 
 A new answer is published in English at once. It appears in another language when
 `src/content/i18n/<language>/help/<same-slug>.md` exists (see "Languages"); until then that
@@ -82,7 +122,7 @@ Words come from three places:
 |---|---|---|
 | Fish, pack, prop and style names | `src/data/*.json` | Pulled from the app by `npm run sync`, in all of the app's languages |
 | Pages and components | `src/i18n/<language>.ts` | Exactly the shape of `en.ts`. A sentence that varies with a count or a name is a function, so each language orders its words and chooses its plurals itself |
-| Help answers, guides, release notes | `src/content/i18n/<language>/{help,guides,news}/<slug>.md` | Frontmatter holds only the words (`question` and `summary`; `title`, `description` and `kicker`; `title` and `summary`). Order, category, dates and related links are read from the English file. Links into the site carry the language's folder (`/ja/help/battery/`) |
+| Help answers, blog posts, release notes | `src/content/i18n/<language>/{help,blog,news}/<slug>.md` | Frontmatter holds only the words (`question` and `summary`; `title` and `description`; `title` and `summary`). Order, category, dates and related links are read from the English file. Links into the site carry the language's folder (`/ja/help/battery/`) |
 
 Three rules keep the translations right:
 
@@ -128,8 +168,8 @@ and add a release note under `src/content/news/`.
 
 ### Liquid glass
 
-The top bar, the buttons, the chips and the containers (cards, the question list, a guide's
-contents box) are liquid glass, drawn by [Liquid Glass for the Web](https://liquidglass.dev)
+The top bar, the buttons, the chips and the containers (cards, the question list, a blog
+post's contents box) are liquid glass, drawn by [Liquid Glass for the Web](https://liquidglass.dev)
 (`src/vendor/liquid-glass/`). The pages themselves stay plain HTML: `src/scripts/glass.js`
 slips one of the library's `<lg-panel>` elements behind each of those elements as its body,
 and turns the top bar's links into the library's `<lg-navbar>`. Until an element has a body,
@@ -192,7 +232,9 @@ Afterwards, every push to `main` republishes within a couple of minutes.
 - `robots.txt` welcomes every search and AI crawler by name; `llms.txt` summarises the site.
 - Every page has a canonical URL, Open Graph and Twitter tags, and JSON-LD: `WebSite`,
   `Person` (developer) and, on the home page, `SoftwareApplication`; `FAQPage` on help pages,
-  `TechArticle` on guides and release notes, `BreadcrumbList` everywhere, `ItemList` on packs.
+  `BlogPosting` on blog posts (and `Blog` on the blog's page), `TechArticle` on release notes,
+  `BreadcrumbList` everywhere, `ItemList` on packs. The blog has an RSS feed in each language
+  (`/blog/rss.xml`, `/ja/blog/rss.xml`), linked from its pages' `<head>`.
 - Every page names itself and its translations with `hreflang` links (and `x-default`, the
   English page), in its `<head>` and again in the sitemap, so a search engine shows each reader
   the page in their own language. Each language's pages have their own `<html lang>`, title,

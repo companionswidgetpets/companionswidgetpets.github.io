@@ -76,6 +76,11 @@ const initial = styleById('lavender');
     background: linear-gradient(to bottom, transparent, var(--band) 140px, var(--band) calc(100% - 140px), transparent);
     transition: --demo-tint 0.5s ease;
   }
+  /* Straight after the hero, which ends in white, the band rises out of that white rather
+     than out of the water (outranking glass.css's fade for the section after the hero). */
+  :global(.hero) ~ .section.demo:nth-of-type(2) {
+    background: linear-gradient(to bottom, var(--bg), var(--band) 220px, var(--band) calc(100% - 140px), transparent);
+  }
   .demo__picker {
     justify-content: center;
     margin-bottom: clamp(28px, 4vw, 44px);

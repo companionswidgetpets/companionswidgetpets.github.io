@@ -2,11 +2,14 @@
 import Base from '../../layouts/Base.astro';
 import { absolute, app } from '../../lib/site';
 import { useLocale, localePaths } from '../../i18n/index.ts';
+import { typeset } from '../../lib/typeset';
 
 export function getStaticPaths() {
   return localePaths();
 }
-const { t, l, date } = useLocale(Astro.url);
+const { locale, t, l, date } = useLocale(Astro.url);
+// The app's wording, with the site's typography for the language (see lib/typeset.ts).
+const app_ = (html: string) => typeset(html, locale.lang);
 const p = t.privacy;
 
 // Kept word for word with the policy shown in the app (PrivacyPolicyView.swift), which is
@@ -44,7 +47,7 @@ const email = `<a href="mailto:${app.supportEmail}">${app.supportEmail}</a>`;
         p.sections.map((section) => (
           <>
             <h2>{section.title}</h2>
-            <Fragment set:html={section.html} />
+            <Fragment set:html={app_(section.html)} />
           </>
         ))
       }
@@ -74,10 +77,10 @@ const email = `<a href="mailto:${app.supportEmail}">${app.supportEmail}</a>`;
       }
 
       <h2>{p.changes.title}</h2>
-      <Fragment set:html={p.changes.html} />
+      <Fragment set:html={app_(p.changes.html)} />
 
       <h2>{p.contact.title}</h2>
-      <Fragment set:html={p.contact.html(email)} />
+      <Fragment set:html={app_(p.contact.html(email))} />
     </div>
   </section>
 </Base>

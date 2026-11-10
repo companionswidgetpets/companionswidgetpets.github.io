@@ -4,7 +4,7 @@ summary: "Yes. My Tanks keeps a shelf of tanks for each widget size, one in use 
 category: tanks-and-styles
 order: 3
 updated: 2026-11-09
-related: ["decorate-tank", "share-a-tank", "/guides/design-a-tank/"]
+related: ["decorate-tank", "share-a-tank", "/blog/design-a-tank/"]
 ---
 Yes. Tap **⋯** at the top of the main page and choose **My Tanks**. The page has a shelf for each widget size; swipe sideways to move between small, medium and large, the same way the main page does.
 

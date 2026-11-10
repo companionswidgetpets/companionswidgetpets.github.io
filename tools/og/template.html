@@ -24,7 +24,7 @@
   .brand img { width: 64px; height: 64px; border-radius: 15px; box-shadow: 0 2px 6px rgba(11,18,32,.15); }
   .brand span { font-weight: 750; font-stretch: 150%; font-size: 30px; letter-spacing: 0.02em; }
   h1 { margin: 0; font-weight: 750; font-stretch: 150%; font-size: 50px; line-height: 1.12; letter-spacing: 0.02em; }
-  p { margin: 26px 0 0; font-family: -apple-system, system-ui, sans-serif; font-size: 26px; line-height: 1.35; color: #5b6572; max-width: 520px; }
+  p { margin: 26px 0 0; font-family: -apple-system, system-ui, sans-serif; font-size: 26px; line-height: 1.35; color: #5b6572; max-width: 520px; text-wrap: balance; }
   .facts { margin-top: 36px; font-size: 20px; color: #8a94a3; }
   .tank {
     position: absolute; right: 72px; top: 86px; width: 420px; height: 458px;
@@ -85,7 +85,15 @@
       document.documentElement.lang = lang;
       const h1 = document.getElementById('title');
       h1.innerHTML = title;
-      document.getElementById('text').textContent = text;
+      const p = document.getElementById('text');
+      p.textContent = text;
+      // Chinese has no spaces and no phrase-aware line breaking in Chrome, so a sentence
+      // with a comma breaks after it rather than mid-word.
+      if (/^zh/.test(lang) && /，/.test(text)) {
+        const at = text.indexOf('，') + 1;
+        p.textContent = '';
+        p.append(text.slice(0, at), document.createElement('br'), text.slice(at));
+      }
       document.getElementById('facts').textContent = facts;
       const cjk = /^(ja|ko|zh)/.test(lang);
       if (cjk) {

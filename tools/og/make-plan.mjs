@@ -21,7 +21,10 @@ const { locales, defaultLocale } = await import(pathToFileURL(join(root, 'src/i1
 const shots = [];
 for (const locale of locales) {
   const { default: t } = await import(pathToFileURL(join(root, `src/i18n/${locale.code}.ts`)).href);
-  const words = { lang: locale.lang, title: t.og.titleHtml, text: t.og.text, facts: t.og.facts };
+  // Chinese, Japanese and Korean have no spaces to break a headline at, so their card takes
+  // the hero's headline, which carries the line break its writer chose.
+  const cjk = /^(ja|ko|zh)/.test(locale.lang);
+  const words = { lang: locale.lang, title: cjk ? t.hero.titleHtml : t.og.titleHtml, text: t.og.text, facts: t.og.facts };
   shots.push({
     url: pathToFileURL(join(here, 'template.html')).href,
     out: `public/og/${locale.code === defaultLocale ? 'default' : locale.code}.png`,

@@ -4,7 +4,7 @@ summary: "Not yet. Companions makes Home Screen widgets in the three colour size
 category: widgets
 order: 5
 updated: 2026-11-09
-related: ["standby", "which-widget-sizes"]
+related: ["standby", "which-widget-sizes", "/blog/iphone-widget-sizes/"]
 ---
 Companions makes the three Home Screen widgets: small, medium and large, in full colour. The Lock Screen uses a different kind of widget, small and drawn in a single colour, so a tank there would be a grey outline of fish rather than the fish themselves. We have chosen not to make one for now.
 

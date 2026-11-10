@@ -669,6 +669,22 @@ html:lang(zh-Hant) {
   line-break: strict;
 }
 
+/* The top bar's App Store button says "Laden", "Obtener", "Obtenir", "Obter" or
+   "Скачать" on a phone, wider than "Get", so on a 390-point iPhone the wordmark would touch
+   it. There the wordmark is set a little smaller. */
+@media (max-width: 429px) {
+  :is(html:lang(de), html:lang(es), html:lang(fr), html:lang(pt), html:lang(ru)) .topbar__wordmark {
+    font-size: 0.8rem;
+  }
+}
+/* The three longest ("Obtener", "Obtenir", "Скачать") still meet it below 390 points, where
+   the wordmark gives way to the icon alone, as every language's does below 380. */
+@media (max-width: 389px) {
+  :is(html:lang(es), html:lang(fr), html:lang(ru)) .topbar__wordmark {
+    display: none;
+  }
+}
+
 /* Russian: Plus Jakarta Sans, the titles' stand-in where SF Pro is not installed, has no
    Cyrillic, and a heading half in it and half in the system font looks patched. Titles
    use the system's own face throughout instead. */
@@ -679,9 +695,11 @@ html:lang(ru) {
 /* German and Russian build long words. Running text may hyphenate them (the browser
    knows each language's rules from the page's lang), and no heading or button may push
    the page wider than the screen. */
-:is(html:lang(de), html:lang(ru)) :is(.prose, .card p, .lead, .qa__body) {
+:is(html:lang(de), html:lang(ru)) :is(.prose, .card p, .qa__body) {
   hyphens: auto;
   -webkit-hyphens: auto;
+  /* Only long words: "Aquariumeinstellungen" may break, "einen" may not. */
+  hyphenate-limit-chars: 10 4 4;
 }
 h1,
 h2,

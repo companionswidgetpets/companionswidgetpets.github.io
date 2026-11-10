@@ -4,7 +4,7 @@ summary: "Yes. Settings has a Fish Size control with five steps from 75% to 125%
 category: fish-and-packs
 order: 5
 updated: 2026-11-09
-related: ["/guides/all-the-fish/"]
+related: ["/blog/all-the-fish/"]
 ---
 Open **Settings** from the **⋯** menu at the top of the main page.
 

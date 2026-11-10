@@ -4,7 +4,7 @@ summary: "Yes, through iPhone widgets on Mac. Turn on Use iPhone Widgets in Syst
 category: other-devices
 order: 3
 updated: 2026-11-09
-related: ["/guides/mac-and-ipad/", "ipad"]
+related: ["/blog/mac-and-ipad/", "ipad"]
 ---
 Yes. Since macOS Sonoma, a Mac can show the widgets of an iPhone signed in to the same Apple Account, as long as the two are near each other or on the same Wi-Fi. Companions doesn't need a Mac app for that.
 

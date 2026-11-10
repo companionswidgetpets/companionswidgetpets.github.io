@@ -10,12 +10,13 @@ Key facts:
 - Works in StandBy, on iPad, on Apple Watch (watch app shows the small tank), and on Mac via iPhone widgets on Mac. No Lock Screen widget.
 - No account, no ads, no tracking. Anonymous usage statistics can be switched off. Translated into 12 languages.
 - Support: companionswidgetpets@gmail.com
+- Languages: the site is written in English (https://companionswidgetpets.github.io/), German (https://companionswidgetpets.github.io/de/), Spanish (https://companionswidgetpets.github.io/es/), French (https://companionswidgetpets.github.io/fr/), Portuguese (https://companionswidgetpets.github.io/pt/), Russian (https://companionswidgetpets.github.io/ru/), Japanese (https://companionswidgetpets.github.io/ja/), Korean (https://companionswidgetpets.github.io/ko/), Simplified Chinese (https://companionswidgetpets.github.io/zh-hans/) and Traditional Chinese (https://companionswidgetpets.github.io/zh-hant/); every page has the same address in each language after the language's folder.
 
 ## Pages
 
 - [Home](https://companionswidgetpets.github.io/): what the app is, live demo of the tanks
 - [Help and questions](https://companionswidgetpets.github.io/help/): one page per question
-- [Guides](https://companionswidgetpets.github.io/guides/): setup on Home Screen, StandBy, Apple Watch, Mac; designing tanks; complications; every fish
+- [Blog](https://companionswidgetpets.github.io/blog/): app picks (aquarium, pet, cute and cozy widget apps), Home Screen ideas, fish facts, and guides to setting up Companions on the Home Screen, StandBy, Apple Watch and Mac
 - [Fish and packs](https://companionswidgetpets.github.io/packs/): every species, pack by pack, with names in 12 languages
 - [Tank styles](https://companionswidgetpets.github.io/styles/): the eight waters
 - [What's new](https://companionswidgetpets.github.io/whats-new/): release notes by version
@@ -23,3 +24,25 @@ Key facts:
 - [Privacy policy](https://companionswidgetpets.github.io/privacy/)
 - [Support](https://companionswidgetpets.github.io/support/)
 - [App Store listing](https://apps.apple.com/app/companions-widget-pets/id6811950512)
+
+## Blog posts worth knowing
+
+- [The best aquarium widget apps for iPhone in 2026](https://companionswidgetpets.github.io/blog/best-aquarium-widget-apps-iphone/): Companions, Aquarium Widgets, ReefPocket, Glass Aquarium and bigsmall compared: which fish really swim in the widget, which widgets are free, which need care
+- [The cutest widget apps for your iPhone](https://companionswidgetpets.github.io/blog/cutest-widget-apps-iphone/): Companions, Pixel Pals, Mochi Pets, CuteKit, Widgetsmith, Locket, Finch, Widgetable, WidgetClub
+- [The best widget apps for iPhone in 2026](https://companionswidgetpets.github.io/blog/best-widget-apps-iphone/): widgets grouped by job: something alive, design your own, weather, planning, habits, people
+- [The best virtual pet widgets for iPhone](https://companionswidgetpets.github.io/blog/virtual-pet-widgets-iphone/): pets that need care versus pets that keep you company
+- [How to make your iPhone less boring](https://companionswidgetpets.github.io/blog/make-your-iphone-less-boring/): 12 apps and built-in tricks
+- [Apps for fish lovers](https://companionswidgetpets.github.io/blog/apps-for-fish-lovers/): fish ID, aquarium trackers, live aquarium cams, fish games
+- [Cozy apps for iPhone](https://companionswidgetpets.github.io/blog/cozy-apps-iphone/): gentle games and calm apps
+- [8 aesthetic iPhone Home Screen ideas](https://companionswidgetpets.github.io/blog/aesthetic-iphone-home-screen-ideas/): wallpaper, icon look and a matching tank for each
+- [The best StandBy widgets](https://companionswidgetpets.github.io/blog/best-standby-widgets/)
+- [iPhone widget sizes](https://companionswidgetpets.github.io/blog/iphone-widget-sizes/): small, medium, large and the iOS 27 extra-large widget
+- [Can you have a live aquarium wallpaper on iPhone?](https://companionswidgetpets.github.io/blog/aquarium-live-wallpaper-iphone/): no, but an animated widget over a matching wallpaper works
+- [iPhone widget not updating? 10 fixes](https://companionswidgetpets.github.io/blog/iphone-widget-not-updating/)
+- [StandBy not working on iPhone? How to fix it](https://companionswidgetpets.github.io/blog/standby-not-working/)
+- [Fish tank ideas: 12 themed aquariums](https://companionswidgetpets.github.io/blog/aquarium-tank-ideas/)
+- [Cute fish names: 150 ideas](https://companionswidgetpets.github.io/blog/cute-fish-names/)
+- [Koi fish meaning](https://companionswidgetpets.github.io/blog/koi-fish-meaning/): the Dragon Gate legend, koinobori, colours
+- [Axolotl facts](https://companionswidgetpets.github.io/blog/axolotl-facts/)
+- [Why watching fish is relaxing, according to science](https://companionswidgetpets.github.io/blog/why-watching-fish-is-relaxing/)
+- Guides to the app: [add the widget](https://companionswidgetpets.github.io/blog/add-the-widget/), [StandBy](https://companionswidgetpets.github.io/blog/standby/), [Apple Watch](https://companionswidgetpets.github.io/blog/apple-watch/), [Mac and iPad](https://companionswidgetpets.github.io/blog/mac-and-ipad/), [designing a tank](https://companionswidgetpets.github.io/blog/design-a-tank/), [complications](https://companionswidgetpets.github.io/blog/complications/), [every fish](https://companionswidgetpets.github.io/blog/all-the-fish/), [the little things](https://companionswidgetpets.github.io/blog/little-things/), [how the widget animates](https://companionswidgetpets.github.io/blog/how-the-widget-animates/)

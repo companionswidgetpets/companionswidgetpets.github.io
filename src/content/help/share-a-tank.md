@@ -4,7 +4,7 @@ summary: "Yes. The ⋯ menu's Share this tank makes a code and a picture of the 
 category: tanks-and-styles
 order: 4
 updated: 2026-11-09
-related: ["multiple-tanks", "/guides/little-things/"]
+related: ["multiple-tanks", "/blog/little-things/"]
 ---
 Tap **⋯** at the top of the main page and choose **Share this tank**. Companions makes two things and opens the share sheet:
 

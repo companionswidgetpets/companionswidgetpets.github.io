@@ -58,6 +58,19 @@ const { t } = useLocale(Astro.url);
     aspect-ratio: 450 / 920;
     user-select: none;
   }
+  /* Black glass under the screen, reaching 3 points in under the bezel. The bezel's
+     opening is anti-aliased and runs about a pixel past the screen on the right and at the
+     bottom; without this, the page shows through that soft edge as a thin white line. */
+  .phone::before {
+    content: '';
+    position: absolute;
+    left: calc(20.5 / 450 * 100%);
+    top: calc(19.5 / 920 * 100%);
+    width: calc(408 / 450 * 100%);
+    height: calc(880 / 920 * 100%);
+    border-radius: calc(63 / 408 * 100%) / calc(63 / 880 * 100%);
+    background: #000;
+  }
   .phone__screen {
     position: absolute;
     left: calc(23.5 / 450 * 100%);

@@ -5,7 +5,7 @@ category: fish-and-packs
 order: 4
 featured: true
 updated: 2026-11-09
-related: ["/guides/little-things/"]
+related: ["/blog/little-things/"]
 ---
 No. Companions is deliberately the easy kind of pet. Your fish don't get hungry, they don't get sick, the water never needs changing and nothing ever dies. Leave the app for a month and the tank is exactly as you left it.
 
