@@ -5,7 +5,7 @@ published: 2026-11-09
 category: app-picks
 order: 1
 featured: true
-tank: { style: minimal, size: medium, fish: [clownfish, regal_tang, moorish_idol, seahorse, tang] }
+tank: { style: pond, size: medium, fish: [clownfish, regal_tang, moorish_idol, seahorse, tang] }
 related: ["virtual-pet-widgets-iphone", "aquarium-tank-ideas", "how-the-widget-animates"]
 ---
 An aquarium widget puts a small fish tank on your iPhone Home Screen, so there is something alive to look at every time you unlock your phone. There are more of them than ever, and they are surprisingly different: some fish really swim, some are a picture that changes now and then, some are free and some want a weekly subscription before the tank appears at all.

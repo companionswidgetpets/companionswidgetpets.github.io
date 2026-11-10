@@ -4,7 +4,7 @@ description: "Put the time, the date, the weather, your step goal or tonight's M
 published: 2026-11-09
 category: guides
 order: 6
-tank: { style: minimal, size: medium, fish: [clownfish, moorish_idol, regal_tang], complication: time }
+tank: { style: pumpkin, size: medium, fish: [clownfish, moorish_idol, regal_tang], complication: time }
 related: ["design-a-tank", "best-widget-apps-iphone", "iphone-widget-not-updating"]
 ---
 Borrowed from watch faces, a complication is a small, useful thing in a corner of the glass: white text or a glyph over the water, with a soft shadow so it reads on any style. A tank has one, in the corner you choose, and it shows wherever the tank does: on the app's pages, in the widget, and in a tank you share. Complications come with **All Fish**, lifetime or monthly.

@@ -4,7 +4,7 @@ description: "A step-by-step guide to a calm, all-black iPhone Home Screen on iO
 published: 2026-11-09
 category: home-screen
 order: 3
-tank: { style: dark, size: medium, fish: [ghost, skeleton, jellyfish, neon] }
+tank: { style: pumpkin, size: medium, fish: [ghost, skeleton, jellyfish, neon] }
 related: ["aesthetic-iphone-home-screen-ideas", "best-standby-widgets", "standby"]
 ---
 An all-black Home Screen is the calmest way to use an iPhone: no bright colours pulling at you, just what you need, quietly. It also suits the iPhone's screen, where black pixels are simply switched off. Here is how to make one in about five minutes, and how to keep it from feeling lifeless.

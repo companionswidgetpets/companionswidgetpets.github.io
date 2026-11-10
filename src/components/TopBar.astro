@@ -22,11 +22,11 @@ const { locale, t, l } = useLocale(Astro.url);
 // The blog is linked only in the languages it has posts in.
 const hasBlog = (await blogLocales()).includes(locale.code);
 const nav = [
+  { path: '/styles/', label: t.nav.styles },
+  { path: '/packs/', label: t.nav.fish },
+  { path: '/whats-new/', label: t.nav.whatsNew },
   { path: '/help/', label: t.nav.help },
   ...(hasBlog ? [{ path: '/blog/', label: t.nav.blog }] : []),
-  { path: '/packs/', label: t.nav.fish },
-  { path: '/styles/', label: t.nav.styles },
-  { path: '/whats-new/', label: t.nav.whatsNew },
 ];
 const isCurrent = (path: string) => (path === '/' ? current === '/' : current.startsWith(path));
 ---
