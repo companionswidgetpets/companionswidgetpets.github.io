@@ -240,7 +240,11 @@ Afterwards, every push to `main` republishes within a couple of minutes.
   the page in their own language. Each language's pages have their own `<html lang>`, title,
   description, `og:locale`, social card and structured data, and link only to pages in the same
   language; the language menu in the footer is the one place that crosses over.
-- The sitemap is at `/sitemap-index.xml`. Submit the site once to
+- The sitemap is at `/sitemap-index.xml`, and the same pages are listed again, one address
+  per line, at `/sitemap.txt`. Search Console often reports "Couldn't fetch" for an XML
+  sitemap on GitHub Pages even though the file is fine
+  ([discussion](https://github.com/orgs/community/discussions/199426)); if it does, submit
+  `sitemap.txt` there as well. Submit the site once to
   [Google Search Console](https://search.google.com/search-console) and
   [Bing Webmaster Tools](https://www.bing.com/webmasters) (Bing feeds ChatGPT and Copilot).
   Search Console shows which Google searches lead here. To prove the site is yours, add it

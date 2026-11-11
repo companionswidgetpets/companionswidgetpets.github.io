@@ -54,3 +54,5 @@ User-agent: Baiduspider
 Allow: /
 
 Sitemap: https://companionswidgetpets.github.io/sitemap-index.xml
+# The same pages as a plain list, for crawlers that have trouble with the XML.
+Sitemap: https://companionswidgetpets.github.io/sitemap.txt

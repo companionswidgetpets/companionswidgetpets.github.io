@@ -1,4 +1,5 @@
 // @ts-check
+import { readdir, readFile, writeFile } from 'node:fs/promises';
 import { defineConfig } from 'astro/config';
 import sitemap from '@astrojs/sitemap';
 import { locales, defaultLocale, hreflangsOf } from './src/i18n/locales.ts';
@@ -26,6 +27,33 @@ const formerGuides = [
 const redirects = {
   '/guides/': '/blog/',
   ...Object.fromEntries(formerGuides.map((slug) => [`/guides/${slug}/`, `/blog/${slug}/`])),
+};
+
+// Google Search Console often says "Couldn't fetch" for an XML sitemap on GitHub Pages,
+// even when the file is served correctly (github.com/orgs/community/discussions/199426),
+// and a plain list of addresses is one thing that gets through. So the same pages are
+// written again as /sitemap.txt, one address per line. It is read back from the XML the
+// sitemap integration has just written (this must come after it in `integrations`), so the
+// two can never disagree.
+const xmlEntities = { amp: '&', lt: '<', gt: '>', quot: '"', apos: "'" };
+/** @type {import('astro').AstroIntegration} */
+const sitemapTxt = {
+  name: 'sitemap-txt',
+  hooks: {
+    'astro:build:done': async ({ dir, logger }) => {
+      const files = (await readdir(dir)).filter((name) => /^sitemap-\d+\.xml$/.test(name)).sort();
+      const urls = [];
+      for (const name of files) {
+        const xml = await readFile(new URL(name, dir), 'utf8');
+        for (const [, loc] of xml.matchAll(/<loc>([^<]+)<\/loc>/g)) {
+          urls.push(loc.replace(/&(amp|lt|gt|quot|apos);/g, (_, entity) => xmlEntities[/** @type {keyof typeof xmlEntities} */ (entity)]));
+        }
+      }
+      if (!urls.length) throw new Error('sitemap.txt: the XML sitemap lists no pages');
+      await writeFile(new URL('sitemap.txt', dir), urls.join('\n') + '\n');
+      logger.info(`\`sitemap.txt\` lists ${urls.length} pages`);
+    },
+  },
 };
 
 // The site is published by GitHub Pages at the organisation's user site, so there is no
@@ -69,6 +97,7 @@ export default defineConfig({
         return item;
       },
     }),
+    sitemapTxt,
   ],
   build: {
     // Every page is a folder with an index.html, so URLs end in a slash and GitHub Pages
